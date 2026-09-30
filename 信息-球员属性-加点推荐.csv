@@ -1,0 +1,27 @@
+序号,属性-中文,属性-英文,属性分类-中文,属性分类-英文
+1,进攻意识,Attacking Awareness,进攻,Attacking
+2,控球,Ball Control,进攻,Attacking
+3,盘球,Dribbling,进攻,Attacking
+4,紧密控球,Tight Possession,进攻,Attacking
+5,地面传球,Low Pass,进攻,Attacking
+6,空中传球,Lofted Pass,进攻,Attacking
+7,射门,Finishing,进攻,Attacking
+8,头球,Heading,进攻,Attacking
+9,罚定位球,Set Piece Taking,进攻,Attacking
+10,弧线球,Curl,进攻,Attacking
+11,防守意识,Defensive Awareness,防守,Defending
+12,防守参与度,Defensive Engagement,防守,Defending
+13,抢球,Tackling,防守,Defending
+14,积极性,Aggression,防守,Defending
+15,守门员意识,GK Awareness,防守,Defending
+16,守门员接球能力,GK Catching,防守,Defending
+17,守门员扑救,GK Parrying,防守,Defending
+18,守门员扑救反应,GK Reflexes,防守,Defending
+19,守门员臂展,GK Reach,防守,Defending
+20,速度,Speed,身体素质,Athleticism
+21,加速,Acceleration,身体素质,Athleticism
+22,脚下力量,Kicking Power,身体素质,Athleticism
+23,跳起,Jumping,身体素质,Athleticism
+24,身体接触,Physical Contact,身体素质,Athleticism
+25,平衡,Balance,身体素质,Athleticism
+26,体力,Stamina,身体素质,Athleticism

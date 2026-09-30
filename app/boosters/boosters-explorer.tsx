@@ -10,6 +10,7 @@ import {
   boosterIdsByPosition,
   boosterPositions,
   boosters,
+  type BoosterId,
   type BoosterPosition,
   type BoosterRecommendation,
 } from './data';
@@ -37,7 +38,7 @@ export function BoostersExplorer() {
         const item = getAttribute(id);
         return `${item.nameZh} ${item.nameEn}`;
       }).join(' ')}`.toLocaleLowerCase();
-      return (selectedPosition === null || (boosterIdsByPosition[selectedPosition] as readonly string[]).includes(booster.id)) &&
+      return (selectedPosition === null || (boosterIdsByPosition[selectedPosition] as readonly BoosterId[]).includes(booster.id)) &&
         (selectedRecommendation === null || booster.recommendation === selectedRecommendation) &&
         selectedAttributes.every((attribute) =>
         (booster.attributes as readonly AttributeId[]).includes(attribute),
