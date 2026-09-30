@@ -1,34 +1,34 @@
-﻿编号,比赛风格名称,进攻型or防守型,风格描述,生效位置
-1,偷猎者,进攻型,侵略性强，善于撕开对手最后层防线的前锋。,CF
-2,虚假跑位,进攻型,吸引对手后卫，为其他球员创造空档的球员。,CF/SS/AMF
-3,禁区之狐,进攻型,在禁区内隐藏，等待机会的前锋。,CF
-4,站桩式中锋,进攻型,将自己定位成在锋线的一名站桩式中锋，并以身体保护球的球员。,CF
-5,组织型前锋,进攻型,愿意回撤接球并帮助创造进攻机会的前锋球员。,CF/SS
-6,有创意的中场指挥官,进攻型,利用任何防守空当展开进攻和助攻射门的球员。,SS/RWF/LWF/AMF/RMF/LMF
-7,高产翼锋,进攻型,站在侧翼位置接收传球的球员，当机会出现时，偶尔也会切入中心。,RWF/LWF
-8,自由侧翼,进攻型,倾向于从侧翼切入以接球的球员。,RWF/LWF/RMF/LMF
-9,传中专家,进攻型,在边线伺机横传的球员。,RWF/LWF/RMF/LMF
-10,传统十号位置,进攻型,保持高位站位，方便发起攻势，伺机前插参与射门。,SS/AMF
-11,影子前锋,进攻型,有很大进攻欲望，一有机会就往前寻求射门的球员。,SS/AMF/RMF/LMF/CMF
-12,全能中场,进攻型,整场比赛不懈奔跑，覆盖整个球场的球员。,RMF/LMF/CMF/DMF
-13,靠山,进攻型,深入防守型中场。保护后方边线。,DMF
-14,指挥官,进攻型,潜伏在更深的位置准备发起进攻的球员。,CMF/DMF
-15,组织大师,进攻型,从较深位置参与进攻组织。,CB
-16,额外前锋,进攻型,喜欢参与进攻，并争取每个机会围攻对手球门的后卫。,CB
-17,进攻型后卫,进攻型,一有机会就跑向前场参与进攻的进攻型后卫。,RB/LB
-18,防守型后卫,进攻型,喜欢留在后场执行防守任务的可靠后卫。,RB/LB
-19,迭瓦式终结者,进攻型,喜欢介入中心区进攻的进攻型后卫。,RB/LB
-20,高位防线门将,进攻型,进攻时保持高位站位，覆盖防线后方区域遏制反击。,GK
-21,锋线施压,防守型,从锋线开始对门将及后卫实施高位压迫。,CF/SS/RWF/LWF
-22,前场埋伏者,防守型,预判对方传球路线并占据有利位置。,CF/SS/RWF/LWF
-23,突前球员,防守型,根据局势保留体力、避免回防，始终在前场待机进攻。,CF/SS/RWF/LWF/AMF
-24,全能后卫,防守型,球队防守时积极回撤补位，应对对方攻势。,AMF/RMF/LMF/CMF/DMF
-25,传球拦截者,防守型,主动封堵对方传球路线进行防守。,AMF/RMF/LMF/CMF/DMF
-26,全能中场,防守型,整场比赛不懈奔跑，覆盖整个球场的球员。,RMF/LMF/CMF/DMF
-27,靠山,防守型,深入防守型中场。保护后方边线。,DMF
-28,破坏型中场,防守型,通过强硬的抢球和施压阻挡对方攻击的顽强斗士。,CMF/DMF/RB/LB/CB
-29,补位型球员,防守型,主动补位进行逼迫的队友。,CMF/DMF/RB/LB/CB
-30,高位防线大师,防守型,专注于保持高效防守阵型，确保防守时整体架构稳固。,RB/LB/CB
-31,进攻型守门员,防守型,果断出击封锁射门角度，应对传到防线后方的球。,GK
-32,防守型守门员,防守型,固守球门附近区域，避免贸然出击。,GK
-33,清道夫门将,防守型,采取高位站位，迅猛出击覆盖防线后方广阔区域。,GK
+﻿编号,比赛风格名称-中文,比赛风格名称-英文,进攻型or防守型-中文,进攻型or防守型-英文,风格描述-中文,风格描述-英文,生效位置
+1,偷猎者,Goal Poacher,进攻型,attack,侵略性强，善于撕开对手最后层防线的前锋。,A predatory striker who plays off the shoulders of the last defender.,CF
+2,虚假跑位,Dummy Runner,进攻型,attack,吸引对手后卫，为其他球员创造空档的球员。,A player who attracts the defence to create space for other players to exploit.,CF/SS/AMF
+3,禁区之狐,Fox in the Box,进攻型,attack,在禁区内隐藏，等待机会的前锋。,A striker who lurks in the opposition 18 yard box just waiting for the ball.,CF
+4,站桩式中锋,Target Man,进攻型,attack,将自己定位成在锋线的一名站桩式中锋，并以身体保护球的球员。,"A player that positions himself on the frontlines as a target man, and protects the ball with his physique.",CF
+5,组织型前锋,Deep-lying Forward,进攻型,attack,愿意回撤接球并帮助创造进攻机会的前锋球员。,A forward player that is willing to fall back to receive the ball and help create plays.,CF/SS
+6,有创意的中场指挥官,Creative Playmaker,进攻型,attack,利用任何防守空当展开进攻和助攻射门的球员。,A player who takes advantage of any opening in the defence to initiate attacks and assists to shots on goal.,SS/RWF/LWF/AMF/RMF/LMF
+7,高产翼锋,Prolific Winger,进攻型,attack,站在侧翼位置接收传球的球员，当机会出现时，偶尔也会切入中心。,"A player who positions himself on the wing to receive passes, occasionally cutting into the centre when the opportunity arises.",RWF/LWF
+8,自由侧翼,Roaming Flank,进攻型,attack,倾向于从侧翼切入以接球的球员。,A player who tends to cut inside from the wing to receive passes.,RWF/LWF/RMF/LMF
+9,传中专家,Cross Specialist,进攻型,attack,在边线伺机横传的球员。,"A player who hugs the touchline, waiting for a chance to cross the ball in.",RWF/LWF/RMF/LMF
+10,传统十号位置,Classic No. 10,进攻型,attack,保持高位站位，方便发起攻势，伺机前插参与射门。,Takes a high position to initiate attacks and also goes for goal themselves when the chance arises.,SS/AMF
+11,影子前锋,Hole Player,进攻型,attack,有很大进攻欲望，一有机会就往前寻求射门的球员。,A player who looks to make runs into the opposition goal area when the team is on the attack.,SS/AMF/RMF/LMF/CMF
+12,全能中场,Box-to-Box,进攻型,attack,整场比赛不懈奔跑，覆盖整个球场的球员。,A player who tirelessly covers every blade of grass for the full 90 minutes.,RMF/LMF/CMF/DMF
+13,靠山,Anchor Man,进攻型,attack,深入防守型中场。保护后方边线。,A deep sitting defensive midfielder protecting the backline.,DMF
+14,指挥官,Orchestrator,进攻型,attack,潜伏在更深的位置准备发起进攻的球员。,"A player who lurks in deeper positions, ready to initiate attacks.",CMF/DMF
+15,组织大师,Build Up,进攻型,attack,从较深位置参与进攻组织。,"From a deep position, takes part in setting up attacks.",CB
+16,额外前锋,Extra Frontman,进攻型,attack,喜欢参与进攻，并争取每个机会围攻对手球门的后卫。,A defender who likes to join in the attack and lay siege on the opposition goal at every given opportunity.,CB
+17,进攻型后卫,Attacking Full-back,进攻型,attack,一有机会就跑向前场参与进攻的进攻型后卫。,An attack-minded full-back who will run upfield and join the attack when presented with a chance.,RB/LB
+18,防守型后卫,Defensive Full-back,进攻型,attack,喜欢留在后场执行防守任务的可靠后卫。,A solid full-back who prefers to stay back and stick to defensive duties.,RB/LB
+19,迭瓦式终结者,Full-back Finisher,进攻型,attack,喜欢介入中心区进攻的进攻型后卫。,An attacking full-back who enjoys joining the attack in high central areas.,RB/LB
+20,高位防线门将,High Line GK,进攻型,attack,进攻时保持高位站位，覆盖防线后方区域遏制反击。,"Takes a high position when attacking, covering the area behind the defence to thwart counter attacks.",GK
+21,锋线施压,Front Line Pressure,防守型,defense,从锋线开始对门将及后卫实施高位压迫。,Presses the opposing keeper and defenders aggressively from the top of the front line.,CF/SS/RWF/LWF
+22,前场埋伏者,Front Line Poacher,防守型,defense,预判对方传球路线并占据有利位置。,Watches the opponent's passing lanes and takes up smart positions.,CF/SS/RWF/LWF
+23,突前球员,Attack Outlet,防守型,defense,根据局势保留体力、避免回防，始终在前场待机进攻。,Avoids defending to save energy depending on the situation and remains up front waiting to attack.,CF/SS/RWF/LWF/AMF
+24,全能后卫,All-action Defender,防守型,defense,球队防守时积极回撤补位，应对对方攻势。,Runs back aggressively when the team is defending and responds to the opponent's attacks.,AMF/RMF/LMF/CMF/DMF
+25,传球拦截者,Pass Disruptor,防守型,defense,主动封堵对方传球路线进行防守。,Defends by actively blocking the opponent's passing lanes.,AMF/RMF/LMF/CMF/DMF
+26,全能中场,Box-to-Box,防守型,defense,整场比赛不懈奔跑，覆盖整个球场的球员。,A player who tirelessly covers every blade of grass for the full 90 minutes.,RMF/LMF/CMF/DMF
+27,靠山,Anchor Man,防守型,defense,深入防守型中场。保护后方边线。,A deep sitting defensive midfielder protecting the backline.,DMF
+28,破坏型中场,The Destroyer,防守型,defense,通过强硬的抢球和施压阻挡对方攻击的顽强斗士。,Applies pressure aggressively when close to an opponent who has the ball.,CMF/DMF/RB/LB/CB
+29,补位型球员,Covering Role,防守型,defense,主动补位进行逼迫的队友。,Actively covers for teammates conducting Match-up roles.,CMF/DMF/RB/LB/CB
+30,高位防线大师,High Line Master,防守型,defense,专注于保持高效防守阵型，确保防守时整体架构稳固。,"Looks to maintain an effective defensive line, keeping the shape intact as they defend.",RB/LB/CB
+31,进攻型守门员,Attacking GK,防守型,defense,果断出击封锁射门角度，应对传到防线后方的球。,Comes out aggressively to limit shooting angles and respond to balls sent behind the defence.,GK
+32,防守型守门员,Defensive GK,防守型,defense,固守球门附近区域，避免贸然出击。,Holds a position near the goal and refrains from rushing out aggressively.,GK
+33,清道夫门将,Sweeper GK,防守型,defense,采取高位站位，迅猛出击覆盖防线后方广阔区域。,Takes a high position and rushes out aggressively to cover a wide area behind the defence.,GK

@@ -17,7 +17,7 @@ SKILLS = %w[
 ].freeze
 
 # 最终输出的 10 个标准位置。所有专家 CSV 的原始列都会映射到这里。
-POSITIONS = %w[CF SS L/RWF AMF CMF DMF L/RMF L/RB CB GK].freeze
+POSITIONS = %w[CF SS RWF/LWF AMF CMF DMF RMF/LMF RB/LB CB GK].freeze
 
 # 自动寻找技能名称列。脚本也支持“技能名称”“技巧名称-中文”等不同表头。
 def find_skill_column(headers)
@@ -53,7 +53,7 @@ end
 # 例如：
 #   CF（高点型）       -> CF
 #   CMF/DMF-扫荡型     -> CMF、DMF
-#   LWF/RWF/LMF/RMF... -> L/RWF、L/RMF
+#   LWF/RWF/LMF/RMF... -> RWF/LWF、RMF/LMF
 # 如果以后遇到无法自动识别的列，可以通过 --mapping 提供 JSON 映射。
 def auto_targets(header)
   h = header.to_s.strip
@@ -65,14 +65,14 @@ def auto_targets(header)
   targets << 'AMF' if h.match?(/AMF/i)
   targets << 'CMF' if h.match?(/CMF/i)
   targets << 'DMF' if h.match?(/DMF/i)
-  targets << 'L/RB' if h.match?(/LB\/?RB|L\/?RB/i)
+  targets << 'RB/LB' if h.match?(/(?:LB\/RB|RB\/LB)/i)
   targets << 'CB' if h.match?(/\ACB(?:$|[（(）)_\/-])/i)
   targets << 'GK' if h.match?(/GK/i)
-  if h.match?(/LWF|RWF/i)
-    targets << 'L/RWF'
-    targets << 'L/RMF' if h.match?(/LMF|RMF/i)
+  if h.match?(/(?:LWF\/RWF|RWF\/LWF)/i)
+    targets << 'RWF/LWF'
+    targets << 'RMF/LMF' if h.match?(/(?:LMF\/RMF|RMF\/LMF)/i)
   end
-  targets << 'L/RMF' if h.match?(/LMF|RMF/i) && !targets.include?('L/RMF')
+  targets << 'RMF/LMF' if h.match?(/(?:LMF\/RMF|RMF\/LMF)/i) && !targets.include?('RMF/LMF')
   targets.uniq
 end
 
@@ -80,7 +80,7 @@ end
 # {
 #   "专家名": {
 #     "CF": ["原始 CF 列名"],
-#     "L/RMF": ["原始边路列名"]
+#     "RMF/LMF": ["原始边路列名"]
 #   }
 # }
 def load_mapping(path)
