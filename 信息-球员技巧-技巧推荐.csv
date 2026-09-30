@@ -1,0 +1,158 @@
+﻿序号,技巧名称-中文,技巧名称-英文,技巧描述-中文,技巧描述-英文,技巧图片索引,技巧类型-中文,技巧类型-英文,别名 / 缩写 / 旧名称,技能推荐度,三方研究-中文
+1,剪刀脚假动作,Scissors Feint,输入假动作指令时执行剪刀脚假动作。,Performs a Scissors Feint when entering a feint command.,01.png,盘带,Dribbling,插花假动作,★☆☆☆☆,
+2,两次触球,Double Touch,输入假动作指令时执行两次触球。,Performs a Double Touch when entering a feint command.,02.png,盘带,Dribbling,双触,★★★★☆,
+3,牛摆尾,Flip Flap,输入假动作指令时执行牛摆尾。,Performs a Flip Flap when entering a feint command.,03.png,盘带,Dribbling,牛尾巴,★★☆☆☆,
+4,马赛回旋,Marseille Turn,输入假动作指令时执行马赛回旋。,Performs a Marseille Turn when entering a feint command.,04.png,盘带,Dribbling,马赛、施丹式转身,★★★☆☆,
+5,挑球过顶,Sombrero,提升挑球过顶和彩虹过人的精准度；接地面传球时也可施展挑球过顶。,Increases the accuracy of Sombrero and Rainbow Flick. Also allows the player to perform a Sombrero when receiving a Low Pass.,05.png,盘带,Dribbling,—,★☆☆☆☆,
+6,脚后跟磕球变向,Chop Turn,输入假动作指令时执行脚后跟磕球变向。,Performs a Chop Turn when entering a feint command.,06.png,盘带,Dribbling,压步转身、压步转弯,★☆☆☆☆,
+7,向后切球并转身,Cut Behind & Turn,执行向后切球；大角度转身时还会使用特殊停球动作。,"Performs a Cut Behind. When turning at a wide angle, also uses a special trapping motion.",07.png,盘带,Dribbling,—,★★★☆☆,
+8,磕球过人,Scotch Move,输入假动作指令时执行磕球过人。,Performs a Scotch Move when entering a feint command.,08.png,盘带,Dribbling,—,★☆☆☆☆,
+9,后脚磕球变向,Tap Trick,输入假动作指令时执行后脚磕球变向假动作。,Performs a Tap Trick feint when entering a feint command.,09.png,ST技能,Showtime,—,★★★☆☆,
+10,足底控球,Sole Control,使球员在做假动作和转身时更多地用脚掌控球。,Enables the player to control the ball more using the soles of his feet when executing feints and turns.,10.png,盘带,Dribbling,足底,—,
+11,旋风盘带,Momentum Dribbling,提高球员在进攻三区的盘球能力。,Improves player's dribbling abilities in the attacking third (deep in opposition territory).,11.png,ST技能,Showtime,—,★★★★★,
+12,瞬间加速,Acceleration Burst,可在静止或缓慢移动时快速施展锐钻触球，也可能触发特殊锐钻触球动作。,Enables the player to perform a quick Sharp Touch while stationary or moving slowly. Special Sharp Touch motions may also be triggered.,12.png,ST技能,Showtime,—,★★★☆☆,
+13,磁力脚,Magnetic Feet,控球时，根据 5 米范围内对手人数（最多 4 人）提高控球能力。,"When in possession of the ball, increases the player's ability to keep it based on the number of opponents within 5 metres (4 opponents max).",13.png,ST技能,Showtime,—,★★★★☆,
+14,头球,Heading,提高头球精准度和砸地头球的频度。,Improves the accuracy of headers as well as the frequency of downward headers.,14.png,其他,Other,—,★★★☆☆,
+15,炮弹式头球,Bullet Header,可完成势大力沉的头球攻门，姿势不自然或失去平衡时也更容易完成。,"Enables the player to head the ball sharply towards goal, shooting with power and accuracy even from awkward positions or when off balance.",15.png,ST技能,Showtime,—,★★★★☆,
+16,远距离弧线球,Long-range Curler,远距离施展大弧度且精准的控制射门。,"Performs a sharp, accurate Controlled Shot with a heavy curl that often hits the target even from a long distance.",16.png,射门,Shooting,远弧,★★★★☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+1、对搓射时的球速、精准度和弧度都有提升，提升效果等效脚力值和射门值+10%多一点。在禁区内外都会生效。
+2、搓射不受远射加成。
+3、远距离弧线球是改参数技能，不是加能力值技能，所以可以突破能力上限而不怕溢出浪费，同时也可以弥补逆足带来的debuff。"
+17,弧线落叶射门,Blitz Curler,力量槽至少 50% 时，可施展带强烈上旋的控制射门。,Performs a Controlled Shot with heavy topspin while the Power Gauge is at least 50% full.,17.png,ST技能,Showtime,金搓,★★★★☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+1、球速比普通搓射快一点，约1.2%
+2、射门落点是瞄准侧上方死角的，这就是弧线落叶射门球路能吊过门将的奥秘
+3、受【远距离弧线球】技能的加成
+4、逆足精度最高级“非常高”即可用逆足触发弧线落叶射门
+5、对外脚背弧线球控制射门无影响，即使有外脚背弧线球技能也可以通过进一步再搓来进行逆足弧线落叶射门。"
+18,吊射控制,Chip Shot Control,高速移动时也能精准吊射。,"Performs an accurate Chip Shot, even when moving at high speed.",18.png,射门,Shooting,—,★★☆☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+让吊射球路更高更“陡峭”，有助于越过出击的门将。"
+19,落叶球射门,Knuckle Shot,力量槽达到 50%–65% 时，以惊人射门指令踢出电梯球；也适合任意球。,Performs a Knuckle Shot when entering a Stunning Shot command while the Power Gauge is 50-65% full. A good free kick option.,19.png,射门,Shooting,—,★★☆☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+1、球路：落叶球射门左右飘忽；急坠射门竖直方向下坠而不侧向漂移；急升射门球路持续上升。
+2、球速：三种特殊球技能，球速均和同情况下紫射一样。
+3、进球率：同情景下，急坠射门比普通紫射进球率高32%，因为球路稳，无侧弧线，不易偏出；落叶球射门比普通紫射进球率高14%；急升射门比普通紫射进球率低11%，因为球路容易太高、太偏。
+4、任意球：落叶球射门、急坠射门可在任意球触发，急坠射门任意球实战价值大。"
+20,急坠射门,Dipping Shot,力量槽达到 20%–50% 时，以惊人射门指令踢出急坠射门。,Performs a Dipping Shot when entering a Stunning Shot command while the Power Gauge is 20-50% full.,20.png,射门,Shooting,插入射门,★★★☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+1、球路：落叶球射门左右飘忽；急坠射门竖直方向下坠而不侧向漂移；急升射门球路持续上升。
+2、球速：三种特殊球技能，球速均和同情况下紫射一样。
+3、进球率：同情景下，急坠射门比普通紫射进球率高32%，因为球路稳，无侧弧线，不易偏出；落叶球射门比普通紫射进球率高14%；急升射门比普通紫射进球率低11%，因为球路容易太高、太偏。
+4、任意球：落叶球射门、急坠射门可在任意球触发，急坠射门任意球实战价值大。"
+21,急升射门,Rising Shot,力量槽达到 65%–95% 时，以惊人射门指令踢出上升射门。,Performs a Rising Shot when entering a Stunning Shot command while the Power Gauge is 65-95% full.,21.png,射门,Shooting,电梯球,★★☆☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+1、球路：落叶球射门左右飘忽；急坠射门竖直方向下坠而不侧向漂移；急升射门球路持续上升。
+2、球速：三种特殊球技能，球速均和同情况下紫射一样。
+3、进球率：同情景下，急坠射门比普通紫射进球率高32%，因为球路稳，无侧弧线，不易偏出；落叶球射门比普通紫射进球率高14%；急升射门比普通紫射进球率低11%，因为球路容易太高、太偏。
+4、任意球：落叶球射门、急坠射门可在任意球触发，急坠射门任意球实战价值大。"
+22,远射,Long-range Shooting,从禁区外射出更容易命中目标的远射。,Performs a Long-range Shot from outside the box that often hits the target.,22.png,射门,Shooting,—,★★★★☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+1、远射起效时会让射门能力值+10%；但不会加成脚下力量（而逆足也不影响脚下力量）
+2、远射是纯加能力值，+10%后超过上限的部分不会生效。
+3、远射这类纯加能力技能，计算顺序先于逆足debuff，不会因为用逆足而让溢出的能力值变得有意义，但体能少于50%时溢出部分就有用。
+4、远射技能生效的界限就是大禁区外。
+5、远射技能对远距离弧线球（搓射）没有加成作用，但对紫射有加成。"
+23,掠地瞬击,Low Screamer,力量槽低于 50% 的惊人射门球速提升，且不会出现急坠射门。,Performing a Stunning Shot while the Power Gauge is under 50% full will increase the speed of the shot. A Dipping Shot will not occur.,23.png,ST技能,Showtime,—,★★★★☆,
+24,瞬发射门,Snap Strike,缩短惊人射门的出脚时间。,Takes less time to kick the ball when making a Stunning Shot.,24.png,ST技能,Showtime,—,★★★★☆,
+25,杂技般进球,Acrobatic Finishing,在不自然姿势或失去平衡时也能找到射门机会。,Enables the player to find a finish even from awkward positions or when off balance.,25.png,射门,Shooting,杂射,★★★☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+1、提升触发射门动作的判定范围，例如各种侧倒射门。
+2、增加非常规的射门动作。"
+26,脚跟绝技,Heel Trick,在不自然姿势或失去平衡时也能用脚后跟传球或射门。,"Enables the player to pass and shoot using the heel, even from awkward positions or when off balance.",26.png,传球,Passing,—,★★★☆☆,
+27,一脚射门,First-time Shot,提高第一时间射门的技术和精准度。,Improves technique and precision when taking first- time shots.,27.png,射门,Shooting,首射,★★★★★,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+1、机制：减少不停球直接射门的射门质量debuff
+2、对精准度和球速均有帮助
+3、即使再缓慢、稳定的来球，有【一脚射门】都会带来明显的射门质量提升
+4、即使有【一脚射门】，面对不好处理的高速或弹跳来球，都会出现明显的射门质量下降。"
+28,无定型射门,Phenomenal Finishing,提高不自然身体姿势下射门的力量和精准度。,Increases the power and accuracy of finishing shots attempted from unorthodox body positions.,28.png,ST技能,Showtime,—,★★★★☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+1、大角度转身/姿态别扭/凌空/飞身侧勾射门会被判定为失衡状态，射门质量会有debuff。而无定型射门则是减轻这种debuff。
+2、成熟的应用套路是：接球转身推远角。"
+29,百折不挠,Willpower,每次射门可提升射门能力，最多累积 8 次。,"Improves player's shooting abilities whenever they take a shot, up to a maximum of 8 times.",29.png,ST技能,Showtime,—,★★☆☆☆,
+30,一脚传球,One-touch Pass,提高一脚传球的技术和精准度。,Improves technique and precision when executing one- touch passes.,30.png,传球、守门,Passing、Goalkeeping,单触,★★★★★,"研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：
+
+1、单触是【改参数】技能，大幅减少一脚出球的debuff。
+2、越是球路不稳定、快速的来球，一脚出球debuff越大，越需要单触。来球球路差（蹦蹦跳跳）时，单触能起到超过几十点传球值的效果。
+3、球队的传递过程中，有单触球员和传球大师很重要，若来球球路稳定（贴地球+别太快），没有单触的前场球员也能处理好一脚出球。
+4、单触对地传和空传都有用，一脚空传其实更需要单触。"
+31,直传球,Through Passing,可传出轨迹合适的直塞球，并提高整体直塞精准度。,Enables the player to make through passes with the appropriate trajectory. Also improves the overall accuracy of through passes.,31.png,传球、守门,Passing、Goalkeeping,—,★★★★★,"研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：
+
+1、直传球技能会对直塞和过顶直塞都有加成
+2、普通直塞看的是地面传球能力，过顶直塞看的是空中传球能力
+3、直传球技能属于【加能力】而不是【改参数】，会对相应的传球能力加 20%（仅限在直传时，普通传球不受加成）"
+32,精准长传,Weighted Pass,向前方踢出带强烈后旋的精准高空传球或挑传直塞。,Performs an accurate Lofted Pass or Chipped Through Ball with heavy backspin to a forward area.,32.png,传球、防守、守门,Passing、Defending、Goalkeeping,—,★★★☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：
+
+1、精准长传是【改参数】技能，让空传球路先平后陡，并不是直接加长传能力，以前的翻译加重旋转传球更合适。
+2、此技能在后场更容易触发，用长传和过顶直塞都会触发，过顶直塞更容易触发。紫传、传中不触发。
+3、用长传触发技能后，球路更合适身材高、弹跳好的球员发挥争顶优势；球路后段减速技能也有利于空传分边后的接球。但会整体上会明显减慢球速，拖慢进攻节奏。
+4、触发后长传的提前量更小，落点更靠近球员。"
+33,精确横传球,Pinpoint Crossing,踢出带明显弧线的快速精准传中。,"Performs a sharp, accurate cross with a heavy curl.",33.png,传球,Passing,横传,★★★★☆,"研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：
+
+1、精确横传球对地面横传和空中横传都有相应传球值的加成，而地面横传看地传值、空中横传看空传值。
+2、精确横传球是【加能力】类型技能，会加成传球值10%（仅限传中时，普通长传不受加成）
+3、精确横传球不会影响弧线球能力"
+34,急坠传中,Edged Crossing,踢出垂直旋转且急速下坠的传中球。,Enables the player to put in vertically rotating crosses that fall sharply.,34.png,ST技能,Showtime,落叶传、落叶式横传,★★★★☆,
+35,外脚背弧线球,Outside Curler,用较强脚的外侧踢出精准的旋转射门或传球，远距离也适用。,"Performs a precise spinning shot or pass with the outside of the boot, even from range, using the stronger foot for accuracy.",35.png,传球,Passing,外脚背、外部弧线球,★★★★☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+外脚背弧线球：射门篇——
+1、触发：有外脚背弧线球技能即可在输入控制射门时，把大多数逆足搓射变为外脚背弧线球射门。触发与逆足频率无关。用平行底线趟球后再搓的方式可以在有外脚背弧线球技能情况下触发逆足搓射/逆足弧线落叶射门。
+2、外脚背弧线球射门不受远距离弧线球加成，也不受弧线落叶射门技能影响球路。
+3、有远距离弧线球的对比下，外脚背弧线球射门球速比搓射慢9%，弧线持平，但精准度比搓射强，且球路更低适合禁区内使用。
+4、外脚背弧线球的优势是比逆足踢球更快出脚（射门时快3帧）。
+外脚背弧线球：传球篇——
+1、触发：无主动输入手段，需有外脚背弧线球技能，出球方向是面朝方向往顺足侧偏30°～60°左右。触发与逆足频率无关。
+2、外脚背弧线球空传：球速比普通传略快，弧线比普通传更大。外脚背弧线球传中需要较近距离才能触发。
+3、外脚背弧线球地传：球速不是优势，弧线比普通传更大，球路能保证稳定、贴地。
+4、外脚背弧线球射门传球的共同优势是比逆足踢球更快出脚。"
+36,插花脚,Rabona,用较强脚施展出其不意的插花脚，扰乱防守节奏。,"Performs a Rabona to disrupt the defence's timing with a surprise kick, using the stronger foot for accuracy.",36.png,传球,Passing,—,★☆☆☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：
+
+（能触发插花脚传球/射门/花式）
+1、插花脚传球的触发需传球目标距离适当不能太长，角度与前进方向成90°～120°，以空传触发（实战中概率很低）。它的球路较低且无弧线，球速无劣势。
+2、插花脚射门需要超过近距离射门才会出现，插花脚射门和传球都是逆足频率越低越大概率触发。
+3、插花脚技能的主要意义在插花脚假射急停，这种急停比一般假射急停入球结合更好，后续动作衔接得快很多（约8帧优势）。触发需要运动方向大致垂直于人与球门连线，逆足频率为经常则可以双腿均触发。"
+37,不看球员传球,No Look Pass,以视线迷惑对手，送出意想不到的传球。,Enables the player to play unexpected passes and confuse the opponent with his lines of sight.,37.png,传球,Passing,—,★☆☆☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：
+
+1、主要是直传球的时候触发的头部动作，短传一般不触发。而且是直塞给空挡很大的队友，成功率很高的时候触发的耍帅动作。如果直塞难度很大则一般不会触发
+2、观察不到对对方后防ai的明显影响
+3、观察不到对尴尬身位出球的改善"
+38,翻盘传球,Game-changing Pass,下半场球队平局或落后时，提高传球能力。,"Improves player's passing abilities after the second half kick-off, under the circumstances that the team is either drawing or losing.",38.png,ST技能,Showtime,—,★☆☆☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：
+
+下半场打平或落后时，地传和空传+10%（由于此加成适用于任何传球而不是特定种类的传球，故其效果还是比直传球、精准横传更强）"
+39,到位传球,Visionary Pass,提高接球队友的一脚传球、直接射门和停球精准度。,"Increases the accuracy of one-touch passes, first-time shots and traps performed by players who receive passes from the holder of this Player Skill.",39.png,ST技能,Showtime,—,★★★☆☆,
+40,无定型传球,Phenomenal Pass,提高不自然身体姿势下传球的力量和精准度。,Increases the power and accuracy of passes attempted from unorthodox body positions.,40.png,ST技能,Showtime,—,★★★★★,
+41,低空传球,Low Lofted Pass,踢出低轨迹、距离远且精准的高空传球。,Enables the player to hit long and accurate Lofted Passes with a low trajectory.,41.png,传球、守门,Passing、Goalkeeping,—,★★☆☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：
+
+1、是改参数技能，会踢出更低轨迹的球路。
+2、触发条件：任何普通长传都会100%触发，但是传中和过顶直塞不触发。
+3、低空传球的球路比普通球路要稍微低一点。低空传球会有微弱的球速优势和精准度优势。"
+42,守门员低弹道凌空球,GK Low Punt,守门员可踢出精准的低弹道凌空球。,Enables the player to take accurate punt kicks with a low trajectory.,42.png,守门,Goalkeeping,开低球、守门员开低球、守门员踢低球,★★★☆☆,
+43,守门员高弹道凌空球,GK High Punt,守门员可踢出长距离高轨迹开球，深入对方半场。,"Enables goalkeepers to take long, high punt kicks that end up deep in opposition territory.",43.png,守门,Goalkeeping,开高球、守门员开高球、守门员踢高球,★★☆☆☆,
+44,长距离投掷,Long Throw,增加界外球投掷距离。,Improves the range of long throws.,44.png,其他,Other,长距离手抛球,★★☆☆☆,"研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：
+
+界外球最大投掷距离（落地点）从21m升高到28m"
+45,守门员长距离投掷,GK Long Throw,增加守门员手抛球距离。,Improves the range on throws by the goalkeeper.,45.png,守门,Goalkeeping,门将手抛,★★☆☆☆,
+46,点球专家,Penalty Specialist,提高主罚点球的精准度。,Enables the player to take higher accuracy penalty kicks.,46.png,射门、其他,Shooting、Other,—,★☆☆☆☆,
+47,守门员扑点球,GK Penalty Saver,提高守门员应对点球时的反应。,Enables the player to have better goalkeeping reactions against penalty kicks.,47.png,守门,Goalkeeping,—,★★☆☆☆,
+48,守门员指挥防守,GK Directing Defence,提高己方腹地后卫的防守能力。,Goalkeeper Skill that improves the defensive abilities of your DF players positioned deep in your own territory.,48.png,ST技能,Showtime,—,★★☆☆☆,
+49,门神战吼,GK Spirit Roar,下半场领先时，提高己方后卫的身体能力。,Goalkeeper Skill that improves the physical abilities of your DF players when leading after half-time.,49.png,ST技能,Showtime,—,★★☆☆☆,
+50,假摔,Gamesmanship,控球时更容易赢得犯规。,Wins fouls more easily when in possession of the ball.,50.png,其他,Other,—,★★☆☆☆,
+51,盯人,Man Marking,快速反应对手动作，施加紧密盯防。,Reacts quickly to an opponent's movements and applies tight marking that is hard to shake.,51.png,防守,Defending,—,★★★★☆,
+52,压迫,Track Back,从前线开始积极压迫对方持球球员。,Enables the player to aggressively apply pressure to the opposition ballholder all the way from the frontlines.,52.png,防守,Defending,—,★★☆☆☆,
+53,截球,Interception,更快地对传球作出反应，提高拦截成功率。,Reacts quickly to passes and intercepts them at a higher rate.,53.png,防守,Defending,—,★★★★☆,
+54,封堵,Blocker,更快封堵传球和射门，并减少反弹球。,"Reacts quickly to kicks by blocking passes and shots at a high rate, and also limits the amount of rebound.",54.png,防守,Defending,—,★★★★☆,
+55,空中优势,Aerial Superiority,空中争抢更占优势，更容易保持头球精准度。,Gains an advantage during mid-air battles and maintains heading accuracy more easily.,55.png,防守、其他,Defending、Other,空优,★★★★☆,
+56,飞身铲球,Sliding Tackle,提高滑铲的精准度和速度，更容易赢得球权。,"Performs a Sliding Tackle with greater accuracy and speed, and wins the ball more easily.",56.png,防守,Defending,铲球,★★★☆☆,
+57,伸脚抢截,Long-reach Tackle,静止或缓慢移动时，更频繁地对较远对手施展站立抢断。,"Increases the frequency of standing tackles, even against far away opponents, while stationary or moving slowly.",57.png,ST技能,Showtime,—,★★★★★,
+58,后防领袖,Fortress,下半场领先时提高防守能力。,"Improves player's defensive abilities after the second half mark, as long as the team has a goal advantage.",58.png,ST技能,Showtime,—,★★★☆☆,
+59,杂技般解围,Acrobatic Clearance,即使姿势不自然，也能用脚解围。,"Enables the player to clear the ball using his feet, even from awkward positions.",59.png,防守,Defending,杂解,★★★☆☆,
+60,空中堡垒,Aerial Fort,在己方禁区内提高空中对抗能力。,Improves player's abilities regarding aerial duels when positioned inside his own penalty box.,60.png,ST技能,Showtime,—,★★★☆☆,
+61,紧急回防,Shadow Hunt,担任后腰或后卫、对手传球打身后时，提高速度相关能力。,"Increases speed-related abilities when this player is a DMF, RB, LB or CB and an opponent's pass is played behind them.",61.png,ST技能,Showtime,—,★★★★☆,
+62,队长,Captaincy,成为场上队伍精神支柱，减轻全队疲劳影响。,"Become the team's inspiration on the pitch, reducing the effects of fatigue for the entire team.",62.png,其他,Other,—,★★☆☆☆,
+63,进攻号手,Attack Trigger,持球时提高其他队友的进攻意识。,Increases all other teammates' Attacking Awareness when this player has control of the ball.,63.png,ST技能,Showtime,—,★★☆☆☆,
+64,超级候补,Super-sub,下半场替补登场时提高球员能力。,Improves player's abilities when introduced after the second half mark.,64.png,其他,Other,超替,★★★☆☆,
+65,战斗精神,Fighting Spirit,受到对手压迫时较少损失踢球或头球精准度，也较少受疲劳影响。,"Rarely loses kicking or heading accuracy when pressured by an opponent, and is less affected by fatigue.",65.png,其他、守门,Other、Goalkeeping,—,★★★☆☆,
+66,进攻提速,Attacking Surge,位于进攻半场且队友持球时，提高速度相关能力。,Increases speed-related abilities when this player is in the attacking half and a teammate has the ball.,66.png,ST技能,Showtime,—,★★★★★,
+67,强力抢断,Power Tackle,使球员更容易施展原地抢断从而通过身体接触赢得球权，同时也更容易通过身体对抗让对手失去平衡。,"Makes it easier to perform a standing tackle that wins the ball using body contact, while also making it easier to knock the opponent off balance.",67.png,ST技能,Showtime,—,★★★★☆,
