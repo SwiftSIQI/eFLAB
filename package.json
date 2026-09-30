@@ -2,11 +2,19 @@
   "name": "sites-project",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "npm@11.19.0",
   "engines": {
     "node": ">=22.13.0"
   },
   "scripts": {
+    "generate:data:styles": "ruby script/generate_playing_styles_data.rb",
+    "generate:data:boosters": "ruby script/generate_boosters_data.rb",
+    "generate:data:attributes": "ruby script/generate_attributes_data.rb",
+    "generate:data:skills": "ruby script/generate_skills_data.rb",
+    "generate:data": "ruby script/generate_playing_styles_data.rb && ruby script/generate_boosters_data.rb && ruby script/generate_attributes_data.rb && ruby script/generate_skills_data.rb",
+    "predev": "ruby script/generate_playing_styles_data.rb && ruby script/generate_boosters_data.rb && ruby script/generate_attributes_data.rb && ruby script/generate_skills_data.rb",
     "dev": "vinext dev",
+    "prebuild": "ruby script/generate_playing_styles_data.rb && ruby script/generate_boosters_data.rb && ruby script/generate_attributes_data.rb && ruby script/generate_skills_data.rb",
     "build": "vinext build",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",

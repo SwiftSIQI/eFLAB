@@ -143,19 +143,19 @@ end
 # --expert "DK=/path/DK.csv" --expert "Skye=/path/Skye.csv"
 options = {
   experts: [],
-  out_dir: Dir.pwd,
+  out_dir: File.join(File.expand_path("..", __dir__), "csv"),
   mapping: nil,
   global: nil
 }
 
 parser = OptionParser.new do |opts|
   opts.banner = <<~USAGE
-    用法：ruby normalize_skill_recommendations.rb --expert 名称=文件.csv [--expert 名称=文件.csv ...]
+    用法：ruby script/normalize_skill_recommendations.rb --expert 名称=文件.csv [--expert 名称=文件.csv ...]
   USAGE
   opts.on('--expert NAME=PATH', '专家 CSV，可重复指定') { |value| options[:experts] << value }
   opts.on('--global PATH', '可选的独立全局技能评分 CSV') { |value| options[:global] = value }
   opts.on('--mapping PATH', '可选 JSON 映射文件') { |value| options[:mapping] = value }
-  opts.on('--out-dir PATH', '输出目录，默认当前目录') { |value| options[:out_dir] = value }
+  opts.on('--out-dir PATH', '输出目录，默认项目的 csv 目录') { |value| options[:out_dir] = value }
   opts.on('-h', '--help', '显示帮助') { puts opts; exit }
 end
 parser.parse!
@@ -280,8 +280,8 @@ end
 # 1. 归一化矩阵：技能为行，标准位置为列，单元格为 0～3。
 # 2. 位置摘要：列出每个位置全部推荐等级大于 0 的技能，按 3、2、1 分排序。
 Dir.mkdir(options[:out_dir]) unless Dir.exist?(options[:out_dir])
-matrix_path = File.join(options[:out_dir], '技能推荐-归一化-矩阵.csv')
-summary_path = File.join(options[:out_dir], '技能推荐-归一化-位置摘要.csv')
+matrix_path = File.join(options[:out_dir], 'play_skill_rec.csv')
+summary_path = File.join(options[:out_dir], 'play_skill_rec_by_position.csv')
 
 CSV.open(matrix_path, 'w', write_headers: true, headers: ['技能', *POSITIONS], encoding: 'UTF-8') do |csv|
   matrix.each { |row| csv << ['技能', *POSITIONS].map { |header| row[header] } }
