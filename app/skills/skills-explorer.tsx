@@ -18,7 +18,7 @@ export function SkillsExplorer() {
     const keyword = query.trim().toLocaleLowerCase();
     return playerSkills.filter((skill) =>
       (category === 'all' || skill.categories.includes(category)) &&
-      (!keyword || `${skill.nameZh} ${skill.nameEn} ${skill.description} ${skill.descriptionEn}`.toLocaleLowerCase().includes(keyword)),
+      (!keyword || `${skill.nameZh} ${skill.nameEn} ${skill.description} ${skill.descriptionEn} ${skill.researchZh ?? ''} ${skill.researchEn ?? ''}`.toLocaleLowerCase().includes(keyword)),
     );
   }, [category, query]);
 
@@ -75,7 +75,7 @@ export function SkillsExplorer() {
             <div className="result-heading skill-result-heading" aria-live="polite">
               <div>
                 <p className="eyebrow">{activeCategory.nameEn.toUpperCase()}</p>
-                <h2>{category === 'Showtime' || category === 'Unknown' ? activeCategory.label : `${activeCategory.label}技巧`}</h2>
+                <h2>{category === 'Showtime' || category === 'Goalkeeping' ? activeCategory.label : `${activeCategory.label}技巧`}</h2>
               </div>
               <span className="skill-result-count">{results.length} 项</span>
             </div>
@@ -88,9 +88,13 @@ export function SkillsExplorer() {
                     <span className="skill-title">
                       <strong>{skill.nameZh}<span> / {skill.nameEn}</span></strong>
                     </span>
-                    {(skill.categories.includes('Showtime') || skill.categories.includes('Unknown')) && (
-                      <span className="premium-tag">{skill.categories.includes('Showtime') ? 'ST技能' : '未分类技能'}</span>
-                    )}
+                    <span className="skill-category-tags" aria-label="技能分类">
+                      {skill.categories.map((id) => (
+                        <span key={id} className="skill-category-tag">
+                          {skillCategories.find((item) => item.id === id)?.label}
+                        </span>
+                      ))}
+                    </span>
                     <span className="skill-expand" aria-hidden="true">＋</span>
                   </summary>
                   <div className="skill-detail">
@@ -107,12 +111,17 @@ export function SkillsExplorer() {
                     <div className="skill-detail-copy">
                       <p>{skill.description}</p>
                       <p lang="en" className="skill-description-en">{skill.descriptionEn}</p>
-                      {skill.categories.length > 1 && (
-                        <div className="skill-tags">
-                          {skill.categories.map((id) => (
-                            <span key={id}>{skillCategories.find((item) => item.id === id)?.label}</span>
-                          ))}
-                        </div>
+                      {skill.researchZh && (
+                        <section className="skill-research" aria-label="三方研究">
+                          <div className="skill-research-heading">
+                            <strong>三方研究</strong>
+                            <span>THIRD-PARTY RESEARCH</span>
+                          </div>
+                          <p className="skill-research-copy">{skill.researchZh}</p>
+                          {skill.researchEn && (
+                            <p lang="en" className="skill-research-copy skill-research-copy-en">{skill.researchEn}</p>
+                          )}
+                        </section>
                       )}
                     </div>
                   </div>

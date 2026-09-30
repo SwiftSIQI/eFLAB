@@ -27,7 +27,6 @@
   --yellow: #efff27;
   --surface: rgb(7 24 111 / 88%);
 }
-
 * { box-sizing: border-box; }
 
 html {
@@ -526,15 +525,20 @@ button, summary { -webkit-tap-highlight-color: transparent; }
 .skill-title { min-width: 0; flex: 1; line-height: 1.35; }
 .skill-title strong { font-size: 1rem; }
 .skill-title strong span { color: #becbfa; font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif; font-size: 0.9rem; font-weight: 600; }
-.premium-tag { padding: 3px 7px; border: 1px solid rgb(255 47 179 / 60%); border-radius: 999px; color: var(--attack); font-size: 0.7rem; white-space: nowrap; }
+.skill-category-tags { display: flex; flex: 0 0 auto; flex-wrap: wrap; justify-content: flex-end; gap: 5px; max-width: 38%; }
+.skill-category-tag { padding: 3px 7px; border: 1px solid rgb(255 47 179 / 60%); border-radius: 999px; color: var(--attack); font-size: 0.7rem; white-space: nowrap; }
 .skill-expand { color: var(--defense); font-size: 1.25rem; }
 .skill-card[open] .skill-expand { transform: rotate(45deg); }
 .skill-detail { margin: 0 16px 14px 66px; padding: 12px 14px; border-top: 1px solid rgb(91 244 242 / 30%); background: rgb(2 12 73 / 45%); }
 .skill-image { display: block; width: min(300px, 100%); height: auto; margin-bottom: 12px; border-radius: 8px; }
 .skill-detail p { margin: 0; color: #f4f6ff; line-height: 1.6; }
 .skill-detail .skill-description-en { margin-top: 6px; color: #becbfa; }
-.skill-tags { display: flex; gap: 5px; margin-top: 10px; }
-.skill-tags span { padding: 2px 7px; border: 1px solid rgb(142 169 255 / 40%); border-radius: 6px; color: #becbfa; font-size: 0.7rem; }
+.skill-research { margin-top: 18px; padding: 14px 16px; border: 1px solid rgb(255 218 86 / 38%); border-left: 3px solid var(--yellow); border-radius: 10px; background: rgb(20 31 105 / 54%); }
+.skill-research-heading { display: flex; align-items: baseline; gap: 9px; margin-bottom: 10px; color: var(--yellow); }
+.skill-research-heading strong { font-size: 0.88rem; letter-spacing: 0.04em; }
+.skill-research-heading span { color: #aebeff; font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif; font-size: 0.7rem; letter-spacing: 0.08em; }
+.skill-research-copy { white-space: pre-line; color: #f4dc91 !important; font-size: 0.86rem; font-weight: 450; line-height: 1.72 !important; }
+.skill-research-copy-en { margin-top: 11px !important; color: #c4d0f5 !important; font-size: 0.78rem; }
 .clear-search { padding: 8px 14px; border: 1px solid var(--yellow); border-radius: 8px; background: transparent; color: var(--yellow); cursor: pointer; }
 
 /* Attributes and boosters */
@@ -575,6 +579,31 @@ button, summary { -webkit-tap-highlight-color: transparent; }
 .booster-intro { background: radial-gradient(circle at 92% 20%, rgb(239 255 39 / 16%), transparent 34%), radial-gradient(circle at 8% 100%, rgb(255 47 179 / 13%), transparent 28%), rgb(5 20 100 / 78%); }
 .booster-rule { display: flex; max-width: 820px; align-items: flex-start; gap: 10px; margin-top: 20px; padding: 12px 14px; border: 1px solid rgb(239 255 39 / 30%); border-radius: 12px; background: rgb(239 255 39 / 6%); color: #dce4ff; font-size: 0.8rem; line-height: 1.55; }
 .booster-rule svg { width: 17px; flex: 0 0 auto; margin-top: 2px; color: var(--yellow); }
+.position-filter { display: grid; gap: 12px; margin-bottom: 14px; padding: 15px 16px; border: 1px solid rgb(91 244 242 / 28%); border-radius: 16px; background: rgb(91 244 242 / 5%); }
+.position-filter-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.position-filter-heading h2, .position-filter-heading p { margin: 0; }
+.position-filter-heading h2 { font-size: 1rem; }
+.position-filter-heading p { margin-top: 3px; color: #91a4e7; font-size: 0.72rem; }
+.position-filter-heading button { flex: 0 0 auto; padding: 6px 9px; border: 1px solid rgb(91 244 242 / 45%); border-radius: 8px; background: transparent; color: var(--defense); cursor: pointer; font-size: 0.72rem; }
+.position-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.position-options button { min-height: 38px; padding: 7px 8px; border: 1px solid rgb(142 169 255 / 28%); border-radius: 9px; background: rgb(4 16 88 / 80%); color: #e8edff; cursor: pointer; font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif; font-size: 0.78rem; font-weight: 800; }
+.position-options button:hover, .position-options button:focus-visible { border-color: var(--defense); }
+.position-options button.is-selected { border-color: var(--defense); background: var(--defense); color: #06115c; }
+.recommendation-filter { display: grid; gap: 12px; margin-bottom: 22px; padding: 15px 16px; border: 1px solid rgb(239 255 39 / 28%); border-radius: 16px; background: rgb(239 255 39 / 6%); }
+.recommendation-filter-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.recommendation-filter-heading h2, .recommendation-filter-heading p { margin: 0; }
+.recommendation-filter-heading h2 { font-size: 1rem; }
+.recommendation-filter-heading p { margin-top: 3px; color: #91a4e7; font-size: 0.72rem; }
+.recommendation-filter-heading button { padding: 6px 9px; border: 1px solid rgb(239 255 39 / 40%); border-radius: 8px; background: transparent; color: var(--yellow); cursor: pointer; font-size: 0.72rem; }
+.recommendation-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.recommendation-options button { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 10px; border: 1px solid rgb(142 169 255 / 28%); border-radius: 10px; background: rgb(4 16 88 / 80%); color: #e8edff; cursor: pointer; }
+.recommendation-options button:hover, .recommendation-options button:focus-visible { border-color: var(--yellow); }
+.recommendation-options button.is-selected { border-color: var(--yellow); background: var(--yellow); color: #06115c; }
+.recommendation-options strong { overflow: hidden; font-size: 0.8rem; text-overflow: ellipsis; white-space: nowrap; }
+.recommendation-options span, .booster-recommendation span { color: var(--yellow); font-size: 0.65rem; letter-spacing: 0.04em; white-space: nowrap; }
+.recommendation-options i, .booster-recommendation i { color: #41538f; font-style: normal; }
+.recommendation-options .is-selected span { color: #06115c; }
+.recommendation-options .is-selected i { color: #a4ad42; }
 .attribute-filter { overflow: hidden; margin: 22px 0 26px; border: 1px solid rgb(91 244 242 / 28%); border-radius: 18px; background: rgb(5 20 100 / 72%); }
 .attribute-filter-heading { display: flex; align-items: center; gap: 12px; padding: 16px 17px; border-bottom: 1px solid rgb(142 169 255 / 20%); }
 .attribute-filter-icon { display: grid; width: 38px; height: 38px; flex: 0 0 auto; place-items: center; border: 1px solid var(--defense); border-radius: 10px; color: var(--defense); }
@@ -606,6 +635,8 @@ button, summary { -webkit-tap-highlight-color: transparent; }
 .booster-card-heading h3, .booster-card-heading p { margin: 0; }
 .booster-card-heading h3 { font-size: 1.08rem; }
 .booster-card-heading p { margin-top: 2px; color: #afbeef; font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif; font-size: 0.85rem; font-weight: 600; }
+.booster-recommendation { display: grid; justify-items: end; gap: 3px; }
+.booster-recommendation strong { padding: 3px 7px; border: 1px solid rgb(239 255 39 / 45%); border-radius: 999px; color: var(--yellow); font-size: 0.68rem; }
 .booster-effect { margin: 0 16px 9px; color: #7f94d8; font-size: 0.7rem; }
 .booster-attributes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; border-top: 1px solid rgb(142 169 255 / 15%); background: rgb(142 169 255 / 14%); }
 .booster-attributes span { min-width: 0; padding: 11px 15px; background: rgb(4 16 88 / 93%); }
@@ -622,6 +653,8 @@ button, summary { -webkit-tap-highlight-color: transparent; }
   .attribute-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .booster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .attribute-options { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .position-options { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .recommendation-options { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
 
 @media (min-width: 760px) {
@@ -785,7 +818,6 @@ button, summary { -webkit-tap-highlight-color: transparent; }
   .result-heading { align-items: center; }
   .style-description { margin-left: 15px; }
   .skill-detail { margin-left: 16px; }
-  .premium-tag { font-size: 0.63rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

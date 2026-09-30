@@ -1,44 +1,44 @@
-// 内容摘自仓库根目录“实况足球球员技巧.xlsx”；分类严格对应“技巧类型”列。
+// 内容摘自仓库根目录“信息-球员技巧-技巧推荐.csv”；分类严格对应“技巧类型”列。
 export const skillCategories = [
   {
-    id: "all",
-    label: "全部",
-    nameEn: "All"
+    "id": "all",
+    "label": "全部",
+    "nameEn": "All"
   },
   {
-    id: "Dribbling",
-    label: "盘带",
-    nameEn: "Dribbling"
+    "id": "Showtime",
+    "label": "ST技能",
+    "nameEn": "Showtime"
   },
   {
-    id: "Shooting",
-    label: "射门",
-    nameEn: "Shooting"
+    "id": "Shooting",
+    "label": "射门",
+    "nameEn": "Shooting"
   },
   {
-    id: "Passing",
-    label: "传球",
-    nameEn: "Passing"
+    "id": "Dribbling",
+    "label": "盘带",
+    "nameEn": "Dribbling"
   },
   {
-    id: "Defending",
-    label: "防守",
-    nameEn: "Defending"
+    "id": "Passing",
+    "label": "传球",
+    "nameEn": "Passing"
   },
   {
-    id: "Other",
-    label: "其他",
-    nameEn: "Other"
+    "id": "Defending",
+    "label": "防守",
+    "nameEn": "Defending"
   },
   {
-    id: "Showtime",
-    label: "ST技能",
-    nameEn: "Showtime"
+    "id": "Goalkeeping",
+    "label": "守门",
+    "nameEn": "Goalkeeping"
   },
   {
-    id: "Unknown",
-    label: "未分类技能",
-    nameEn: "Unknown"
+    "id": "Other",
+    "label": "其他",
+    "nameEn": "Other"
   }
 ] as const;
 
@@ -50,6 +50,8 @@ export type PlayerSkill = {
   nameEn: string;
   description: string;
   descriptionEn: string;
+  researchZh?: string;
+  researchEn?: string;
   categories: SkillCategory[];
   image: string;
 };
@@ -226,6 +228,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Long-range Curler",
     "description": "远距离施展大弧度且精准的控制射门。",
     "descriptionEn": "Performs a sharp, accurate Controlled Shot with a heavy curl that often hits the target even from a long distance.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n1、对搓射时的球速、精准度和弧度都有提升，提升效果等效脚力值和射门值+10%多一点。在禁区内外都会生效。\n2、搓射不受远射加成。\n3、远距离弧线球是改参数技能，不是加能力值技能，所以可以突破能力上限而不怕溢出浪费，同时也可以弥补逆足带来的debuff。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\n1. For curl shots, including Blitz Curler shots, ball speed, accuracy, and curl are all improved. The effect is equivalent to adding slightly more than 10% to Kicking Power and Shooting Ability, and it takes effect both inside and outside the penalty area.\n2. Curl shots, including Blitz Curler shots, are not affected by Long-range Shooting.\n3. Long-range Curler is a parameter-adjustment skill rather than an Ability increase, so it can exceed the Ability limit without wasting the excess, and it can also offset the debuff from using the weaker foot.",
     "categories": [
       "Shooting"
     ],
@@ -237,6 +241,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Blitz Curler",
     "description": "力量槽至少 50% 时，可施展带强烈上旋的控制射门。",
     "descriptionEn": "Performs a Controlled Shot with heavy topspin while the Power Gauge is at least 50% full.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n1、球速比普通搓射快一点，约1.2%\n2、射门落点是瞄准侧上方死角的，这就是弧线落叶射门球路能吊过门将的奥秘\n3、受【远距离弧线球】技能的加成\n4、逆足精度最高级“非常高”即可用逆足触发弧线落叶射门\n5、对外脚背弧线球控制射门无影响，即使有外脚背弧线球技能也可以通过进一步再搓来进行逆足弧线落叶射门。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\n1. Ball speed is slightly faster than a normal curl shot, by about 1.2%.\n2. The shot aims at the upper side-corner of the goal; this is the secret behind the Blitz Curler trajectory being able to clear the goalkeeper.\n3. It benefits from the Long-range Curler skill.\n4. A weaker-foot accuracy level of “Very High”, the highest level, is enough to trigger Blitz Curler with the weaker foot.\n5. Outside Curler control shots are unaffected; even with Outside Curler, the player can curl again to perform a weaker-foot Blitz Curler shot.",
     "categories": [
       "Showtime"
     ],
@@ -248,6 +254,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Chip Shot Control",
     "description": "高速移动时也能精准吊射。",
     "descriptionEn": "Performs an accurate Chip Shot, even when moving at high speed.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n让吊射球路更高更“陡峭”，有助于越过出击的门将。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\nMakes the Chip Shot trajectory higher and more “steep”, helping it clear an advancing goalkeeper.",
     "categories": [
       "Shooting"
     ],
@@ -259,6 +267,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Knuckle Shot",
     "description": "力量槽达到 50%–65% 时，以惊人射门指令踢出电梯球；也适合任意球。",
     "descriptionEn": "Performs a Knuckle Shot when entering a Stunning Shot command while the Power Gauge is 50-65% full. A good free kick option.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n1、球路：落叶球射门左右飘忽；急坠射门竖直方向下坠而不侧向漂移；急升射门球路持续上升。\n2、球速：三种特殊球技能，球速均和同情况下紫射一样。\n3、进球率：同情景下，急坠射门比普通紫射进球率高32%，因为球路稳，无侧弧线，不易偏出；落叶球射门比普通紫射进球率高14%；急升射门比普通紫射进球率低11%，因为球路容易太高、太偏。\n4、任意球：落叶球射门、急坠射门可在任意球触发，急坠射门任意球实战价值大。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\n1. Trajectory: Knuckle Shot moves unpredictably from side to side; Dipping Shot drops vertically without drifting sideways; Rising Shot continues to rise.\n2. Ball speed: For all three special-shot skills, ball speed is the same as a purple shot in the same situation.\n3. Conversion rate: In the same situation, Dipping Shot has a 32% higher conversion rate than a normal purple shot because its trajectory is stable, has no side curl, and is less likely to miss; Knuckle Shot has a 14% higher conversion rate; Rising Shot has an 11% lower conversion rate because its trajectory can be too high and too wide.\n4. Free kicks: Knuckle Shot and Dipping Shot can be triggered on free kicks, and Dipping Shot has high practical value on free kicks.",
     "categories": [
       "Shooting"
     ],
@@ -270,6 +280,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Dipping Shot",
     "description": "力量槽达到 20%–50% 时，以惊人射门指令踢出急坠射门。",
     "descriptionEn": "Performs a Dipping Shot when entering a Stunning Shot command while the Power Gauge is 20-50% full.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n1、球路：落叶球射门左右飘忽；急坠射门竖直方向下坠而不侧向漂移；急升射门球路持续上升。\n2、球速：三种特殊球技能，球速均和同情况下紫射一样。\n3、进球率：同情景下，急坠射门比普通紫射进球率高32%，因为球路稳，无侧弧线，不易偏出；落叶球射门比普通紫射进球率高14%；急升射门比普通紫射进球率低11%，因为球路容易太高、太偏。\n4、任意球：落叶球射门、急坠射门可在任意球触发，急坠射门任意球实战价值大。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\n1. Trajectory: Knuckle Shot moves unpredictably from side to side; Dipping Shot drops vertically without drifting sideways; Rising Shot continues to rise.\n2. Ball speed: For all three special-shot skills, ball speed is the same as a purple shot in the same situation.\n3. Conversion rate: In the same situation, Dipping Shot has a 32% higher conversion rate than a normal purple shot because its trajectory is stable, has no side curl, and is less likely to miss; Knuckle Shot has a 14% higher conversion rate; Rising Shot has an 11% lower conversion rate because its trajectory can be too high and too wide.\n4. Free kicks: Knuckle Shot and Dipping Shot can be triggered on free kicks, and Dipping Shot has high practical value on free kicks.",
     "categories": [
       "Shooting"
     ],
@@ -281,6 +293,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Rising Shot",
     "description": "力量槽达到 65%–95% 时，以惊人射门指令踢出上升射门。",
     "descriptionEn": "Performs a Rising Shot when entering a Stunning Shot command while the Power Gauge is 65-95% full.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n1、球路：落叶球射门左右飘忽；急坠射门竖直方向下坠而不侧向漂移；急升射门球路持续上升。\n2、球速：三种特殊球技能，球速均和同情况下紫射一样。\n3、进球率：同情景下，急坠射门比普通紫射进球率高32%，因为球路稳，无侧弧线，不易偏出；落叶球射门比普通紫射进球率高14%；急升射门比普通紫射进球率低11%，因为球路容易太高、太偏。\n4、任意球：落叶球射门、急坠射门可在任意球触发，急坠射门任意球实战价值大。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\n1. Trajectory: Knuckle Shot moves unpredictably from side to side; Dipping Shot drops vertically without drifting sideways; Rising Shot continues to rise.\n2. Ball speed: For all three special-shot skills, ball speed is the same as a purple shot in the same situation.\n3. Conversion rate: In the same situation, Dipping Shot has a 32% higher conversion rate than a normal purple shot because its trajectory is stable, has no side curl, and is less likely to miss; Knuckle Shot has a 14% higher conversion rate; Rising Shot has an 11% lower conversion rate because its trajectory can be too high and too wide.\n4. Free kicks: Knuckle Shot and Dipping Shot can be triggered on free kicks, and Dipping Shot has high practical value on free kicks.",
     "categories": [
       "Shooting"
     ],
@@ -292,6 +306,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Long-range Shooting",
     "description": "从禁区外射出更容易命中目标的远射。",
     "descriptionEn": "Performs a Long-range Shot from outside the box that often hits the target.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n1、远射起效时会让射门能力值+10%；但不会加成脚下力量（而逆足也不影响脚下力量）\n2、远射是纯加能力值，+10%后超过上限的部分不会生效。\n3、远射这类纯加能力技能，计算顺序先于逆足debuff，不会因为用逆足而让溢出的能力值变得有意义，但体能少于50%时溢出部分就有用。\n4、远射技能生效的界限就是大禁区外。\n5、远射技能对远距离弧线球（搓射）没有加成作用，但对紫射有加成。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\n1. When Long-range Shooting takes effect, it increases Shooting Ability by +10%, but does not increase Kicking Power (and using the weaker foot does not affect Kicking Power).\n2. Long-range Shooting is a pure Ability increase; any portion above the limit after the +10% increase does not take effect.\n3. For this type of pure Ability increase, the calculation comes before the weaker-foot debuff. Using the weaker foot does not make the excess Ability meaningful, but when Stamina is below 50%, the excess portion is useful.\n4. Long-range Shooting takes effect outside the penalty area.\n5. Long-range Shooting does not increase Long-range Curler (curl shots), but it does increase purple shots.",
     "categories": [
       "Shooting"
     ],
@@ -325,6 +341,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Acrobatic Finishing",
     "description": "在不自然姿势或失去平衡时也能找到射门机会。",
     "descriptionEn": "Enables the player to find a finish even from awkward positions or when off balance.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n1、提升触发射门动作的判定范围，例如各种侧倒射门。\n2、增加非常规的射门动作。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\n1. Increases the judgment range for triggering shooting animations, such as various side-falling shots.\n2. Adds unconventional shooting animations.",
     "categories": [
       "Shooting"
     ],
@@ -347,6 +365,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "First-time Shot",
     "description": "提高第一时间射门的技术和精准度。",
     "descriptionEn": "Improves technique and precision when taking first- time shots.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n1、机制：减少不停球直接射门的射门质量debuff\n2、对精准度和球速均有帮助\n3、即使再缓慢、稳定的来球，有【一脚射门】都会带来明显的射门质量提升\n4、即使有【一脚射门】，面对不好处理的高速或弹跳来球，都会出现明显的射门质量下降。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\n1. Mechanism: Reduces the shot-quality debuff on direct shots without controlling the ball first.\n2. Helps both accuracy and ball speed.\n3. Even with a slow, stable incoming ball, First-time Shot provides a clear improvement in shot quality.\n4. Even with First-time Shot, a difficult high-speed or bouncing incoming ball still causes a clear decline in shot quality.",
     "categories": [
       "Shooting"
     ],
@@ -358,6 +378,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Phenomenal Finishing",
     "description": "提高不自然身体姿势下射门的力量和精准度。",
     "descriptionEn": "Increases the power and accuracy of finishing shots attempted from unorthodox body positions.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n1、大角度转身/姿态别扭/凌空/飞身侧勾射门会被判定为失衡状态，射门质量会有debuff。而无定型射门则是减轻这种debuff。\n2、成熟的应用套路是：接球转身推远角。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\n1. Large-angle turns, awkward body posture, volleys, and flying side volleys may be judged as unbalanced states, causing a shot-quality debuff. Phenomenal Finishing reduces this debuff.\n2. A mature application is to receive the ball, turn, and push the shot toward the far corner.",
     "categories": [
       "Showtime"
     ],
@@ -380,8 +402,11 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "One-touch Pass",
     "description": "提高一脚传球的技术和精准度。",
     "descriptionEn": "Improves technique and precision when executing one- touch passes.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：\n\n1、单触是【改参数】技能，大幅减少一脚出球的debuff。\n2、越是球路不稳定、快速的来球，一脚出球debuff越大，越需要单触。来球球路差（蹦蹦跳跳）时，单触能起到超过几十点传球值的效果。\n3、球队的传递过程中，有单触球员和传球大师很重要，若来球球路稳定（贴地球+别太快），没有单触的前场球员也能处理好一脚出球。\n4、单触对地传和空传都有用，一脚空传其实更需要单触。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Passing\" (BV1do4y1K7A1):\n\n1. One-touch Pass reduces the debuff on a first-time pass and is a parameter-adjustment skill.\n2. The more unstable the ball path and the faster the incoming ball, the larger the first-time-pass debuff and the more One-touch Pass is needed. When the incoming ball has a poor path (bouncing around), One-touch Pass can have an effect worth more than several dozen passing points.\n3. In team passing, players with One-touch Pass and the Passing Maestro are important. If the incoming ball path is stable (a grounded ball and not too fast), a forward without One-touch Pass can also handle the first-time pass.\n4. One-touch Pass helps both ground passes and lofted passes; a first-time lofted pass needs it even more.",
     "categories": [
-      "Passing"
+      "Passing",
+      "Goalkeeping"
     ],
     "image": "/skills/30.png"
   },
@@ -391,8 +416,11 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Through Passing",
     "description": "可传出轨迹合适的直塞球，并提高整体直塞精准度。",
     "descriptionEn": "Enables the player to make through passes with the appropriate trajectory. Also improves the overall accuracy of through passes.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：\n\n1、直传球技能会对直塞和过顶直塞都有加成\n2、普通直塞看的是地面传球能力，过顶直塞看的是空中传球能力\n3、直传球技能属于【加能力】而不是【改参数】，会对相应的传球能力加 20%（仅限在直传时，普通传球不受加成）",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Passing\" (BV1do4y1K7A1):\n\n1. Through Passing improves both through passes and lofted through passes.\n2. Normal through passes rely on Ground Pass, while lofted through passes rely on Lofted Pass.\n3. Through Passing is an Ability-increase skill rather than a parameter-adjustment skill. It increases the corresponding passing Ability by 20% (only for through passes; normal passes receive no bonus).",
     "categories": [
-      "Passing"
+      "Passing",
+      "Goalkeeping"
     ],
     "image": "/skills/31.png"
   },
@@ -402,9 +430,12 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Weighted Pass",
     "description": "向前方踢出带强烈后旋的精准高空传球或挑传直塞。",
     "descriptionEn": "Performs an accurate Lofted Pass or Chipped Through Ball with heavy backspin to a forward area.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：\n\n1、精准长传是【改参数】技能，让空传球路先平后陡，并不是直接加长传能力，以前的翻译加重旋转传球更合适。\n2、此技能在后场更容易触发，用长传和过顶直塞都会触发，过顶直塞更容易触发。紫传、传中不触发。\n3、用长传触发技能后，球路更合适身材高、弹跳好的球员发挥争顶优势；球路后段减速技能也有利于空传分边后的接球。但会整体上会明显减慢球速，拖慢进攻节奏。\n4、触发后长传的提前量更小，落点更靠近球员。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Passing\" (BV1do4y1K7A1):\n\n1. Weighted Pass is a parameter-adjustment skill. It makes the lofted-pass trajectory travel flat first and then rise, rather than directly increasing Lofted Pass Ability. The previous translation, “weighted spin pass”, is more appropriate.\n2. This skill is easier to trigger in the defensive half. Long passes and lofted through passes can trigger it, with lofted through passes being easier to trigger. Purple passes and crosses do not trigger it.\n3. After triggering it with a long pass, the trajectory is more suitable for tall players with good jumping ability to contest the ball. The late-trajectory deceleration also helps receive a lofted pass played out wide, but it noticeably slows the ball and the attacking tempo overall.\n4. After triggering, the lead on a long pass is smaller and the landing point is closer to the player.",
     "categories": [
       "Passing",
-      "Defending"
+      "Defending",
+      "Goalkeeping"
     ],
     "image": "/skills/32.png"
   },
@@ -414,6 +445,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Pinpoint Crossing",
     "description": "踢出带明显弧线的快速精准传中。",
     "descriptionEn": "Performs a sharp, accurate cross with a heavy curl.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：\n\n1、精确横传球对地面横传和空中横传都有相应传球值的加成，而地面横传看地传值、空中横传看空传值。\n2、精确横传球是【加能力】类型技能，会加成传球值10%（仅限传中时，普通长传不受加成）\n3、精确横传球不会影响弧线球能力",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Passing\" (BV1do4y1K7A1):\n\n1. Pinpoint Crossing increases the relevant passing value for both ground crosses and lofted crosses. Ground crosses use Ground Pass value, while lofted crosses use Lofted Pass value.\n2. Pinpoint Crossing is an Ability-increase skill and increases Passing value by 10% (only for crosses; normal long passes receive no bonus).\n3. Pinpoint Crossing does not affect Curl.",
     "categories": [
       "Passing"
     ],
@@ -436,6 +469,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Outside Curler",
     "description": "用较强脚的外侧踢出精准的旋转射门或传球，远距离也适用。",
     "descriptionEn": "Performs a precise spinning shot or pass with the outside of the boot, even from range, using the stronger foot for accuracy.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n外脚背弧线球：射门篇——\n1、触发：有外脚背弧线球技能即可在输入控制射门时，把大多数逆足搓射变为外脚背弧线球射门。触发与逆足频率无关。用平行底线趟球后再搓的方式可以在有外脚背弧线球技能情况下触发逆足搓射/逆足弧线落叶射门。\n2、外脚背弧线球射门不受远距离弧线球加成，也不受弧线落叶射门技能影响球路。\n3、有远距离弧线球的对比下，外脚背弧线球射门球速比搓射慢9%，弧线持平，但精准度比搓射强，且球路更低适合禁区内使用。\n4、外脚背弧线球的优势是比逆足踢球更快出脚（射门时快3帧）。\n外脚背弧线球：传球篇——\n1、触发：无主动输入手段，需有外脚背弧线球技能，出球方向是面朝方向往顺足侧偏30°～60°左右。触发与逆足频率无关。\n2、外脚背弧线球空传：球速比普通传略快，弧线比普通传更大。外脚背弧线球传中需要较近距离才能触发。\n3、外脚背弧线球地传：球速不是优势，弧线比普通传更大，球路能保证稳定、贴地。\n4、外脚背弧线球射门传球的共同优势是比逆足踢球更快出脚。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\nOutside Curler: Shooting —\n1. Trigger: With Outside Curler, entering a controlled shot turns most weaker-foot curl shots into Outside Curler shots. Triggering is unrelated to weaker-foot frequency. After carrying the ball parallel to the touchline, curling the shot can trigger a weaker-foot curl shot or a weaker-foot Blitz Curler shot when Outside Curler is available.\n2. Outside Curler shots are not affected by Long-range Curler and their trajectory is not affected by Blitz Curler.\n3. Compared with Long-range Curler shots, Outside Curler shots are 9% slower, have the same amount of curl, but are more accurate and have a lower trajectory, making them suitable for use inside the penalty area.\n4. The advantage of Outside Curler is that it releases faster than a weaker-foot shot (3 frames faster when shooting).\n\nOutside Curler: Passing —\n1. Trigger: There is no active input method. Outside Curler is required, and the ball travels about 30°–60° toward the strong-foot side relative to the facing direction. Triggering is unrelated to weaker-foot frequency.\n2. Outside Curler lofted passes are slightly faster than normal passes and have more curl. Outside Curler crosses require a relatively short distance to trigger.\n3. Outside Curler ground passes have no speed advantage, but have more curl than normal passes and maintain a stable, grounded trajectory.\n4. The shared advantage of Outside Curler shots and passes is a faster release than weaker-foot kicks.",
     "categories": [
       "Passing"
     ],
@@ -447,6 +482,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Rabona",
     "description": "用较强脚施展出其不意的插花脚，扰乱防守节奏。",
     "descriptionEn": "Performs a Rabona to disrupt the defence's timing with a surprise kick, using the stronger foot for accuracy.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全部技能研究：射门篇》（BV1aadcYKE9X）：\n\n（能触发插花脚传球/射门/花式）\n1、插花脚传球的触发需传球目标距离适当不能太长，角度与前进方向成90°～120°，以空传触发（实战中概率很低）。它的球路较低且无弧线，球速无劣势。\n2、插花脚射门需要超过近距离射门才会出现，插花脚射门和传球都是逆足频率越低越大概率触发。\n3、插花脚技能的主要意义在插花脚假射急停，这种急停比一般假射急停入球结合更好，后续动作衔接得快很多（约8帧优势）。触发需要运动方向大致垂直于人与球门连线，逆足频率为经常则可以双腿均触发。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Shooting\" (BV1aadcYKE9X):\n\n(Can trigger Rabona passes, shots, and skills)\n1. A Rabona pass requires the target distance to be appropriate and not too long, with an angle of 90°–120° relative to the movement direction. It is triggered with a lofted pass (very unlikely in actual matches). Its trajectory is relatively low with no curl, and it has no speed disadvantage.\n2. A Rabona shot only appears beyond close-range shooting distance. Both Rabona shots and passes are more likely to trigger when weaker-foot frequency is lower.\n3. The main purpose of Rabona is the Rabona fake-shot stop. This stop combines better with the ball than a normal fake-shot stop, and subsequent actions connect much faster (about an 8-frame advantage). Triggering requires the movement direction to be roughly perpendicular to the line between the player and the goal; when weaker-foot frequency is frequent, both legs can trigger it.",
     "categories": [
       "Passing"
     ],
@@ -458,6 +495,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "No Look Pass",
     "description": "以视线迷惑对手，送出意想不到的传球。",
     "descriptionEn": "Enables the player to play unexpected passes and confuse the opponent with his lines of sight.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：\n\n1、主要是直传球的时候触发的头部动作，短传一般不触发。而且是直塞给空挡很大的队友，成功率很高的时候触发的耍帅动作。如果直塞难度很大则一般不会触发\n2、观察不到对对方后防ai的明显影响\n3、观察不到对尴尬身位出球的改善",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Passing\" (BV1do4y1K7A1):\n\n1. It is mainly a head animation triggered during a through pass and generally does not trigger on short passes. It is more likely to trigger a stylish animation when the through pass is played to a teammate with a large amount of space and a high success rate. If the through pass is very difficult, it generally does not trigger.\n2. No obvious effect on the opposing defensive AI can be observed.\n3. No improvement in passing from awkward body positions can be observed.",
     "categories": [
       "Passing"
     ],
@@ -469,6 +508,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Game-changing Pass",
     "description": "下半场球队平局或落后时，提高传球能力。",
     "descriptionEn": "Improves player's passing abilities after the second half kick-off, under the circumstances that the team is either drawing or losing.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：\n\n下半场打平或落后时，地传和空传+10%（由于此加成适用于任何传球而不是特定种类的传球，故其效果还是比直传球、精准横传更强）",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Passing\" (BV1do4y1K7A1):\n\nWhen the match is level or the team is trailing in the second half, Ground Pass and Lofted Pass receive +10%. Since this bonus applies to all passes rather than a specific type of pass, its effect is still stronger than Through Passing and Pinpoint Crossing.",
     "categories": [
       "Showtime"
     ],
@@ -502,8 +543,11 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Low Lofted Pass",
     "description": "踢出低轨迹、距离远且精准的高空传球。",
     "descriptionEn": "Enables the player to hit long and accurate Lofted Passes with a low trajectory.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：\n\n1、是改参数技能，会踢出更低轨迹的球路。\n2、触发条件：任何普通长传都会100%触发，但是传中和过顶直塞不触发。\n3、低空传球的球路比普通球路要稍微低一点。低空传球会有微弱的球速优势和精准度优势。",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Passing\" (BV1do4y1K7A1):\n\n1. Low Lofted Pass is a parameter-adjustment skill and produces a lower trajectory.\n2. Trigger condition: Any normal long pass triggers it 100%, but crosses and lofted through passes do not trigger it.\n3. The trajectory of Low Lofted Pass is slightly lower than a normal trajectory, with slight advantages in ball speed and accuracy.",
     "categories": [
-      "Passing"
+      "Passing",
+      "Goalkeeping"
     ],
     "image": "/skills/41.png"
   },
@@ -514,7 +558,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "守门员可踢出精准的低弹道凌空球。",
     "descriptionEn": "Enables the player to take accurate punt kicks with a low trajectory.",
     "categories": [
-      "Unknown"
+      "Goalkeeping"
     ],
     "image": "/skills/42.png"
   },
@@ -525,7 +569,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "守门员可踢出长距离高轨迹开球，深入对方半场。",
     "descriptionEn": "Enables goalkeepers to take long, high punt kicks that end up deep in opposition territory.",
     "categories": [
-      "Unknown"
+      "Goalkeeping"
     ],
     "image": "/skills/43.png"
   },
@@ -535,6 +579,8 @@ export const playerSkills: PlayerSkill[] = [
     "nameEn": "Long Throw",
     "description": "增加界外球投掷距离。",
     "descriptionEn": "Improves the range of long throws.",
+    "researchZh": "研究结果 from 珠海amadeusz，对应资料：视频《全技能真实效果研究：传球篇》（BV1do4y1K7A1）：\n\n界外球最大投掷距离（落地点）从21m升高到28m",
+    "researchEn": "Research results from 珠海amadeusz, source: video \"All Skills Research: Passing\" (BV1do4y1K7A1):\n\nThe maximum throw-in distance, measured at the landing point, increases from 21 m to 28 m.",
     "categories": [
       "Other"
     ],
@@ -547,7 +593,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "增加守门员手抛球距离。",
     "descriptionEn": "Improves the range on throws by the goalkeeper.",
     "categories": [
-      "Unknown"
+      "Goalkeeping"
     ],
     "image": "/skills/45.png"
   },
@@ -570,7 +616,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "提高守门员应对点球时的反应。",
     "descriptionEn": "Enables the player to have better goalkeeping reactions against penalty kicks.",
     "categories": [
-      "Unknown"
+      "Goalkeeping"
     ],
     "image": "/skills/47.png"
   },
@@ -769,7 +815,8 @@ export const playerSkills: PlayerSkill[] = [
     "description": "受到对手压迫时较少损失踢球或头球精准度，也较少受疲劳影响。",
     "descriptionEn": "Rarely loses kicking or heading accuracy when pressured by an opponent, and is less affected by fatigue.",
     "categories": [
-      "Other"
+      "Other",
+      "Goalkeeping"
     ],
     "image": "/skills/65.png"
   },
