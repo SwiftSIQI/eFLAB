@@ -1,12 +1,45 @@
 // 内容摘自仓库根目录“实况足球球员技巧.xlsx”；分类严格对应“技巧类型”列。
 export const skillCategories = [
-  { id: 'all', label: '全部', nameEn: 'All' },
-  { id: 'Dribbling', label: '盘带', nameEn: 'Dribbling' },
-  { id: 'Shooting', label: '射门', nameEn: 'Shooting' },
-  { id: 'Passing', label: '传球', nameEn: 'Passing' },
-  { id: 'Defending', label: '防守', nameEn: 'Defending' },
-  { id: 'Other', label: '其他', nameEn: 'Other' },
-  { id: 'Premium', label: '付费技能', nameEn: 'Premium' },
+  {
+    id: "all",
+    label: "全部",
+    nameEn: "All"
+  },
+  {
+    id: "Dribbling",
+    label: "盘带",
+    nameEn: "Dribbling"
+  },
+  {
+    id: "Shooting",
+    label: "射门",
+    nameEn: "Shooting"
+  },
+  {
+    id: "Passing",
+    label: "传球",
+    nameEn: "Passing"
+  },
+  {
+    id: "Defending",
+    label: "防守",
+    nameEn: "Defending"
+  },
+  {
+    id: "Other",
+    label: "其他",
+    nameEn: "Other"
+  },
+  {
+    id: "Showtime",
+    label: "ST技能",
+    nameEn: "Showtime"
+  },
+  {
+    id: "Unknown",
+    label: "未分类技能",
+    nameEn: "Unknown"
+  }
 ] as const;
 
 export type SkillCategory = Exclude<(typeof skillCategories)[number]['id'], 'all'>;
@@ -117,7 +150,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "输入假动作指令时执行后脚磕球变向假动作。",
     "descriptionEn": "Performs a Tap Trick feint when entering a feint command.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/09.png"
   },
@@ -139,7 +172,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "提高球员在进攻三区的盘球能力。",
     "descriptionEn": "Improves player's dribbling abilities in the attacking third (deep in opposition territory).",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/11.png"
   },
@@ -150,7 +183,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "可在静止或缓慢移动时快速施展锐钻触球，也可能触发特殊锐钻触球动作。",
     "descriptionEn": "Enables the player to perform a quick Sharp Touch while stationary or moving slowly. Special Sharp Touch motions may also be triggered.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/12.png"
   },
@@ -161,7 +194,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "控球时，根据 5 米范围内对手人数（最多 4 人）提高控球能力。",
     "descriptionEn": "When in possession of the ball, increases the player's ability to keep it based on the number of opponents within 5 metres (4 opponents max).",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/13.png"
   },
@@ -183,7 +216,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "可完成势大力沉的头球攻门，姿势不自然或失去平衡时也更容易完成。",
     "descriptionEn": "Enables the player to head the ball sharply towards goal, shooting with power and accuracy even from awkward positions or when off balance.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/15.png"
   },
@@ -205,7 +238,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "力量槽至少 50% 时，可施展带强烈上旋的控制射门。",
     "descriptionEn": "Performs a Controlled Shot with heavy topspin while the Power Gauge is at least 50% full.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/17.png"
   },
@@ -271,7 +304,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "力量槽低于 50% 的惊人射门球速提升，且不会出现急坠射门。",
     "descriptionEn": "Performing a Stunning Shot while the Power Gauge is under 50% full will increase the speed of the shot. A Dipping Shot will not occur.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/23.png"
   },
@@ -282,7 +315,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "缩短惊人射门的出脚时间。",
     "descriptionEn": "Takes less time to kick the ball when making a Stunning Shot.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/24.png"
   },
@@ -326,7 +359,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "提高不自然身体姿势下射门的力量和精准度。",
     "descriptionEn": "Increases the power and accuracy of finishing shots attempted from unorthodox body positions.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/28.png"
   },
@@ -337,7 +370,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "每次射门可提升射门能力，最多累积 8 次。",
     "descriptionEn": "Improves player's shooting abilities whenever they take a shot, up to a maximum of 8 times.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/29.png"
   },
@@ -393,7 +426,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "踢出垂直旋转且急速下坠的传中球。",
     "descriptionEn": "Enables the player to put in vertically rotating crosses that fall sharply.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/34.png"
   },
@@ -437,7 +470,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "下半场球队平局或落后时，提高传球能力。",
     "descriptionEn": "Improves player's passing abilities after the second half kick-off, under the circumstances that the team is either drawing or losing.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/38.png"
   },
@@ -448,7 +481,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "提高接球队友的一脚传球、直接射门和停球精准度。",
     "descriptionEn": "Increases the accuracy of one-touch passes, first-time shots and traps performed by players who receive passes from the holder of this Player Skill.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/39.png"
   },
@@ -459,7 +492,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "提高不自然身体姿势下传球的力量和精准度。",
     "descriptionEn": "Increases the power and accuracy of passes attempted from unorthodox body positions.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/40.png"
   },
@@ -481,7 +514,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "守门员可踢出精准的低弹道凌空球。",
     "descriptionEn": "Enables the player to take accurate punt kicks with a low trajectory.",
     "categories": [
-      "Premium"
+      "Unknown"
     ],
     "image": "/skills/42.png"
   },
@@ -492,7 +525,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "守门员可踢出长距离高轨迹开球，深入对方半场。",
     "descriptionEn": "Enables goalkeepers to take long, high punt kicks that end up deep in opposition territory.",
     "categories": [
-      "Premium"
+      "Unknown"
     ],
     "image": "/skills/43.png"
   },
@@ -514,7 +547,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "增加守门员手抛球距离。",
     "descriptionEn": "Improves the range on throws by the goalkeeper.",
     "categories": [
-      "Premium"
+      "Unknown"
     ],
     "image": "/skills/45.png"
   },
@@ -537,7 +570,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "提高守门员应对点球时的反应。",
     "descriptionEn": "Enables the player to have better goalkeeping reactions against penalty kicks.",
     "categories": [
-      "Premium"
+      "Unknown"
     ],
     "image": "/skills/47.png"
   },
@@ -548,7 +581,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "提高己方腹地后卫的防守能力。",
     "descriptionEn": "Goalkeeper Skill that improves the defensive abilities of your DF players positioned deep in your own territory.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/48.png"
   },
@@ -559,7 +592,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "下半场领先时，提高己方后卫的身体能力。",
     "descriptionEn": "Goalkeeper Skill that improves the physical abilities of your DF players when leading after half-time.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/49.png"
   },
@@ -648,7 +681,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "静止或缓慢移动时，更频繁地对较远对手施展站立抢断。",
     "descriptionEn": "Increases the frequency of standing tackles, even against far away opponents, while stationary or moving slowly.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/57.png"
   },
@@ -659,7 +692,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "下半场领先时提高防守能力。",
     "descriptionEn": "Improves player's defensive abilities after the second half mark, as long as the team has a goal advantage.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/58.png"
   },
@@ -681,7 +714,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "在己方禁区内提高空中对抗能力。",
     "descriptionEn": "Improves player's abilities regarding aerial duels when positioned inside his own penalty box.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/60.png"
   },
@@ -692,7 +725,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "担任后腰或后卫、对手传球打身后时，提高速度相关能力。",
     "descriptionEn": "Increases speed-related abilities when this player is a DMF, RB, LB or CB and an opponent's pass is played behind them.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/61.png"
   },
@@ -714,7 +747,7 @@ export const playerSkills: PlayerSkill[] = [
     "description": "持球时提高其他队友的进攻意识。",
     "descriptionEn": "Increases all other teammates' Attacking Awareness when this player has control of the ball.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/63.png"
   },
@@ -747,8 +780,19 @@ export const playerSkills: PlayerSkill[] = [
     "description": "位于进攻半场且队友持球时，提高速度相关能力。",
     "descriptionEn": "Increases speed-related abilities when this player is in the attacking half and a teammate has the ball.",
     "categories": [
-      "Premium"
+      "Showtime"
     ],
     "image": "/skills/66.png"
+  },
+  {
+    "id": 67,
+    "nameZh": "强力抢断",
+    "nameEn": "Power Tackle",
+    "description": "使球员更容易施展原地抢断从而通过身体接触赢得球权，同时也更容易通过身体对抗让对手失去平衡。",
+    "descriptionEn": "Makes it easier to perform a standing tackle that wins the ball using body contact, while also making it easier to knock the opponent off balance.",
+    "categories": [
+      "Showtime"
+    ],
+    "image": "/skills/67.png"
   }
 ];

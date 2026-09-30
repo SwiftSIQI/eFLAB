@@ -75,7 +75,7 @@ export function SkillsExplorer() {
             <div className="result-heading skill-result-heading" aria-live="polite">
               <div>
                 <p className="eyebrow">{activeCategory.nameEn.toUpperCase()}</p>
-                <h2>{category === 'Premium' ? '付费技能' : `${activeCategory.label}技巧`}</h2>
+                <h2>{category === 'Showtime' || category === 'Unknown' ? activeCategory.label : `${activeCategory.label}技巧`}</h2>
               </div>
               <span className="skill-result-count">{results.length} 项</span>
             </div>
@@ -88,7 +88,9 @@ export function SkillsExplorer() {
                     <span className="skill-title">
                       <strong>{skill.nameZh}<span> / {skill.nameEn}</span></strong>
                     </span>
-                    {skill.categories.includes('Premium') && <span className="premium-tag">付费技能</span>}
+                    {(skill.categories.includes('Showtime') || skill.categories.includes('Unknown')) && (
+                      <span className="premium-tag">{skill.categories.includes('Showtime') ? 'ST技能' : '未分类技能'}</span>
+                    )}
                     <span className="skill-expand" aria-hidden="true">＋</span>
                   </summary>
                   <div className="skill-detail">
