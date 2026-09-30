@@ -85,12 +85,12 @@ export const styles: PlayingStyle[] = [
   },
   {
     id: 'a12', side: 'attack', nameZh: '全能中场', nameEn: 'Box-to-Box', positions: ['RMF', 'LMF', 'CMF', 'DMF'],
-    descriptionZh: '整场比赛不懈奔跑，覆盖整个球场。',
+    descriptionZh: '整场比赛不懈奔跑，覆盖整个球场的球员。',
     descriptionEn: 'A player who tirelessly covers every blade of grass for the full 90 minutes.',
   },
   {
     id: 'a13', side: 'attack', nameZh: '靠山', nameEn: 'Anchor Man', positions: ['DMF'],
-    descriptionZh: '深入防守型中场，保护后方边线。',
+    descriptionZh: '深入防守型中场。保护后方边线。',
     descriptionEn: 'A deep sitting defensive midfielder protecting the backline.',
   },
   {
@@ -120,7 +120,7 @@ export const styles: PlayingStyle[] = [
   },
   {
     id: 'a19', side: 'attack', nameZh: '迭瓦式终结者', nameEn: 'Full-back Finisher', positions: ['RB', 'LB'],
-    descriptionZh: '喜欢介入中心区域进攻的进攻型后卫。',
+    descriptionZh: '喜欢介入中心区进攻的进攻型后卫。',
     descriptionEn: 'An attacking full-back who enjoys joining the attack in high central areas.',
   },
   {
@@ -155,12 +155,12 @@ export const styles: PlayingStyle[] = [
   },
   {
     id: 'd06', side: 'defense', nameZh: '全能中场', nameEn: 'Box-to-Box', positions: ['RMF', 'LMF', 'CMF', 'DMF'],
-    descriptionZh: '整场比赛不懈奔跑，覆盖整个球场。',
+    descriptionZh: '整场比赛不懈奔跑，覆盖整个球场的球员。',
     descriptionEn: 'A player who tirelessly covers every blade of grass for the full 90 minutes.',
   },
   {
     id: 'd07', side: 'defense', nameZh: '靠山', nameEn: 'Anchor Man', positions: ['DMF'],
-    descriptionZh: '深入防守型中场，保护后方边线。',
+    descriptionZh: '深入防守型中场。保护后方边线。',
     descriptionEn: 'A deep sitting defensive midfielder protecting the backline.',
   },
   {
@@ -170,7 +170,7 @@ export const styles: PlayingStyle[] = [
   },
   {
     id: 'd09', side: 'defense', nameZh: '补位型球员', nameEn: 'Covering Role', positions: ['CMF', 'DMF', 'RB', 'LB', 'CB'],
-    descriptionZh: '主动补位，支援正在逼抢的队友。',
+    descriptionZh: '主动补位进行逼迫的队友。',
     descriptionEn: 'Actively covers for teammates conducting Match-up roles.',
   },
   {
