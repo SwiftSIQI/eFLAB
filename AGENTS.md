@@ -60,6 +60,7 @@
 ### 3.6 技能推荐归一化
 
 - `script/normalize_skill_recommendations.rb` 使用三份专家 CSV：`csv/player_skill_rec_from_skye.csv`、`csv/player_skill_rec_from_大叔.csv`、`csv/player_skill_rec_from_实况老baby.csv`。
+- `npm run dev` 和 `npm run build` 会先执行 `npm run normalize:data`，再生成四个 `data.ts`；归一化失败时应停止后续流程。
 - 输出为 `csv/play_skill_rec.csv` 和 `csv/play_skill_rec_by_position.csv`。修改脚本或输入时，校验技能清单、位置映射和输出行数。
 
 ## 4. 运行与验证
