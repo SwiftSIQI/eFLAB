@@ -5,9 +5,9 @@ import { usePathname } from 'next/navigation';
 
 const links = [
   { href: '/', label: '首页', description: 'HOME' },
+  { href: '/attributes', label: '球员属性', description: 'ATTRIBUTES' },
   { href: '/styles', label: '比赛风格速查', description: 'PLAYING STYLES' },
   { href: '/skills', label: '球员技巧速查', description: 'PLAYER SKILLS' },
-  { href: '/attributes', label: '球员属性', description: 'ATTRIBUTES' },
   { href: '/boosters', label: '增能', description: 'BOOSTERS' },
 ] as const;
 

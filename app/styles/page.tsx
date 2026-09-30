@@ -47,7 +47,7 @@ type WebMcpContext = {
 };
 
 export default function StylesPage() {
-  const [position, setPosition] = useState<Position>('CF');
+  const [position, setPosition] = useState<Position>('ALL');
   const [side, setSide] = useState<SideFilter>('all');
   const [query, setQuery] = useState('');
   const filterState = useRef({ position, side, query });
@@ -133,8 +133,14 @@ export default function StylesPage() {
               <p className="eyebrow">POSITION MAP</p>
               <h2>选择球员位置</h2>
             </div>
-            <button className="all-link" type="button" onClick={() => setPosition('ALL')}>
-              查看全部
+            <button
+              className="all-link"
+              type="button"
+              onClick={() => setPosition('ALL')}
+              disabled={position === 'ALL'}
+              aria-label="清除位置选项"
+            >
+              清除位置选项
             </button>
           </div>
           <div className="pitch">

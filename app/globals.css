@@ -165,6 +165,11 @@ button, summary { -webkit-tap-highlight-color: transparent; }
   font-size: 0.875rem;
 }
 
+.all-link:disabled {
+  color: rgb(151 164 230 / 52%);
+  cursor: not-allowed;
+}
+
 .controls {
   position: sticky;
   z-index: 20;
@@ -530,7 +535,7 @@ button, summary { -webkit-tap-highlight-color: transparent; }
 .skill-expand { color: var(--defense); font-size: 1.25rem; }
 .skill-card[open] .skill-expand { transform: rotate(45deg); }
 .skill-detail { margin: 0 16px 14px 66px; padding: 12px 14px; border-top: 1px solid rgb(91 244 242 / 30%); background: rgb(2 12 73 / 45%); }
-.skill-image { display: block; width: min(300px, 100%); height: auto; margin-bottom: 12px; border-radius: 8px; }
+.skill-image { display: block; width: min(300px, 100%); height: auto; margin-bottom: 12px; border: 1px solid rgb(0 0 0 / 78%); border-radius: 8px; box-shadow: 0 0 0 3px rgb(0 0 0 / 42%), 0 8px 20px rgb(0 0 0 / 28%); }
 .skill-detail p { margin: 0; color: #f4f6ff; line-height: 1.6; }
 .skill-detail .skill-description-en { margin-top: 6px; color: #becbfa; }
 .skill-research { margin-top: 18px; padding: 14px 16px; border: 1px solid rgb(255 218 86 / 38%); border-left: 3px solid var(--yellow); border-radius: 10px; background: rgb(20 31 105 / 54%); }

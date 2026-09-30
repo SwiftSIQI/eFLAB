@@ -6,14 +6,23 @@ import { useMemo, useState } from 'react';
 import { SiteFooter } from '@/components/site-footer';
 import { Input } from '@/components/ui/input';
 import { getAttribute, playerAttributes, type AttributeId } from '../attributes/data';
-import { boosters } from './data';
+import {
+  boosterIdsByPosition,
+  boosterPositions,
+  boosters,
+  type BoosterPosition,
+  type BoosterRecommendation,
+} from './data';
 
 const usedAttributeIds = new Set<AttributeId>(boosters.flatMap((booster) => [...booster.attributes]));
 const availableAttributes = playerAttributes.filter((item) => usedAttributeIds.has(item.id));
+const recommendationLevels = [5, 4, 3, 2, 1] as const satisfies readonly BoosterRecommendation[];
 
 export function BoostersExplorer() {
   const [query, setQuery] = useState('');
   const [selectedAttributes, setSelectedAttributes] = useState<AttributeId[]>([]);
+  const [selectedRecommendation, setSelectedRecommendation] = useState<BoosterRecommendation | null>(null);
+  const [selectedPosition, setSelectedPosition] = useState<BoosterPosition | null>(null);
 
   function toggleAttribute(id: AttributeId) {
     setSelectedAttributes((current) =>
@@ -28,12 +37,14 @@ export function BoostersExplorer() {
         const item = getAttribute(id);
         return `${item.nameZh} ${item.nameEn}`;
       }).join(' ')}`.toLocaleLowerCase();
-      return selectedAttributes.every((attribute) =>
+      return (selectedPosition === null || (boosterIdsByPosition[selectedPosition] as readonly string[]).includes(booster.id)) &&
+        (selectedRecommendation === null || booster.recommendation === selectedRecommendation) &&
+        selectedAttributes.every((attribute) =>
         (booster.attributes as readonly AttributeId[]).includes(attribute),
       ) &&
         (!keyword || text.includes(keyword));
     });
-  }, [query, selectedAttributes]);
+  }, [query, selectedAttributes, selectedPosition, selectedRecommendation]);
 
   return (
     <main className="site-shell reference-page boosters-page">
@@ -41,8 +52,8 @@ export function BoostersExplorer() {
         <header className="reference-intro booster-intro">
           <p className="eyebrow">CRAFTABLE BOOSTERS</p>
           <h1>增能 Booster</h1>
-          <p>每种可制作增能会同时提升 4 项球员属性。可按属性反查适合的增能组合。</p>
-          <div className="booster-rule"><Sparkles aria-hidden="true" /><span>所有可制作增能均可通过随机增能代币抽取，各种增能的出现概率相同。</span></div>
+          <p>每种可制作增能会同时提升 4 项球员属性。可按球员位置和属性反查适合的增能组合。</p>
+          <div className="booster-rule"><Sparkles aria-hidden="true" /><span>随机增能代币只会从球员所在位置可获得的增能中抽取，各种可获得增能的出现概率相同。</span></div>
         </header>
 
         <div className="booster-toolbar">
@@ -53,6 +64,41 @@ export function BoostersExplorer() {
             {query && <button type="button" onClick={() => setQuery('')} aria-label="清除搜索"><X aria-hidden="true" /></button>}
           </label>
         </div>
+
+        <section className="position-filter" aria-labelledby="position-filter-title">
+          <div className="position-filter-heading">
+            <div><h2 id="position-filter-title">球员位置</h2><p>只显示该位置可通过随机增能代币获得的增能</p></div>
+            {selectedPosition !== null && <button type="button" onClick={() => setSelectedPosition(null)}>显示全部</button>}
+          </div>
+          <div className="position-options">
+            {boosterPositions.map((position) => {
+              const selected = selectedPosition === position;
+              return (
+                <button key={position} type="button" className={selected ? 'is-selected' : ''} onClick={() => setSelectedPosition(selected ? null : position)} aria-pressed={selected}>
+                  {position}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="recommendation-filter" aria-labelledby="recommendation-filter-title">
+          <div className="recommendation-filter-heading">
+            <div><h2 id="recommendation-filter-title">推荐指数</h2><p>按评价等级筛选增能</p></div>
+            {selectedRecommendation !== null && <button type="button" onClick={() => setSelectedRecommendation(null)}>显示全部</button>}
+          </div>
+          <div className="recommendation-options">
+            {recommendationLevels.map((level) => {
+              const selected = selectedRecommendation === level;
+              return (
+                <button key={level} type="button" className={selected ? 'is-selected' : ''} onClick={() => setSelectedRecommendation(selected ? null : level)} aria-pressed={selected}>
+                  <strong>{level} 星</strong>
+                  <span aria-label={`${level} 颗星`}>{'★'.repeat(level)}<i>{'★'.repeat(5 - level)}</i></span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
 
         <section className="attribute-filter" aria-labelledby="attribute-filter-title">
           <div className="attribute-filter-heading">
@@ -89,7 +135,7 @@ export function BoostersExplorer() {
         <div className="booster-result-heading" aria-live="polite">
           <div>
             <p className="eyebrow">BOOSTER LIST</p>
-            <h2>{selectedAttributes.length === 0 ? '全部增能' : `同时提升「${selectedAttributes.map((id) => getAttribute(id).nameZh).join('＋')}」`}</h2>
+            <h2>{selectedPosition ? `${selectedPosition} 可随机获得的增能` : selectedAttributes.length === 0 ? '全部增能' : `同时提升「${selectedAttributes.map((id) => getAttribute(id).nameZh).join('＋')}」`}</h2>
           </div>
           <span>{results.length} / {boosters.length}</span>
         </div>
@@ -100,6 +146,10 @@ export function BoostersExplorer() {
               <div className="booster-card-heading">
                 <span className="booster-index">{String(index + 1).padStart(2, '0')}</span>
                 <div><h3>{booster.nameZh}</h3><p lang="en">{booster.nameEn}</p></div>
+                <div className="booster-recommendation" aria-label={`推荐指数 ${booster.recommendation} 颗星`}>
+                  <strong>{booster.recommendation} 星</strong>
+                  <span>{'★'.repeat(booster.recommendation)}<i>{'★'.repeat(5 - booster.recommendation)}</i></span>
+                </div>
               </div>
               <p className="booster-effect">提升以下 4 项球员属性</p>
               <div className="booster-attributes">
@@ -110,7 +160,7 @@ export function BoostersExplorer() {
               </div>
             </article>
           ))}
-          {results.length === 0 && <div className="empty-state booster-empty"><Search aria-hidden="true" /><h3>没有找到相关增能</h3><p>试试其他属性或关键词。</p></div>}
+          {results.length === 0 && <div className="empty-state booster-empty"><Search aria-hidden="true" /><h3>没有找到相关增能</h3><p>试试其他位置、星级、属性或关键词。</p></div>}
         </div>
       </section>
       <SiteFooter />
