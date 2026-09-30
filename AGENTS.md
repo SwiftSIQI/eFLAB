@@ -67,15 +67,17 @@
 
 ### 4.1 常规检查
 
-- 使用本地 Node.js 24 和仓库锁定的 npm 依赖；本地 Node.js 或 npm 不可用时，才使用 workspace dependencies 作为备用运行时。
+- 使用本地 Node.js 24 和 `package-lock.json` 锁定的 npm 依赖；本地 Node.js 或 npm 不可用时，才使用 workspace dependencies 作为备用运行时。
 - 常用命令：`npm run dev`、`npm run lint`、`npm run build`。
+- `npm run dev` 和 `npm run build` 会自动依次执行技能推荐归一化和四类数据生成。
+- 需要单独更新技能推荐归一化结果时，运行 `npm run normalize:data`。
 - 修改后运行最相关的检查；涉及交互时检查对应页面。无法验证时说明原因和风险。
 
 ### 4.2 Chrome 本地预览
 
-- 只有用户明确要求预览时才启动。项目使用 `.openai/hosting.json` 和 Vinext，优先使用 `node_modules/.bin/vinext` 与项目现有命令。
-- 预览前确认 `node_modules/.bin/vinext` 存在。不要删除、重装或修改 `node_modules/`。
+- 只有用户明确要求预览时才启动。项目使用 `.openai/hosting.json` 和 Vinext，优先使用 `node_modules/.bin/vinext` 与项目现有 npm 命令。
+- 预览前确认 `node_modules/.bin/vinext` 存在。依赖缺失时使用 `npm ci`，不得使用 pnpm；除非用户明确要求，否则不要手工修改或删除 `node_modules/`。
 - 在可保留的终端会话中运行 `npm run dev -- --host 127.0.0.1`，等待实际的 `Local` 地址，不重复启动服务或扫描端口。
 - 用同一环境对该地址发起一次轻量 HTTP 请求，确认返回非错误状态后，再在 Chrome 中打开该准确地址；请求失败不能视为预览成功。
-- 不得留下预览适配配置。若环境限制要求临时修改，启动后立即恢复，并说明修改和恢复结果。
+- 不得留下预览适配配置。若环境限制要求临时修改，启动后立即恢复，并说明临时调整及恢复结果。
 - 后续修改复用同一开发服务和同一个 Chrome 标签页；任务完成或用户要求停止时关闭服务。
