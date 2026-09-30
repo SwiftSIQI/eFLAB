@@ -37,3 +37,9 @@ next-env.d.ts
 /outputs/
 /work/
 /.pnpm-store/
+/app/data.ts
+/app/skills/data.ts
+/app/boosters/data.ts
+/app/attributes/data.ts
+/csv/play_skill_rec.csv
+/csv/play_skill_rec_by_position.csv
