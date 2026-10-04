@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '比赛风格速查 | eFootball 工具站',
+  title: '比赛风格 | eFootball Lab',
   description: '按球员位置与攻防类型查询 eFootball 比赛风格。',
 };
 
