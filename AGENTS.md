@@ -35,9 +35,9 @@
 
 ### 3.2 数据来源与生成
 
-- CSV 是结构化数据的唯一来源：比赛风格使用 `csv/player_style.csv`，增能使用 `csv/player_booster.csv`，技巧使用 `csv/player_skill.csv`，属性使用 `csv/player_attributes.csv`。
-- 四个 CSV 第一列统一为连续唯一的 `序号`，直接作为对应 `data.ts` 的 `id`，不得生成英文 slug ID。
-- 四个生成脚本位于 `script/`：`generate_playing_styles_data.rb`、`generate_boosters_data.rb`、`generate_skills_data.rb` 和 `generate_attributes_data.rb`。修改数据时先改 CSV，再运行对应脚本；`npm run dev` 和 `npm run build` 会自动生成，禁止直接编辑生成的 `data.ts`。
+- CSV 是结构化数据的唯一来源：比赛风格使用 `csv/player_style.csv`，增能使用 `csv/player_booster.csv`，技巧使用 `csv/player_skill.csv`，球员属性使用 `csv/player_ability.csv`。
+- 主数据 CSV 第一列统一为连续唯一的 `序号`，直接作为对应 `data.ts` 的 `id`，不得生成英文 slug ID；技能组合 CSV 的序号同样必须与技巧 CSV 对齐。
+- 五个生成脚本位于 `script/`：`generate_playing_styles_data.rb`、`generate_boosters_data.rb`、`generate_skills_data.rb`、`generate_attributes_data.rb` 和 `generate_skill_combo_data.rb`。修改数据时先改 CSV，再运行对应脚本；`npm run dev` 和 `npm run build` 会自动生成，禁止直接编辑生成的 `data.ts`。
 - CSV 字段名含 `-中文` 或 `-英文` 时，修改一侧要提醒用户是否同步修改另一侧。
 
 ### 3.3 通用位置与筛选
@@ -54,13 +54,13 @@
 
 - `csv/player_skill.csv` 是技巧名称、描述和分类的唯一来源，不得添加其中不存在的技能或分类。
 - 技巧分类允许重叠，以 CSV 的“技巧类型-中文”和“技巧类型-英文”为准。
-- 遇到别名、缩写或组合简称时，查阅 `csv/player_skill.csv` 和 `球员技巧组合简称.md`。网页数据和代码使用 CSV 标准名称；无法对应时，先询问标准技能及是否需要补充映射。
+- 遇到别名、缩写或组合简称时，查阅 `csv/player_skill.csv` 和 `csv/player_skill_combo.csv`。网页数据和代码使用 CSV 标准名称；无法对应时，先询问标准技能及是否需要补充映射。
 - 技巧图片位于 `public/skills/`，按序号使用 `01.png`～`67.png`；`public/skills-hd/` 是后续资源，禁止删除或覆盖。
 
 ### 3.6 技能推荐归一化
 
-- `script/normalize_skill_recommendations.rb` 使用三份专家 CSV：`csv/player_skill_rec_from_skye.csv`、`csv/player_skill_rec_from_大叔.csv`、`csv/player_skill_rec_from_实况老baby.csv`。
-- `npm run dev` 和 `npm run build` 会先执行 `npm run normalize:data`，再生成四个 `data.ts`；归一化失败时应停止后续流程。
+- `script/normalize_skill_recommendations.rb` 目前只参考两份专家 CSV：`csv/player_skill_rec_from_skye.csv` 和 `csv/player_skill_rec_from_大叔.csv`；不再参考 `csv/player_skill_rec_from_实况老baby.csv`。
+- `npm run dev` 和 `npm run build` 会先执行 `npm run normalize:data`，再生成各类 `data.ts`；归一化失败时应停止后续流程。
 - 输出为 `csv/play_skill_rec.csv` 和 `csv/play_skill_rec_by_position.csv`。修改脚本或输入时，校验技能清单、位置映射和输出行数。
 
 ## 4. 运行与验证

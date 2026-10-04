@@ -1707,33 +1707,12 @@ summary {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
-.recommendation-plan-options button {
-  min-height: 42px;
-  padding: 8px 10px;
-  border: 1px solid rgb(239 255 39 / 35%);
-  border-radius: 9px;
-  background: rgb(4 16 88 / 80%);
-  color: #e8edff;
-  cursor: pointer;
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-.recommendation-plan-options button:hover,
-.recommendation-plan-options button:focus-visible {
-  border-color: var(--yellow);
-}
-.recommendation-plan-options button.is-selected {
-  border-color: var(--yellow);
-  background: var(--yellow);
-  color: #06115c;
-}
 .recommendation-plan-option {
   position: relative;
-  display: flex;
+  display: grid;
   min-width: 0;
   min-height: 42px;
-  align-items: center;
-  justify-content: center;
+  place-items: center;
   border: 1px solid rgb(239 255 39 / 35%);
   border-radius: 9px;
   background: rgb(4 16 88 / 80%);
@@ -1742,10 +1721,13 @@ summary {
   border-color: var(--yellow);
   background: var(--yellow);
 }
-.recommendation-plan-option > button {
-  min-width: 0;
+.recommendation-plan-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
   min-height: 40px;
-  flex: 1;
   padding: 8px 10px;
   border: 0;
   background: transparent;
@@ -1754,53 +1736,36 @@ summary {
   font-size: 0.78rem;
   font-weight: 700;
 }
-.recommendation-plan-option > button:first-child {
-  width: 100%;
-  flex: 1 1 auto;
-  padding-right: 10px;
-}
-.recommendation-plan-option > button:hover,
-.recommendation-plan-option > button:focus-visible {
+.recommendation-plan-select:hover,
+.recommendation-plan-select:focus-visible {
   border: 0;
   background: transparent;
 }
-.recommendation-plan-option.is-selected > button {
-  border: 0;
-  background: transparent;
+.recommendation-plan-option.is-selected .recommendation-plan-select {
   color: #06115c;
-}
-.recommendation-plan-info-wrap {
-  position: relative;
-  display: grid;
-  width: 24px;
-  height: 24px;
-  flex: 0 0 24px;
-  margin: 0 4px 0 0;
-  place-items: center;
-  color: #9fb4f2;
 }
 .recommendation-plan-info {
   display: grid;
   width: 24px;
   height: 24px;
+  flex: 0 0 24px;
   place-items: center;
+  color: #9fb4f2;
   cursor: help;
-}
-.recommendation-plan-info:hover,
-.recommendation-plan-info:focus-visible {
-  color: var(--yellow);
 }
 .recommendation-plan-info svg {
   width: 16px;
   height: 16px;
 }
-.recommendation-plan-option.is-selected .recommendation-plan-info-wrap {
+.recommendation-plan-option.is-selected .recommendation-plan-info {
   color: #304175;
 }
-.recommendation-plan-option.is-selected .recommendation-plan-info:hover,
-.recommendation-plan-option.is-selected
-  .recommendation-plan-info:focus-visible {
-  color: #06115c;
+.recommendation-plan-option:has(.recommendation-plan-info:hover)
+  > .recommendation-source-tooltip {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0s;
 }
 .skill-profile-filter {
   display: grid;
@@ -1924,7 +1889,11 @@ summary {
   display: grid;
   width: 16px;
   height: 16px;
+  padding: 0;
   place-items: center;
+  border: 0;
+  background: transparent;
+  color: inherit;
   cursor: help;
 }
 .custom-filter-info:hover {
@@ -2086,7 +2055,10 @@ summary {
   display: grid;
   width: auto;
   min-height: 0;
+  padding: 0;
   place-items: center;
+  border: 0;
+  background: transparent;
   color: var(--yellow);
   cursor: help;
   font-size: inherit;
