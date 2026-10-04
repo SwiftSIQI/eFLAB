@@ -146,7 +146,9 @@ export function BoostersExplorer() {
             <article key={booster.id} className="booster-card">
               <div className="booster-card-heading">
                 <span className="booster-index">{String(index + 1).padStart(2, '0')}</span>
-                <div><h3>{booster.nameZh}</h3><p lang="en">{booster.nameEn}</p></div>
+                <div>
+                  <h3>{booster.nameZh}<span className="booster-name-separator" aria-hidden="true"> / </span><span lang="en" className="booster-name-en">{booster.nameEn}</span></h3>
+                </div>
                 <div className="booster-recommendation" aria-label={`推荐指数 ${booster.recommendation} 颗星`}>
                   <strong>{booster.recommendation} 星</strong>
                   <span>{'★'.repeat(booster.recommendation)}<i>{'★'.repeat(5 - booster.recommendation)}</i></span>
@@ -156,7 +158,7 @@ export function BoostersExplorer() {
               <div className="booster-attributes">
                 {booster.attributes.map((id) => {
                   const item = getAttribute(id);
-                  return <span key={id}><strong>{item.nameZh}</strong><small>{item.nameEn}</small></span>;
+                  return <span key={id}><strong>{item.nameZh}</strong><span className="booster-name-separator" aria-hidden="true"> / </span><small lang="en">{item.nameEn}</small></span>;
                 })}
               </div>
             </article>

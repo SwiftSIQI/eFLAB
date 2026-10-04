@@ -1882,6 +1882,9 @@ summary {
   background: transparent;
   color: #06115c;
 }
+.custom-filter-select:disabled {
+  cursor: not-allowed;
+}
 .custom-filter-info-wrap {
   position: relative;
   display: grid;
@@ -2337,18 +2340,36 @@ summary {
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
   font-weight: 800;
 }
-.booster-card-heading h3,
-.booster-card-heading p {
+.booster-card-heading h3 {
   margin: 0;
 }
 .booster-card-heading h3 {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 2px;
+  overflow: hidden;
   font-size: 1.08rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.booster-card-heading p {
-  margin-top: 2px;
+.booster-card-heading > div:nth-child(2) {
+  min-width: 0;
+}
+.booster-name-en,
+.booster-attributes small {
+  min-width: 0;
+  overflow: hidden;
   color: #afbeef;
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.booster-name-separator {
+  color: #8196da;
+  font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
   font-weight: 600;
 }
 .booster-recommendation {
@@ -2380,9 +2401,16 @@ summary {
   padding: 11px 15px;
   background: rgb(4 16 88 / 93%);
 }
-.booster-attributes strong,
-.booster-attributes small {
-  display: block;
+.booster-attributes > span {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.booster-attributes strong {
+  flex: 0 0 auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2391,7 +2419,7 @@ summary {
   font-size: 0.86rem;
 }
 .booster-attributes small {
-  margin-top: 3px;
+  flex: 1 1 auto;
   color: #8499dd;
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
   font-size: 0.68rem;
