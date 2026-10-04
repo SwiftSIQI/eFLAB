@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react';
+import { Check, CircleHelp, Search, SlidersHorizontal, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
@@ -48,13 +48,25 @@ export function BoostersExplorer() {
   }, [query, selectedAttributes, selectedPosition, selectedRecommendation]);
 
   return (
-    <main className="site-shell reference-page boosters-page">
+    <main id="main-content" className="site-shell reference-page boosters-page">
       <section className="reference-workspace">
         <header className="reference-intro booster-intro">
           <p className="eyebrow">CRAFTABLE BOOSTERS</p>
-          <h1>增能 Booster</h1>
-          <p>每种可制作增能会同时提升 4 项球员属性。可按球员位置和属性反查适合的增能组合。</p>
-          <div className="booster-rule"><Sparkles aria-hidden="true" /><span>随机增能代币只会从球员所在位置可获得的增能中抽取，各种可获得增能的出现概率相同。</span></div>
+          <h1>球员增能</h1>
+          <p>
+            有 {boosters.length} 个球员增能可以同时提升 4 项球员属性，选择合适的增能可以进一步强化球员的场上竞争力。
+            <span className="booster-source-info">
+              <button type="button" aria-label="查看球员增能评分来源" aria-describedby="booster-source">
+                <CircleHelp aria-hidden="true" />
+              </button>
+              <span id="booster-source" className="custom-filter-tooltip recommendation-source-tooltip booster-source-tooltip" role="tooltip">
+                球员增能评分参考自vearwu的研究成果，<a href="https://www.bilibili.com/video/BV1M3m3BaEuM/" target="_blank" rel="noreferrer">查看相关资料。</a>
+              </span>
+            </span>
+          </p>
+          <div className="reference-stats" aria-label="球员增能概览">
+            <span><strong>{boosters.length}</strong>球员增能</span>
+          </div>
         </header>
 
         <div className="booster-toolbar">

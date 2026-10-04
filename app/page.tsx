@@ -59,7 +59,7 @@ const tools = [
 
 export default function HomePage() {
   return (
-    <main className="site-shell home-page">
+    <main id="main-content" className="site-shell home-page">
       <section className="home-hero">
         <div className="home-hero-copy">
           <p className="home-kicker">

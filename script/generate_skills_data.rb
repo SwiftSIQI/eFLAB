@@ -5,11 +5,14 @@ require "json"
 
 # 从技巧 CSV 生成 app/skills/data.ts。
 # 技巧分类支持使用“、”分隔的多个分类，并保留 CSV 中的中英文描述、研究资料和图片索引。
-# 别名、旧名称和技能推荐度暂不写入网页数据，因为当前页面没有对应字段。
+# 位置适配度来自各专家独立的 csv/play_skill_rec_by_expert.csv。
+# 别名和旧名称暂不写入网页数据；技能推荐度用于技巧卡片展示。
 ROOT = File.expand_path("..", __dir__)
 CSV_PATH = File.join(ROOT, "csv/player_skill.csv")
+POSITION_RECOMMENDATION_PATH = File.join(ROOT, "csv/play_skill_rec_by_expert.csv")
 OUTPUT_PATH = File.join(ROOT, "app/skills/data.ts")
 CATEGORY_ORDER = %w[Showtime Shooting Dribbling Passing Defending Goalkeeping Other].freeze
+POSITION_ORDER = %w[CF SS RWF/LWF AMF CMF DMF RMF/LMF RB/LB CB GK].freeze
 
 def fail_with(message)
   abort("球员技巧生成失败：#{message}")
@@ -18,9 +21,35 @@ end
 table = CSV.read(CSV_PATH, headers: true, encoding: "bom|utf-8")
 headers = table.headers.map(&:to_s)
 headers[0] = headers[0].sub(/^\uFEFF/, "")
-required = %w[序号 技巧名称-中文 技巧名称-英文 技巧描述-中文 技巧描述-英文 技巧图片索引 技巧类型-中文 技巧类型-英文 三方研究-中文 三方研究-英文]
+required = %w[序号 技巧名称-中文 技巧名称-英文 技巧描述-中文 技巧描述-英文 技巧图片索引 技巧类型-中文 技巧类型-英文 技能推荐度 三方研究-中文 三方研究-英文]
 fail_with("缺少字段") unless (required - headers).empty?
 fail_with("没有数据") if table.empty?
+
+position_table = CSV.read(POSITION_RECOMMENDATION_PATH, headers: true, encoding: "bom|utf-8")
+position_headers = position_table.headers.map(&:to_s)
+required_position_headers = %w[方案 方案ID 位置 定位 技能 推荐等级]
+fail_with("位置推荐文件缺少字段") unless (required_position_headers - position_headers).empty?
+position_recommendations = Hash.new { |hash, skill_name| hash[skill_name] = {} }
+recommendation_plans = {}
+position_table.each do |row|
+  plan_id = row["方案ID"].to_s.strip
+  plan_label = row["方案"].to_s.strip
+  position = row["位置"].to_s.strip
+  profile = row["定位"].to_s.strip
+  skill_name = row["技能"].to_s.strip
+  level = Integer(row["推荐等级"].to_s, 10) rescue nil
+  fail_with("位置推荐方案为空") if plan_id.empty? || plan_label.empty?
+  fail_with("位置推荐中的位置无效：#{position}") unless POSITION_ORDER.include?(position)
+  fail_with("位置推荐中的定位为空") if profile.empty?
+  fail_with("位置推荐中的技能为空") if skill_name.empty?
+  fail_with("技能 #{skill_name} 的位置推荐等级无效") unless level && (1..3).include?(level)
+  recommendation_plans[plan_id] ||= { label: plan_label, positions: Hash.new { |hash, key| hash[key] = [] } }
+  recommendation_plans[plan_id][:positions][position] << profile unless recommendation_plans[plan_id][:positions][position].include?(profile)
+  position_recommendations[skill_name][plan_id] ||= {}
+  position_recommendations[skill_name][plan_id][position] ||= {}
+  fail_with("方案 #{plan_label} 的 #{position} / #{profile} / #{skill_name} 推荐重复") if position_recommendations[skill_name][plan_id][position].key?(profile)
+  position_recommendations[skill_name][plan_id][position][profile] = level
+end
 
 ids = table.map { |row| Integer(row["序号"].to_s, 10) rescue nil }
 fail_with("序号必须连续且从 1 开始") unless ids == (1..table.length).to_a
@@ -45,6 +74,15 @@ skills = table.map do |row|
   image = row["技巧图片索引"].to_s.strip
   fail_with("序号 #{row["序号"]} 的图片索引无效") unless image.match?(/\A\d{2}\.png\z/)
 
+  recommendation_text = row["技能推荐度"].to_s.strip
+  recommendation = if recommendation_text == "—" || recommendation_text.empty?
+    nil
+  else
+    recommendation_value = recommendation_text.count("★")
+    fail_with("序号 #{row["序号"]} 的推荐度无效") unless recommendation_text.match?(/\A★{1,5}☆{0,4}\z/) && recommendation_value.between?(1, 5)
+    recommendation_value
+  end
+
   skill = {
     id: Integer(row["序号"], 10),
     nameZh: row["技巧名称-中文"].to_s,
@@ -53,6 +91,8 @@ skills = table.map do |row|
     descriptionEn: row["技巧描述-英文"].to_s,
     categories: categories,
     image: "/skills/#{image}",
+    recommendation: recommendation,
+    positionRecommendations: position_recommendations[row["技巧名称-中文"].to_s.strip],
   }
   research_zh = row["三方研究-中文"].to_s
   research_en = row["三方研究-英文"].to_s
@@ -67,6 +107,15 @@ category_rows = CATEGORY_ORDER.select { |category| category_pairs.key?(category)
   pair = category_pairs.fetch(category)
   "  { id: #{json.call(category)}, label: #{json.call(pair[:label])}, nameEn: #{json.call(pair[:nameEn])} },"
 end.join("\n")
+plan_rows = recommendation_plans.map do |plan_id, plan|
+  positions = POSITION_ORDER.map do |position|
+    profiles = plan[:positions][position]
+    next if profiles.empty?
+
+    "{ id: #{json.call(position)}, profiles: #{json.call(profiles)} }"
+  end.compact.join(", ")
+  "  { id: #{json.call(plan_id)}, label: #{json.call(plan[:label])}, positions: [#{positions}] },"
+end.join("\n")
 skill_rows = skills.map do |skill|
   fields = [
     "id: #{skill[:id]}",
@@ -78,6 +127,8 @@ skill_rows = skills.map do |skill|
     ("researchEn: #{json.call(skill[:researchEn])}" if skill.key?(:researchEn)),
     "categories: #{json.call(skill[:categories])}",
     "image: #{json.call(skill[:image])}",
+    "recommendation: #{skill[:recommendation] || 'null'}",
+    "positionRecommendations: #{json.call(skill[:positionRecommendations])}",
   ].compact.join(", ")
   "  { #{fields} },"
 end.join("\n")
@@ -91,6 +142,16 @@ output = <<~TS
 
   export type SkillCategory = Exclude<(typeof skillCategories)[number]['id'], 'all'>;
 
+  export const skillRecommendationPlans = [
+  #{plan_rows}
+  ] as const;
+
+  export type SkillRecommendationPlanId = (typeof skillRecommendationPlans)[number]['id'];
+
+  export const skillPositions = #{json.call(POSITION_ORDER)} as const;
+  export type SkillPosition = (typeof skillPositions)[number];
+  export type SkillPositionRecommendation = 1 | 2 | 3;
+
   export type PlayerSkill = {
     id: number;
     nameZh: string;
@@ -101,6 +162,8 @@ output = <<~TS
     researchEn?: string;
     categories: SkillCategory[];
     image: string;
+    recommendation: 1 | 2 | 3 | 4 | 5 | null;
+    positionRecommendations: Partial<Record<SkillRecommendationPlanId, Partial<Record<SkillPosition, Partial<Record<string, SkillPositionRecommendation>>>>>>;
   };
 
   export const playerSkills: PlayerSkill[] = [

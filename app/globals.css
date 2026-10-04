@@ -73,6 +73,26 @@ summary {
   border: 0;
 }
 
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 8px;
+  left: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--yellow);
+  border-radius: 8px;
+  background: #06115c;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform 160ms ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .site-shell {
   min-height: 100vh;
 }
@@ -1735,8 +1755,9 @@ summary {
   font-weight: 700;
 }
 .recommendation-plan-option > button:first-child {
-  flex: 0 0 auto;
-  padding-right: 2px;
+  width: 100%;
+  flex: 1 1 auto;
+  padding-right: 10px;
 }
 .recommendation-plan-option > button:hover,
 .recommendation-plan-option > button:focus-visible {
@@ -1857,6 +1878,10 @@ summary {
 .custom-filter-option.is-selected {
   border-color: var(--defense);
   background: var(--defense);
+}
+.custom-filter-option:has(.custom-filter-select:disabled) {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 .custom-filter-select {
   min-width: 0;

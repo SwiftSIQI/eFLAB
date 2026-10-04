@@ -100,6 +100,25 @@ def source_columns_for(expert, headers, mapping)
   result
 end
 
+def expert_id(label)
+  return 'castor' if label.match?(/大叔|castor/i)
+  return 'skye' if label.match?(/skye/i)
+
+  label.downcase.gsub(/[^a-z0-9]+/, '-').gsub(/\A-+|-+\z/, '')
+end
+
+def position_profile(header)
+  text = header.to_s.strip
+  return '通用' if text.empty?
+
+  if text.match?(/\A[^（(]+[（(].+[）)]\z/)
+    return text.sub(/\A[^（(]+[（(]/, '').sub(/[）)]\z/, '')
+  end
+  return text.split('-', 2).last.strip if text.include?('-')
+
+  '通用'
+end
+
 # 读取一个专家 CSV，并保存技能行、原始表头、位置映射和全局评分列。
 def load_expert(label, path, mapping)
   rows = CSV.read(path, headers: true, encoding: 'bom|utf-8')
@@ -116,8 +135,10 @@ def load_expert(label, path, mapping)
 
   {
     label: label,
+    id: expert_id(label),
     path: path,
     rows: skill_rows,
+    skill_column: skill_column,
     headers: rows.headers,
     mapping: source_columns_for(label, rows.headers, mapping),
     global_column: find_global_column(rows.headers)
@@ -200,6 +221,33 @@ end
 
 matrix = []
 detail = []
+expert_detail = []
+
+experts.each do |expert|
+  expert[:headers].each do |header|
+    next if header == expert[:skill_column] || header.to_s.match?(/序号|技能推荐度|全局|global|rating|备注/i)
+
+    targets = auto_targets(header)
+    next if targets.empty?
+
+    profile = position_profile(header)
+    SKILLS.each do |skill|
+      level = parse_cell(expert[:rows][skill][header])&.to_i
+      next unless level && level.positive?
+
+      targets.each do |position|
+        expert_detail << {
+          '方案' => expert[:label],
+          '方案ID' => expert[:id],
+          '位置' => position,
+          '定位' => profile,
+          '技能' => skill,
+          '推荐等级' => level
+        }
+      end
+    end
+  end
+end
 
 # 主计算：逐个技能、逐个标准位置计算最终等级。
 SKILLS.each do |skill|
@@ -282,6 +330,7 @@ end
 Dir.mkdir(options[:out_dir]) unless Dir.exist?(options[:out_dir])
 matrix_path = File.join(options[:out_dir], 'play_skill_rec.csv')
 summary_path = File.join(options[:out_dir], 'play_skill_rec_by_position.csv')
+expert_path = File.join(options[:out_dir], 'play_skill_rec_by_expert.csv')
 
 CSV.open(matrix_path, 'w', write_headers: true, headers: ['技能', *POSITIONS], encoding: 'UTF-8') do |csv|
   matrix.each { |row| csv << ['技能', *POSITIONS].map { |header| row[header] } }
@@ -298,5 +347,13 @@ CSV.open(summary_path, 'w', write_headers: true,
   end
 end
 
+CSV.open(expert_path, 'w', write_headers: true,
+         headers: ['方案', '方案ID', '位置', '定位', '技能', '推荐等级'], encoding: 'UTF-8') do |csv|
+  expert_detail.sort_by { |row| [experts.index { |expert| expert[:id] == row['方案ID'] }, POSITIONS.index(row['位置']), row['定位'], -row['推荐等级'], row['技能']] }.each do |row|
+    csv << row.values_at('方案', '方案ID', '位置', '定位', '技能', '推荐等级')
+  end
+end
+
 puts "已生成：#{matrix_path}"
 puts "已生成：#{summary_path}"
+puts "已生成：#{expert_path}"

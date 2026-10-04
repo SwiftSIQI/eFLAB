@@ -1,19 +1,17 @@
 'use client';
 
-import { Activity, Search, Shield, Sparkles, X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
 import { Input } from '@/components/ui/input';
-import { attributeCategories, playerAttributes, type AttributeCategory } from './data';
+import {
+  attributeCategories,
+  playerAttributes,
+  type AttributeCategory,
+} from './data';
 
 type CategoryFilter = 'all' | AttributeCategory;
-
-const categoryIcons = {
-  attacking: Sparkles,
-  defending: Shield,
-  athleticism: Activity,
-} as const;
 
 export function AttributesExplorer() {
   const [category, setCategory] = useState<CategoryFilter>('all');
@@ -21,70 +19,167 @@ export function AttributesExplorer() {
 
   const results = useMemo(() => {
     const keyword = query.trim().toLocaleLowerCase();
-    return playerAttributes.filter((attribute) =>
-      (category === 'all' || attribute.category === category) &&
-      (!keyword || `${attribute.nameZh} ${attribute.nameEn}`.toLocaleLowerCase().includes(keyword)),
+    return playerAttributes.filter(
+      (attribute) =>
+        (category === 'all' || attribute.category === category) &&
+        (!keyword ||
+          `${attribute.nameZh} ${attribute.nameEn} ${attribute.descriptionZh} ${attribute.descriptionEn}`
+            .toLocaleLowerCase()
+            .includes(keyword)),
     );
   }, [category, query]);
 
+  const activeCategory =
+    category === 'all'
+      ? { label: '全部', nameEn: 'All' }
+      : attributeCategories.find((item) => item.id === category)!;
+
   return (
-    <main className="site-shell reference-page attributes-page">
+    <main id="main-content" className="site-shell reference-page attributes-page">
       <section className="reference-workspace">
         <header className="reference-intro">
           <p className="eyebrow">PLAYER ATTRIBUTES</p>
           <h1>球员属性</h1>
-          <p>26 项球员属性分为进攻、防守和身体素质 3 大类。属性价值与实战意义将持续补充。</p>
+          <p>
+            26 项球员属性分为进攻技能、防守技能和力量 3
+            大类，包含游戏内中英文说明。
+          </p>
           <div className="reference-stats" aria-label="属性概览">
+            <span>
+              <strong>{playerAttributes.length}</strong>球员属性
+            </span>
             {attributeCategories.map((item) => (
-              <span key={item.id}><strong>{playerAttributes.filter((attribute) => attribute.category === item.id).length}</strong>{item.label}</span>
+              <span key={item.id}>
+                <strong>
+                  {
+                    playerAttributes.filter(
+                      (attribute) => attribute.category === item.id,
+                    ).length
+                  }
+                </strong>
+                {item.label}
+              </span>
             ))}
           </div>
         </header>
+      </section>
 
-        <div className="reference-toolbar">
-          <div className="reference-tabs" aria-label="属性分类">
-            <button type="button" className={category === 'all' ? 'is-active' : ''} onClick={() => setCategory('all')} aria-pressed={category === 'all'}>全部</button>
-            {attributeCategories.map((item) => (
-              <button key={item.id} type="button" className={category === item.id ? `is-active ${item.id}` : item.id} onClick={() => setCategory(item.id)} aria-pressed={category === item.id}>
-                {item.label}<small>{item.nameEn}</small>
-              </button>
-            ))}
+      <section
+        className="skills-workspace attribute-explorer-workspace"
+        aria-label="球员属性查询"
+      >
+        <div className="skills-controls">
+          <nav
+            className="skill-category-list attribute-category-list"
+            aria-label="属性分类"
+          >
+            <button
+              type="button"
+              className={`skill-category ${category === 'all' ? 'is-active' : ''}`}
+              onClick={() => setCategory('all')}
+              aria-pressed={category === 'all'}
+            >
+              <span>
+                全部<small>All</small>
+              </span>
+              <b>{playerAttributes.length}</b>
+            </button>
+            {attributeCategories.map((item) => {
+              const count = playerAttributes.filter(
+                (attribute) => attribute.category === item.id,
+              ).length;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`skill-category ${category === item.id ? 'is-active' : ''}`}
+                  onClick={() => setCategory(item.id)}
+                  aria-pressed={category === item.id}
+                >
+                  <span>
+                    {item.label}
+                    <small>{item.nameEn}</small>
+                  </span>
+                  <b>{count}</b>
+                </button>
+              );
+            })}
+          </nav>
+
+          <div className="skill-results">
+            <div className="skill-search-row">
+              <label className="search-box">
+                <span className="sr-only">搜索球员属性</span>
+                <Search aria-hidden="true" />
+                <Input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="搜索属性名称或描述…"
+                />
+                {query && (
+                  <button
+                    type="button"
+                    onClick={() => setQuery('')}
+                    aria-label="清除搜索"
+                  >
+                    <X aria-hidden="true" />
+                  </button>
+                )}
+              </label>
+            </div>
+
+            <div
+              className="result-heading attribute-result-heading"
+              aria-live="polite"
+            >
+              <div>
+                <p className="eyebrow">{activeCategory.nameEn.toUpperCase()}</p>
+                <h2>{activeCategory.label}</h2>
+              </div>
+              <span className="skill-result-count">{results.length} 项</span>
+            </div>
+
+            <div className="attribute-list">
+              {results.map((attribute) => (
+                <article
+                  key={attribute.id}
+                  className={`attribute-card ${attribute.category}`}
+                >
+                  <div>
+                    <div className="attribute-title-row">
+                      <h3>
+                        {attribute.nameZh}
+                        <span lang="en"> / {attribute.nameEn}</span>
+                      </h3>
+                      <span className="attribute-number">
+                        {String(attribute.id).padStart(2, '0')}
+                      </span>
+                    </div>
+                    <p className="attribute-description">
+                      {attribute.descriptionZh}
+                    </p>
+                    <p className="attribute-description" lang="en">
+                      {attribute.descriptionEn}
+                    </p>
+                  </div>
+                </article>
+              ))}
+              {results.length === 0 && (
+                <div className="empty-state">
+                  <Search aria-hidden="true" />
+                  <h3>没有找到相关属性</h3>
+                  <p>试试其他分类或关键词。</p>
+                  <button
+                    type="button"
+                    className="clear-search"
+                    onClick={() => setQuery('')}
+                  >
+                    清除搜索
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-          <label className="search-box reference-search">
-            <span className="sr-only">搜索球员属性</span>
-            <Search aria-hidden="true" />
-            <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索中英文属性…" />
-            {query && <button type="button" onClick={() => setQuery('')} aria-label="清除搜索"><X aria-hidden="true" /></button>}
-          </label>
-        </div>
-
-        <div className="attribute-groups">
-          {attributeCategories.map((group) => {
-            const attributes = results.filter((attribute) => attribute.category === group.id);
-            const Icon = categoryIcons[group.id];
-            if (attributes.length === 0) return null;
-            return (
-              <section key={group.id} className={`attribute-group ${group.id}`}>
-                <div className="attribute-group-heading">
-                  <span><Icon aria-hidden="true" /></span>
-                  <div><p>{group.nameEn}</p><h2>{group.label}</h2></div>
-                  <b>{attributes.length}</b>
-                </div>
-                <div className="attribute-grid">
-                  {attributes.map((attribute) => (
-                    <article key={attribute.id} className="attribute-card">
-                      <div>
-                        <h3>{attribute.nameZh}</h3>
-                        <p lang="en">{attribute.nameEn}</p>
-                      </div>
-                      <span className="pending-note">价值与意义 · 待补充</span>
-                    </article>
-                  ))}
-                </div>
-              </section>
-            );
-          })}
-          {results.length === 0 && <div className="empty-state"><Search aria-hidden="true" /><h3>没有找到相关属性</h3><p>试试其他分类或关键词。</p></div>}
         </div>
       </section>
       <SiteFooter />

@@ -1,6 +1,6 @@
 'use client';
 
-import { Search, Shield, Sparkles, X } from 'lucide-react';
+import { Search, Shield, Swords, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -122,10 +122,28 @@ export default function StylesPage() {
 
   const attackCount = results.filter((style) => style.side === 'attack').length;
   const defenseCount = results.length - attackCount;
+  const totalAttackCount = styles.filter((style) => style.side === 'attack').length;
+  const totalDefenseCount = styles.length - totalAttackCount;
+  const overviewStats = [
+    { label: '球员风格', value: styles.length },
+    { label: '进攻', value: totalAttackCount },
+    { label: '防守', value: totalDefenseCount },
+  ];
 
   return (
-    <main className="site-shell">
-      <h1 className="sr-only">比赛风格速查</h1>
+    <main id="main-content" className="site-shell reference-page styles-page">
+      <section className="reference-workspace styles-reference-workspace">
+        <header className="reference-intro">
+          <p className="eyebrow">PLAYING STYLES</p>
+          <h1>比赛风格</h1>
+          <p>{styles.length} 项比赛风格分为进攻和防守两大类，帮助你快速了解球员在场上的跑位倾向与职责。</p>
+          <div className="reference-stats" aria-label="比赛风格概览">
+            {overviewStats.map((item) => (
+              <span key={item.label}><strong>{item.value}</strong>{item.label}</span>
+            ))}
+          </div>
+        </header>
+      </section>
       <section className="workspace" aria-label="比赛风格查询">
         <aside className="pitch-panel" aria-label="球场位置选择">
           <div className="panel-heading">
@@ -191,7 +209,7 @@ export default function StylesPage() {
                 <TabsList className="side-tabs" aria-label="比赛风格类型">
                   <TabsTrigger value="all">全部</TabsTrigger>
                   <TabsTrigger value="attack" className="attack-tab">
-                    <Sparkles aria-hidden="true" />进攻型
+                    <Swords aria-hidden="true" />进攻型
                   </TabsTrigger>
                   <TabsTrigger value="defense" className="defense-tab">
                     <Shield aria-hidden="true" />防守型
@@ -231,18 +249,20 @@ export default function StylesPage() {
               <details key={style.id} className={`style-card ${style.side}`}>
                 <summary>
                   <span className="type-mark" aria-hidden="true">
-                    {style.side === 'attack' ? <Sparkles /> : <Shield />}
+                    {style.side === 'attack' ? <Swords /> : <Shield />}
                   </span>
-                  <span className="style-title">
-                    <strong>{style.nameZh}</strong>
-                    <span>/ {style.nameEn}</span>
+                  <span className="style-heading">
+                    <span className="style-title">
+                      <strong>{style.nameZh}</strong>
+                      <span>/ {style.nameEn}</span>
+                    </span>
+                    <span className="expand-label">说明</span>
                   </span>
                   <span className="compatible-positions">
                     {style.positions.map((item) => (
                       <b key={item}>{item}</b>
                     ))}
                   </span>
-                  <span className="expand-label">说明</span>
                 </summary>
                 <div className="style-description">
                   <p>{style.descriptionZh}</p>

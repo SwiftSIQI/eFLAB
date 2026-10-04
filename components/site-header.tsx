@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 const links = [
@@ -16,11 +17,15 @@ export function SiteHeader() {
 
   return (
     <header className="topbar">
+      <a className="skip-link" href="#main-content">跳到主要内容</a>
       <Link className="brand-lockup" href="/" aria-label="eFootball Lab 首页">
-        <img
+        <Image
           className="brand-logo"
           src="/efootball-lab-logo.svg"
           alt="eFootball Lab"
+          width={205}
+          height={64}
+          priority
         />
       </Link>
       <nav className="site-nav" aria-label="工具导航">

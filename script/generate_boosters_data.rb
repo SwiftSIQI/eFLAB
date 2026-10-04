@@ -8,6 +8,7 @@ require "json"
 # 推荐度从“增能推荐度”的星级文本转换为 1～5 的数字。
 ROOT = File.expand_path("..", __dir__)
 CSV_PATH = File.join(ROOT, "csv/player_booster.csv")
+ATTRIBUTE_CSV_PATH = File.join(ROOT, "csv/player_attributes.csv")
 OUTPUT_PATH = File.join(ROOT, "app/boosters/data.ts")
 POSITIONS = %w[CF SS RWF/LWF AMF RMF/LMF CMF DMF RB/LB CB GK].freeze
 FIXED_HEADERS = %w[序号 增能-中文 增能-英文 增能推荐度].freeze
@@ -17,18 +18,34 @@ def fail_with(message)
 end
 
 table = CSV.read(CSV_PATH, headers: true, encoding: "bom|utf-8")
+attribute_table = CSV.read(ATTRIBUTE_CSV_PATH, headers: true, encoding: "bom|utf-8")
 headers = table.headers.map(&:to_s)
+attribute_rows = attribute_table.map do |row|
+  {
+    id: Integer(row["序号"].to_s, 10),
+    name_zh: row["属性名称-中文"].to_s.strip,
+    name_en: row["属性名称-英文"].to_s.strip,
+  }
+end
+attribute_by_name = attribute_rows.each_with_object({}) do |attribute, result|
+  [attribute[:name_zh], attribute[:name_en]].each do |name|
+    fail_with("属性名称重复：#{name}") if result.key?(name) && result[name] != attribute[:id]
+    result[name] = attribute[:id]
+  end
+end
 headers[0] = headers[0].sub(/^\uFEFF/, "")
 fail_with("缺少基础字段") unless (FIXED_HEADERS - headers).empty?
 fail_with("位置字段不符合规范") unless headers.last(POSITIONS.length) == POSITIONS
 attribute_headers = headers[FIXED_HEADERS.length, headers.length - FIXED_HEADERS.length - POSITIONS.length]
 fail_with("没有属性字段") if attribute_headers.nil? || attribute_headers.empty?
+unknown_attributes = attribute_headers.reject { |name| attribute_by_name.key?(name) }
+fail_with("增能中的属性无法关联到属性语义：#{unknown_attributes.join('、')}") unless unknown_attributes.empty?
 fail_with("没有数据") if table.empty?
 
 ids = table.map { |row| Integer(row["序号"].to_s, 10) rescue nil }
 fail_with("序号必须连续且从 1 开始") unless ids == (1..table.length).to_a
 
-attribute_ids = attribute_headers.each_with_index.to_h { |name, index| [name, index + 1] }
+attribute_ids = attribute_headers.to_h { |name| [name, attribute_by_name.fetch(name)] }
 boosters = table.map do |row|
   recommendation = row["增能推荐度"].to_s.strip.delete_suffix("星")
   recommendation = Integer(recommendation, 10) rescue nil

@@ -10,9 +10,9 @@ ROOT = File.expand_path("..", __dir__)
 CSV_PATH = File.join(ROOT, "csv/player_attributes.csv")
 OUTPUT_PATH = File.join(ROOT, "app/attributes/data.ts")
 CATEGORY_IDS = {
-  "Attacking" => "attacking",
-  "Defending" => "defending",
-  "Athleticism" => "athleticism",
+  "Attack" => "attacking",
+  "Defence" => "defending",
+  "Strength" => "athleticism",
 }.freeze
 
 def fail_with(message)
@@ -21,7 +21,7 @@ end
 
 table = CSV.read(CSV_PATH, headers: true, encoding: "bom|utf-8")
 headers = table.headers.map(&:to_s)
-required = %w[序号 属性-中文 属性-英文 属性分类-中文 属性分类-英文]
+required = %w[序号 属性名称-中文 属性名称-英文 属性分类-中文 属性分类-英文 属性描述-中文 属性描述-英文]
 fail_with("缺少字段") unless (required - headers).empty?
 fail_with("没有数据") if table.empty?
 
@@ -38,9 +38,11 @@ attributes = table.map do |row|
 
   {
     id: Integer(row["序号"], 10),
-    nameZh: row["属性-中文"].to_s,
-    nameEn: row["属性-英文"].to_s,
+    nameZh: row["属性名称-中文"].to_s,
+    nameEn: row["属性名称-英文"].to_s,
     category: category_id,
+    descriptionZh: row["属性描述-中文"].to_s,
+    descriptionEn: row["属性描述-英文"].to_s,
   }
 end
 
@@ -58,6 +60,8 @@ output = <<~TS
     nameZh: string;
     nameEn: string;
     category: AttributeCategory;
+    descriptionZh: string;
+    descriptionEn: string;
   }>;
 
   export type AttributeId = (typeof playerAttributes)[number]['id'];
