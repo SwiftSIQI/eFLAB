@@ -2190,19 +2190,6 @@ summary {
   padding: 16px 17px;
   border-bottom: 1px solid rgb(142 169 255 / 20%);
 }
-.attribute-filter-icon {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  flex: 0 0 auto;
-  place-items: center;
-  border: 1px solid var(--defense);
-  border-radius: 10px;
-  color: var(--defense);
-}
-.attribute-filter-icon svg {
-  width: 18px;
-}
 .attribute-filter-heading div {
   min-width: 0;
   flex: 1;

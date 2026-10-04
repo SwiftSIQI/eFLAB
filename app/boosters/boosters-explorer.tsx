@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, CircleHelp, Search, SlidersHorizontal, X } from 'lucide-react';
+import { Check, CircleHelp, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
@@ -120,7 +120,6 @@ export function BoostersExplorer() {
 
         <section className="attribute-filter" aria-labelledby="attribute-filter-title">
           <div className="attribute-filter-heading">
-            <span className="attribute-filter-icon"><SlidersHorizontal aria-hidden="true" /></span>
             <div>
               <h2 id="attribute-filter-title">想提升哪些属性？</h2>
               <p>可多选；结果需同时提升所有已选属性。</p>
