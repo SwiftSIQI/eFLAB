@@ -55,14 +55,6 @@ export function BoostersExplorer() {
           <h1>球员增能</h1>
           <p>
             有 {boosters.length} 个球员增能可以同时提升 4 项球员属性，选择合适的增能可以进一步强化球员的场上竞争力。
-            <span className="booster-source-info">
-              <button type="button" aria-label="查看球员增能评分来源" aria-describedby="booster-source">
-                <CircleHelp aria-hidden="true" />
-              </button>
-              <span id="booster-source" className="custom-filter-tooltip recommendation-source-tooltip booster-source-tooltip" role="tooltip">
-                球员增能评分参考自vearwu的研究成果，<a href="https://www.bilibili.com/video/BV1M3m3BaEuM/" target="_blank" rel="noreferrer">查看相关资料。</a>
-              </span>
-            </span>
           </p>
           <div className="reference-stats" aria-label="球员增能概览">
             <span><strong>{boosters.length}</strong>球员增能</span>
@@ -78,6 +70,37 @@ export function BoostersExplorer() {
           </label>
         </div>
 
+        <section className="recommendation-filter" aria-labelledby="recommendation-filter-title">
+          <div className="recommendation-filter-heading">
+            <div>
+              <div className="recommendation-heading-title">
+                <h2 id="recommendation-filter-title">增能价值</h2>
+                <span className="booster-source-info">
+                  <button type="button" aria-label="查看球员增能价值来源" aria-describedby="booster-source">
+                    <CircleHelp aria-hidden="true" />
+                  </button>
+                  <span id="booster-source" className="custom-filter-tooltip recommendation-source-tooltip booster-source-tooltip" role="tooltip">
+                    球员增能价值参考自vearwu的研究成果，<a href="https://www.bilibili.com/video/BV1M3m3BaEuM/" target="_blank" rel="noreferrer">查看相关资料。</a>
+                  </span>
+                </span>
+              </div>
+              <p>按价值等级筛选增能</p>
+            </div>
+            {selectedRecommendation !== null && <button type="button" onClick={() => setSelectedRecommendation(null)}>显示全部</button>}
+          </div>
+          <div className="recommendation-options">
+            {recommendationLevels.map((level) => {
+              const selected = selectedRecommendation === level;
+              return (
+                <button key={level} type="button" className={selected ? 'is-selected' : ''} onClick={() => setSelectedRecommendation(selected ? null : level)} aria-pressed={selected}>
+                  <strong>{level} 星</strong>
+                  <span aria-label={`${level} 颗星`}>{'★'.repeat(level)}<i>{'★'.repeat(5 - level)}</i></span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
         <section className="position-filter" aria-labelledby="position-filter-title">
           <div className="position-filter-heading">
             <div><h2 id="position-filter-title">球员位置</h2><p>只显示该位置可通过随机增能代币获得的增能</p></div>
@@ -89,24 +112,6 @@ export function BoostersExplorer() {
               return (
                 <button key={position} type="button" className={selected ? 'is-selected' : ''} onClick={() => setSelectedPosition(selected ? null : position)} aria-pressed={selected}>
                   {position}
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="recommendation-filter" aria-labelledby="recommendation-filter-title">
-          <div className="recommendation-filter-heading">
-            <div><h2 id="recommendation-filter-title">推荐指数</h2><p>按评价等级筛选增能</p></div>
-            {selectedRecommendation !== null && <button type="button" onClick={() => setSelectedRecommendation(null)}>显示全部</button>}
-          </div>
-          <div className="recommendation-options">
-            {recommendationLevels.map((level) => {
-              const selected = selectedRecommendation === level;
-              return (
-                <button key={level} type="button" className={selected ? 'is-selected' : ''} onClick={() => setSelectedRecommendation(selected ? null : level)} aria-pressed={selected}>
-                  <strong>{level} 星</strong>
-                  <span aria-label={`${level} 颗星`}>{'★'.repeat(level)}<i>{'★'.repeat(5 - level)}</i></span>
                 </button>
               );
             })}
@@ -161,7 +166,7 @@ export function BoostersExplorer() {
                 <div>
                   <h3>{booster.nameZh}<span className="booster-name-separator" aria-hidden="true"> / </span><span lang="en" className="booster-name-en">{booster.nameEn}</span></h3>
                 </div>
-                <div className="booster-recommendation" aria-label={`推荐指数 ${booster.recommendation} 颗星`}>
+                <div className="booster-recommendation" aria-label={`增能价值 ${booster.recommendation} 颗星`}>
                   <strong>{booster.recommendation} 星</strong>
                   <span>{'★'.repeat(booster.recommendation)}<i>{'★'.repeat(5 - booster.recommendation)}</i></span>
                 </div>
