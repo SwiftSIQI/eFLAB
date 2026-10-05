@@ -1,13 +1,16 @@
 'use client';
 
-import { Check, ChevronDown, CircleHelp, Search, X } from 'lucide-react';
-import { useMemo, useState, type ReactNode } from 'react';
+import { Check, CircleHelp, Search, X } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
-import { ReferenceLayerDebug } from '@/components/reference-layer-debug';
+import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
+import { ReferenceIntentOption } from '@/components/reference-intent-option';
+import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import { Input } from '@/components/ui/input';
 import { normalizeSearchText } from '@/lib/utils';
 import {
+  attributeCategories,
   getAttribute,
   playerAttributes,
   type AttributeId,
@@ -37,69 +40,7 @@ const recommendationLevels = [
 ].sort((first, second) => second - first);
 const maxRecommendationLevel = Math.max(...recommendationLevels, 0);
 type BoosterIntent = 'lookup' | 'recommend';
-
-type BoosterIntentOptionProps = {
-  readonly intent: BoosterIntent;
-  readonly selectedIntent: BoosterIntent;
-  readonly expandedIntent: BoosterIntent | null;
-  readonly title: string;
-  readonly description: string;
-  readonly detailId: string;
-  readonly onSelect: (intent: BoosterIntent) => void;
-  readonly onToggle: (intent: BoosterIntent) => void;
-  readonly children: ReactNode;
-};
-
-function BoosterIntentOption({
-  intent,
-  selectedIntent,
-  expandedIntent,
-  title,
-  description,
-  detailId,
-  onSelect,
-  onToggle,
-  children,
-}: BoosterIntentOptionProps) {
-  const selected = selectedIntent === intent;
-  const expanded = expandedIntent === intent;
-
-  return (
-    <div
-      className={`booster-intent-option${selected ? ' is-selected' : ''}${expanded ? ' is-expanded' : ''}`}
-    >
-      <label className="booster-intent-summary">
-        <input
-          type="radio"
-          name="booster-intent"
-          value={intent}
-          checked={selected}
-          aria-label={title}
-          onChange={() => onSelect(intent)}
-        />
-        <span className="booster-intent-radio" aria-hidden="true" />
-        <span className="booster-intent-copy">
-          <strong>{title}</strong>
-          <small>{description}</small>
-        </span>
-      </label>
-      <button
-        type="button"
-        className="booster-intent-expand"
-        aria-label={
-          expanded ? `收起${title}的使用说明` : `展开${title}的使用说明`
-        }
-        aria-expanded={expanded}
-        aria-controls={detailId}
-        onClick={() => onToggle(intent)}
-      >
-        <span>{expanded ? '收起使用说明' : '查看使用说明'}</span>
-        <ChevronDown aria-hidden="true" />
-      </button>
-      {expanded && children}
-    </div>
-  );
-}
+const isDebugBuild = import.meta.env.DEV || import.meta.env.MODE === 'test';
 
 export function BoostersExplorer() {
   const [query, setQuery] = useState('');
@@ -183,25 +124,23 @@ export function BoostersExplorer() {
 
   return (
     <main id="main-content" className="site-shell reference-page boosters-page">
-      <ReferenceLayerDebug />
+      {isDebugBuild && <ReferenceDebugPanel />}
       <section className="reference-workspace">
-        <div className="reference-intro booster-intro">
-          <div className="booster-hero-copy booster-section-heading">
-            <p className="eyebrow">CRAFTABLE BOOSTERS</p>
-            <h1>球员增能</h1>
-            <p>
-              有 {boosters.length} 个球员增能可以同时提升{' '}
-              {boosterAttributeCount}{' '}
-              项球员属性，选择合适的增能可以进一步强化球员的场上竞争力。
-            </p>
-          </div>
+        <div className="reference-intro reference-intro-layout">
+          <ReferenceSectionHeading
+            className="reference-hero-copy"
+            eyebrow="CRAFTABLE BOOSTERS"
+            title="球员增能"
+            description={`有 ${boosters.length} 个球员增能可以同时提升 ${boosterAttributeCount} 项球员属性，选择合适的增能可以进一步强化球员的场上竞争力。`}
+            level="h1"
+          />
           <div className="reference-stats" aria-label="球员增能概览">
             <span>
               <strong>{boosters.length}</strong>球员增能
             </span>
           </div>
           <section
-            className="usage-guide booster-intent-guide"
+            className="usage-guide reference-intent-guide"
             aria-labelledby="boosters-usage-title"
           >
             <div className="usage-guide-heading">
@@ -209,23 +148,24 @@ export function BoostersExplorer() {
               <span>选择一个使用方式，开始查询增能。</span>
             </div>
             <div
-              className="booster-intent-options"
+              className="reference-intent-options"
               role="radiogroup"
               aria-labelledby="boosters-usage-title"
             >
-              <BoosterIntentOption
+              <ReferenceIntentOption
                 intent="lookup"
                 selectedIntent={boosterIntent}
-                expandedIntent={expandedBoosterIntent}
                 title="我想查询某个增能的作用"
                 description="搜索增能中文或英文名称，查看它会增加哪些属性。"
-                detailId="booster-lookup-steps"
+                radioName="booster-intent"
                 onSelect={selectBoosterIntent}
+                expanded={expandedBoosterIntent === 'lookup'}
+                detailId="booster-lookup-steps"
                 onToggle={toggleBoosterIntent}
               >
                 <ol
                   id="booster-lookup-steps"
-                  className="usage-steps booster-intent-detail booster-intent-lookup-steps"
+                  className="usage-steps reference-intent-detail reference-intent-lookup-steps"
                 >
                   <li>
                     <strong>搜索增能名称</strong>
@@ -234,20 +174,21 @@ export function BoostersExplorer() {
                     </span>
                   </li>
                 </ol>
-              </BoosterIntentOption>
-              <BoosterIntentOption
+              </ReferenceIntentOption>
+              <ReferenceIntentOption
                 intent="recommend"
                 selectedIntent={boosterIntent}
-                expandedIntent={expandedBoosterIntent}
                 title="我想给球员添加合适的增能"
                 description="根据球员位置、球员属性和增能价值等维度筛选出最合适的球员增能。"
-                detailId="booster-recommend-steps"
+                radioName="booster-intent"
                 onSelect={selectBoosterIntent}
+                expanded={expandedBoosterIntent === 'recommend'}
+                detailId="booster-recommend-steps"
                 onToggle={toggleBoosterIntent}
               >
                 <ol
                   id="booster-recommend-steps"
-                  className="usage-steps booster-intent-detail"
+                  className="usage-steps reference-intent-detail"
                 >
                   <li>
                     <strong>选择球员位置</strong>
@@ -266,27 +207,28 @@ export function BoostersExplorer() {
                     <span>根据需要决定是否遵守游戏对随机增能的系统限制。</span>
                   </li>
                 </ol>
-              </BoosterIntentOption>
+              </ReferenceIntentOption>
             </div>
           </section>
         </div>
       </section>
 
-      <section className="booster-filter-section" aria-label="增能筛选">
-        <div className="booster-filter-panel reference-section-panel">
-          <div className="booster-filter-heading booster-section-heading">
-            <div>
-              <p className="eyebrow">BOOSTER SEARCH AREA</p>
-              <h2>增能筛选区</h2>
-              <p>
-                {boosterIntent === 'lookup'
+      <section className="reference-filter-section" aria-label="增能筛选">
+        <div className="reference-filter-panel reference-section-panel">
+          <div className="reference-filter-heading">
+            <ReferenceSectionHeading
+              eyebrow="BOOSTER SEARCH AREA"
+              title="增能筛选区"
+              description={
+                boosterIntent === 'lookup'
                   ? '搜索增能中文或英文名称，查看它会增加哪些属性。'
-                  : '根据球员位置、球员属性和增能价值等维度筛选出最合适的球员增能。'}
-              </p>
-            </div>
+                  : '根据球员位置、球员属性和增能价值等维度筛选出最合适的球员增能。'
+              }
+              level="h2"
+            />
           </div>
           {boosterIntent === 'lookup' && (
-            <div className="booster-toolbar">
+            <div className="reference-toolbar">
               <label className="search-box reference-search">
                 <span className="sr-only">搜索增能</span>
                 <Search aria-hidden="true" />
@@ -375,24 +317,43 @@ export function BoostersExplorer() {
                   )}
                 </div>
                 <div className="attribute-options">
-                  {availableAttributes.map((item) => {
-                    const selected = selectedAttributes.includes(item.id);
+                  {attributeCategories.map((category) => {
+                    const categoryAttributes = availableAttributes.filter(
+                      (item) => item.category === category.id,
+                    );
                     return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        className={selected ? 'is-selected' : ''}
-                        onClick={() => toggleAttribute(item.id)}
-                        aria-pressed={selected}
+                      <section
+                        key={category.id}
+                        className="attribute-category"
+                        aria-labelledby={`attribute-category-${category.id}`}
                       >
-                        <span className="attribute-check">
-                          {selected && <Check aria-hidden="true" />}
-                        </span>
-                        <span>
-                          {item.nameZh}
-                          <small>{item.nameEn}</small>
-                        </span>
-                      </button>
+                        <h3 id={`attribute-category-${category.id}`}>
+                          {category.label}
+                          <span>{category.nameEn}</span>
+                        </h3>
+                        <div className="attribute-category-options">
+                          {categoryAttributes.map((item) => {
+                            const selected = selectedAttributes.includes(item.id);
+                            return (
+                              <button
+                                key={item.id}
+                                type="button"
+                                className={selected ? 'is-selected' : ''}
+                                onClick={() => toggleAttribute(item.id)}
+                                aria-pressed={selected}
+                              >
+                                <span className="attribute-check">
+                                  {selected && <Check aria-hidden="true" />}
+                                </span>
+                                <span>
+                                  {item.nameZh}
+                                  <small>{item.nameEn}</small>
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </section>
                     );
                   })}
                 </div>
@@ -505,18 +466,19 @@ export function BoostersExplorer() {
       </section>
 
       <section
-        className="booster-content booster-results-section"
+        className="reference-content reference-results-section"
         aria-label="增能查询结果"
       >
-        <div className="booster-results-panel reference-section-panel">
+        <div className="reference-results-panel reference-section-panel">
           <div
-            className="booster-result-heading booster-section-heading"
+            className="reference-result-heading"
             aria-live="polite"
           >
-            <div>
-              <p className="eyebrow">BOOSTER RESULT LIST</p>
-              <h2>增能结果列表</h2>
-            </div>
+            <ReferenceSectionHeading
+              eyebrow="BOOSTER RESULT LIST"
+              title="增能结果列表"
+              level="h2"
+            />
             <span>
               显示 {results.length} / 共 {boosters.length}
             </span>

@@ -1451,6 +1451,15 @@ summary {
 .skill-category.is-active b {
   color: #24366c;
 }
+.skill-category:disabled {
+  border-color: rgb(142 169 255 / 24%);
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.skill-category:disabled:hover,
+.skill-category:disabled:focus-visible {
+  border-color: rgb(142 169 255 / 24%);
+}
 .skill-results {
   min-width: 0;
 }
@@ -1462,12 +1471,7 @@ summary {
   border-color: rgb(91 244 242 / 28%);
   background: rgb(91 244 242 / 5%);
 }
-.skills-filter-workspace .booster-section-heading > div > p:last-child {
-  color: #c3cff5;
-  font-size: 0.82rem;
-  line-height: 1.5;
-}
-.booster-filter-section .booster-section-heading > div > p:last-child {
+.reference-filter-section .reference-section-heading > p:last-child {
   color: #c3cff5;
   font-size: 0.82rem;
   line-height: 1.5;
@@ -1693,7 +1697,7 @@ summary {
     radial-gradient(circle at 90% 20%, rgb(255 47 179 / 20%), transparent 34%),
     var(--reference-intro-bg);
 }
-.booster-intro {
+.reference-intro-layout {
   display: grid;
   overflow: visible;
   padding: var(--booster-panel-padding);
@@ -1719,7 +1723,7 @@ summary {
 .skills-reference-workspace .skills-intro-copy > p:not(.eyebrow) {
   max-width: 720px;
 }
-.booster-intro > p:not(.eyebrow) {
+.reference-intro-layout > p:not(.eyebrow) {
   max-width: 1100px;
 }
 .reference-stats {
@@ -1781,14 +1785,14 @@ summary {
 .booster-source-tooltip a {
   text-decoration: none;
 }
-.booster-hero-copy > p:not(.eyebrow) {
+.reference-hero-copy > p:not(.eyebrow) {
   max-width: none;
 }
-.booster-intro .reference-stats {
+.reference-intro-layout .reference-stats {
   justify-self: end;
   margin-top: 0;
 }
-.booster-intro > .usage-guide {
+.reference-intro-layout > .usage-guide {
   grid-column: 1 / -1;
   width: auto;
   margin: 0;
@@ -1797,43 +1801,43 @@ summary {
   border-color: rgb(123 158 255 / 28%);
   background: var(--reference-guide-bg);
 }
-.booster-intro .usage-guide-heading {
+.reference-intro-layout .usage-guide-heading {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0 12px;
 }
-.booster-intro .usage-guide-heading strong {
+.reference-intro-layout .usage-guide-heading strong {
   font-size: 1.2rem;
 }
-.booster-intro .usage-guide-heading > span:last-child {
+.reference-intro-layout .usage-guide-heading > span:last-child {
   flex-basis: 100%;
   margin-top: 3px;
   font-size: 0.82rem;
 }
-.booster-intent-guide {
+.reference-intent-guide {
   align-content: start;
   gap: var(--booster-heading-content-gap);
 }
-.booster-intent-guide .usage-guide-heading {
+.reference-intent-guide .usage-guide-heading {
   display: grid;
   gap: 6px;
   line-height: 1.4;
 }
-.booster-intent-guide .usage-guide-heading strong {
+.reference-intent-guide .usage-guide-heading strong {
   font-size: 1.2rem;
 }
-.booster-intent-guide .usage-guide-heading > span:last-child {
+.reference-intent-guide .usage-guide-heading > span:last-child {
   flex-basis: auto;
   margin-top: 0;
   font-size: 0.82rem;
 }
-.booster-intent-options {
+.reference-intent-options {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
 }
-.booster-intent-option {
+.reference-intent-option {
   position: relative;
   min-width: 0;
   overflow: hidden;
@@ -1843,17 +1847,17 @@ summary {
   color: #e8edff;
   cursor: pointer;
 }
-.booster-intent-summary {
+.reference-intent-summary {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   padding: 14px 150px 14px 14px;
   cursor: pointer;
 }
-.booster-intent-option.is-expanded .booster-intent-summary {
+.reference-intent-option.is-expanded .reference-intent-summary {
   padding-bottom: 10px;
 }
-.booster-intent-expand {
+.reference-intent-expand {
   position: absolute;
   top: 14px;
   right: 14px;
@@ -1872,45 +1876,45 @@ summary {
   font-size: 0.72rem;
   font-weight: 700;
 }
-.booster-intent-expand:hover,
-.booster-intent-expand:focus-visible {
+.reference-intent-expand:hover,
+.reference-intent-expand:focus-visible {
   background: rgb(239 255 39 / 12%);
 }
-.booster-intent-expand svg {
+.reference-intent-expand svg {
   width: 20px;
   transition: transform 180ms ease;
 }
-.booster-intent-option.is-expanded .booster-intent-expand svg {
+.reference-intent-option.is-expanded .reference-intent-expand svg {
   transform: rotate(180deg);
 }
-.booster-intent-option:hover,
-.booster-intent-option:has(input:focus-visible) {
+.reference-intent-option:hover,
+.reference-intent-option:has(input:focus-visible) {
   border-color: var(--yellow);
 }
-.booster-intent-option.is-selected {
+.reference-intent-option.is-selected {
   border-color: var(--yellow);
   background: rgb(239 255 39 / 10%);
   box-shadow: inset 0 0 0 1px rgb(239 255 39 / 18%);
 }
-.booster-intent-option input {
+.reference-intent-option input {
   position: absolute;
   width: 1px;
   height: 1px;
   opacity: 0;
 }
-.booster-intent-detail {
+.reference-intent-detail {
   margin: 0;
   padding: 0 14px 14px;
 }
-.booster-intent-detail li {
+.reference-intent-detail li {
   min-width: 0;
   min-height: 0;
   padding: 14px;
 }
-.booster-intent-lookup-steps {
+.reference-intent-lookup-steps {
   grid-template-columns: 1fr;
 }
-.booster-intent-radio {
+.reference-intent-radio {
   display: grid;
   width: 18px;
   height: 18px;
@@ -1920,7 +1924,7 @@ summary {
   border: 2px solid #91a4e7;
   border-radius: 50%;
 }
-.booster-intent-radio::after {
+.reference-intent-radio::after {
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -1928,33 +1932,33 @@ summary {
   content: '';
   opacity: 0;
 }
-.booster-intent-option.is-selected .booster-intent-radio {
+.reference-intent-option.is-selected .reference-intent-radio {
   border-color: var(--yellow);
 }
-.booster-intent-option.is-selected .booster-intent-radio::after {
+.reference-intent-option.is-selected .reference-intent-radio::after {
   opacity: 1;
 }
-.booster-intent-copy {
+.reference-intent-copy {
   display: grid;
   min-width: 0;
   gap: 4px;
 }
-.booster-intent-copy strong {
+.reference-intent-copy strong {
   font-size: 0.95rem;
   line-height: 1.4;
 }
-.booster-intent-copy small {
+.reference-intent-copy small {
   color: #b9c7f7;
   font-size: 0.76rem;
   line-height: 1.5;
 }
-.booster-content,
-.booster-filter-section {
+.reference-content,
+.reference-filter-section {
   width: min(1280px, 100%);
   margin: 0 auto;
   padding: 0 18px;
 }
-.booster-filter-section {
+.reference-filter-section {
   margin-top: 28px;
 }
 .reference-section-panel {
@@ -1963,37 +1967,36 @@ summary {
   border-radius: 22px;
   background: var(--reference-section-bg);
 }
-.booster-filter-heading {
+.reference-filter-heading {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
   margin-bottom: var(--booster-heading-content-gap);
 }
-.booster-filter-heading h2,
-.booster-filter-heading p,
-.booster-result-heading p {
+.reference-filter-heading h2,
+.reference-filter-heading p,
+.reference-result-heading p {
   margin: 0;
 }
-.booster-filter-heading > div > p:last-child {
+.reference-filter-heading > div > p:last-child {
   margin-top: 4px;
   color: #91a4e7;
 }
-.booster-filter-panel > .position-filter,
-.booster-filter-panel > .recommendation-filter,
-.booster-filter-panel > .random-limit-filter,
-.booster-filter-panel > .attribute-filter {
+.reference-filter-panel > .position-filter,
+.reference-filter-panel > .recommendation-filter,
+.reference-filter-panel > .random-limit-filter,
+.reference-filter-panel > .attribute-filter {
   border-color: rgb(142 169 255 / 28%);
   background: var(--reference-filter-bg);
 }
-.booster-filter-panel > :last-child {
+.reference-filter-panel > :last-child {
   margin-bottom: 0;
 }
-.booster-results-section {
+.reference-results-section {
   margin-top: 28px;
 }
-.reference-toolbar,
-.booster-toolbar {
+.reference-toolbar {
   display: grid;
   gap: 12px;
   margin: 0 0 14px;
@@ -2215,24 +2218,24 @@ summary {
 .attribute-card .attribute-description:not([lang='en']) {
   margin-top: 12px;
 }
-.booster-intro {
+.reference-intro-layout {
   background:
     radial-gradient(circle at 92% 20%, rgb(239 255 39 / 16%), transparent 34%),
     radial-gradient(circle at 8% 100%, rgb(255 47 179 / 13%), transparent 28%),
     var(--reference-intro-bg);
 }
-.booster-section-heading .eyebrow {
+.reference-section-heading .eyebrow {
   margin: 0;
   font-size: 0.75rem;
 }
-.booster-section-heading h1,
-.booster-section-heading h2 {
+.reference-section-heading h1,
+.reference-section-heading h2 {
   margin: 5px 0 8px;
   font-size: clamp(1.65rem, 3vw, 2.2rem);
   font-weight: 700;
   line-height: 1.15;
 }
-.booster-section-heading p:not(.eyebrow) {
+.reference-section-heading p:not(.eyebrow) {
   margin: 0;
   color: #c3cff5;
   font-size: 0.82rem;
@@ -2319,6 +2322,15 @@ summary {
   border-color: var(--defense);
   background: var(--defense);
   color: #06115c;
+}
+.position-options button:disabled {
+  border-color: rgb(142 169 255 / 28%);
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.position-options button:disabled:hover,
+.position-options button:disabled:focus-visible {
+  border-color: rgb(142 169 255 / 28%);
 }
 .random-limit-filter {
   display: grid;
@@ -2612,6 +2624,9 @@ summary {
   border-color: rgb(91 244 242 / 45%);
   color: var(--defense);
 }
+.skill-owned-filter .position-filter-heading h2 {
+  font-weight: 800;
+}
 .owned-skill-options {
   display: grid;
   gap: 12px;
@@ -2630,46 +2645,73 @@ summary {
 }
 .owned-skill-category {
   display: grid;
-  gap: 6px;
+  gap: 12px;
   min-width: 0;
-  padding: 11px;
+  padding: 14px;
   border: 1px solid rgb(142 169 255 / 24%);
   border-radius: 10px;
-  background: rgb(4 16 88 / 48%);
+  background: linear-gradient(
+    135deg,
+    rgb(9 28 115 / 62%),
+    rgb(4 16 88 / 42%)
+  );
 }
 .owned-skill-category h3 {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 7px;
   margin: 0;
-  color: #f5f7ff;
-  font-size: 0.82rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgb(142 169 255 / 24%);
+  color: var(--defense);
+  font-size: 0.94rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.owned-skill-category h3::before {
+  width: 3px;
+  height: 18px;
+  flex: 0 0 3px;
+  border-radius: 99px;
+  background: var(--defense);
+  content: '';
 }
 .owned-skill-category h3 span {
+  padding: 3px 7px;
+  border: 1px solid rgb(142 169 255 / 24%);
+  border-radius: 5px;
+  background: rgb(4 16 88 / 55%);
   color: #91a4e7;
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
   font-size: 0.68rem;
-}
+  letter-spacing: 0.04em;
+  }
 .owned-skill-category-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 .owned-skill-category-options button {
-  min-height: 32px;
-  padding: 5px 8px;
-  border: 1px solid rgb(142 169 255 / 24%);
-  border-radius: 7px;
-  background: rgb(4 16 88 / 65%);
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid rgb(142 169 255 / 30%);
+  border-radius: 8px;
+  background: rgb(4 16 88 / 72%);
   color: #cbd7ff;
   cursor: pointer;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 600;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
 }
 .owned-skill-category-options button:hover,
 .owned-skill-category-options button:focus-visible {
   border-color: var(--defense);
+  background: rgb(12 44 134 / 78%);
   color: #e8ffff;
+  transform: translateY(-1px);
 }
 .owned-skill-category-options button.is-selected {
   border-color: var(--defense);
@@ -2917,11 +2959,58 @@ summary {
 }
 .attribute-options {
   display: grid;
+  gap: 12px;
+}
+.attribute-category {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid rgb(142 169 255 / 24%);
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgb(9 28 115 / 62%),
+    rgb(4 16 88 / 42%)
+  );
+}
+.attribute-category h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 11px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgb(142 169 255 / 24%);
+  color: var(--defense);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+.attribute-category h3::before {
+  width: 3px;
+  height: 17px;
+  flex: 0 0 3px;
+  border-radius: 99px;
+  background: var(--defense);
+  content: '';
+}
+.attribute-category h3 span {
+  padding: 3px 7px;
+  border: 1px solid rgb(142 169 255 / 24%);
+  border-radius: 5px;
+  background: rgb(4 16 88 / 55%);
+  color: #91a4e7;
+  font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+}
+.attribute-category-options {
+  display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
+  overflow: hidden;
+  border: 1px solid rgb(142 169 255 / 14%);
+  border-radius: 8px;
   background: rgb(142 169 255 / 13%);
 }
-.attribute-options > button {
+.attribute-category-options > button {
   display: flex;
   min-width: 0;
   min-height: 52px;
@@ -2934,17 +3023,17 @@ summary {
   cursor: pointer;
   text-align: left;
 }
-.attribute-options > button:hover,
-.attribute-options > button:focus-visible {
+.attribute-category-options > button:hover,
+.attribute-category-options > button:focus-visible {
   background: rgb(13 38 139 / 96%);
 }
-.attribute-options > button:focus-visible {
+.attribute-category-options > button:focus-visible {
   position: relative;
   z-index: 1;
   outline: 2px solid var(--yellow);
   outline-offset: -2px;
 }
-.attribute-options > button.is-selected {
+.attribute-category-options > button.is-selected {
   background: rgb(239 255 39 / 10%);
   color: var(--yellow);
 }
@@ -2960,17 +3049,17 @@ summary {
 .attribute-check svg {
   width: 13px;
 }
-.attribute-options .is-selected .attribute-check {
+.attribute-category-options .is-selected .attribute-check {
   border-color: var(--yellow);
   background: var(--yellow);
   color: #06115c;
 }
-.attribute-options button > span:last-child {
+.attribute-category-options button > span:last-child {
   min-width: 0;
   font-size: 0.82rem;
   font-weight: 700;
 }
-.attribute-options small {
+.attribute-category-options small {
   display: block;
   overflow: hidden;
   margin-top: 2px;
@@ -2981,20 +3070,20 @@ summary {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.attribute-options .is-selected small {
+.attribute-category-options .is-selected small {
   color: #c8d26d;
 }
-.booster-result-heading {
+.reference-result-heading {
   display: flex;
   align-items: end;
   justify-content: space-between;
   gap: 16px;
   margin: 0 0 var(--booster-heading-content-gap);
 }
-.booster-result-heading p {
+.reference-result-heading p {
   margin: 0;
 }
-.booster-result-heading > span {
+.reference-result-heading > span {
   padding: 5px 10px;
   border: 1px solid var(--yellow);
   border-radius: 999px;
@@ -3124,6 +3213,12 @@ summary {
   border-radius: 16px;
   background: var(--reference-filter-bg);
 }
+.reference-page .position-filter-heading h2,
+.reference-page .recommendation-filter-heading h2,
+.reference-page .attribute-filter-heading h2 {
+  color: var(--defense);
+  font-weight: 800;
+}
 .reference-page .position-filter,
 .reference-page .random-limit-filter,
 .reference-page .recommendation-filter,
@@ -3144,135 +3239,24 @@ summary {
   border-color: rgb(142 169 255 / 28%);
 }
 .reference-page .owned-skill-category {
-  background: var(--reference-control-bg);
+  background: linear-gradient(
+    135deg,
+    rgb(9 28 115 / 62%),
+    rgb(4 16 88 / 42%)
+  );
 }
 .reference-page .owned-skill-category-options button {
   background: var(--reference-control-muted-bg);
 }
-
-.reference-layer-debug-toggle {
-  position: fixed;
-  z-index: 100;
-  top: 12px;
-  right: 16px;
-  padding: 7px 10px;
-  border: 1px solid rgb(255 255 255 / 55%);
-  border-radius: 8px;
-  background: rgb(3 12 72 / 92%);
-  color: white;
-  cursor: pointer;
-  font-size: 0.72rem;
-  font-weight: 700;
+.reference-page .owned-skill-category-options button:hover,
+.reference-page .owned-skill-category-options button:focus-visible {
+  background: rgb(12 44 134 / 78%);
 }
-.reference-layer-debug-toggle[aria-pressed='true'] {
-  border-color: #fff;
-  background: #fff;
+.reference-page .owned-skill-category-options button.is-selected {
+  border-color: var(--defense);
+  background: var(--defense);
   color: #06115c;
 }
-
-html[data-reference-layer-debug='on'] body {
-  background: #101b36;
-}
-html[data-reference-layer-debug='on'] .reference-page .reference-intro,
-html[data-reference-layer-debug='on'] .reference-page .reference-section-panel {
-  background: #57213d !important;
-}
-html[data-reference-layer-debug='on'] .reference-page .booster-intro > .usage-guide,
-html[data-reference-layer-debug='on'] .reference-page .reference-stats span,
-html[data-reference-layer-debug='on'] .reference-page .booster-result-heading > span,
-html[data-reference-layer-debug='on'] .reference-page .reference-filter-module,
-html[data-reference-layer-debug='on'] .reference-page .position-filter,
-html[data-reference-layer-debug='on'] .reference-page .attribute-filter,
-html[data-reference-layer-debug='on'] .reference-page .recommendation-filter,
-html[data-reference-layer-debug='on'] .reference-page .random-limit-filter,
-html[data-reference-layer-debug='on'] .reference-page .skill-owned-filter,
-html[data-reference-layer-debug='on'] .reference-page .search-box input,
-html[data-reference-layer-debug='on'] .reference-page .booster-card,
-html[data-reference-layer-debug='on'] .reference-page .booster-card-heading,
-html[data-reference-layer-debug='on'] .reference-page .booster-attributes,
-html[data-reference-layer-debug='on'] .reference-page .skill-category-list,
-html[data-reference-layer-debug='on'] .reference-page .skill-list,
-html[data-reference-layer-debug='on'] .reference-page .skill-result-count {
-  background: #0b6b63 !important;
-}
-html[data-reference-layer-debug='on'] .reference-page .booster-intent-option,
-html[data-reference-layer-debug='on'] .reference-page .position-options,
-html[data-reference-layer-debug='on'] .reference-page .random-limit-options,
-html[data-reference-layer-debug='on'] .reference-page .recommendation-options,
-html[data-reference-layer-debug='on'] .reference-page .recommendation-plan-options,
-html[data-reference-layer-debug='on'] .reference-page .attribute-options,
-html[data-reference-layer-debug='on'] .reference-page .position-level-options,
-html[data-reference-layer-debug='on'] .reference-page .custom-filter-options,
-html[data-reference-layer-debug='on'] .reference-page .owned-skill-options,
-html[data-reference-layer-debug='on'] .reference-page .skill-category,
-html[data-reference-layer-debug='on'] .reference-page .skill-card,
-html[data-reference-layer-debug='on'] .reference-page .skill-card summary {
-  background: #8a5a00 !important;
-}
-html[data-reference-layer-debug='on'] .reference-page .booster-intent-option button,
-html[data-reference-layer-debug='on'] .reference-page .position-options button,
-html[data-reference-layer-debug='on'] .reference-page .random-limit-options button,
-html[data-reference-layer-debug='on'] .reference-page .recommendation-options button,
-html[data-reference-layer-debug='on'] .reference-page .recommendation-plan-option,
-html[data-reference-layer-debug='on'] .reference-page .attribute-options > button,
-html[data-reference-layer-debug='on'] .reference-page .position-level-options button,
-html[data-reference-layer-debug='on'] .reference-page .custom-filter-option,
-html[data-reference-layer-debug='on'] .reference-page .owned-skill-category,
-html[data-reference-layer-debug='on'] .reference-page .skill-detail {
-  background: #4b236d !important;
-}
-html[data-reference-layer-debug='on']
-  .reference-page
-  .owned-skill-category-options
-  button {
-  background: #8d3f78 !important;
-}
-html[data-reference-layer-debug='on'] .reference-page .booster-attributes > span,
-html[data-reference-layer-debug='on'] .reference-page .booster-index,
-html[data-reference-layer-debug='on']
-  .reference-page
-  .booster-recommendation
-  strong {
-  background: #8a5a00 !important;
-}
-html[data-reference-layer-debug='on'] .reference-page .skill-number,
-html[data-reference-layer-debug='on'] .reference-page .skill-category-tag,
-html[data-reference-layer-debug='on'] .reference-page .skill-research-tag,
-html[data-reference-layer-debug='on'] .reference-page .skill-position-fit,
-html[data-reference-layer-debug='on'] .reference-page .skill-recommendation strong,
-html[data-reference-layer-debug='on'] .reference-page .skill-research {
-  background: #8d3f78 !important;
-}
-/* Disabled controls otherwise blend the debug colors with their parent layer. */
-html[data-reference-layer-debug='on'] .reference-page .position-level-options button,
-html[data-reference-layer-debug='on'] .reference-page .custom-filter-option {
-  opacity: 1 !important;
-}
-.reference-layer-debug-legend {
-  position: fixed;
-  z-index: 100;
-  top: 48px;
-  right: 16px;
-  display: grid;
-  min-width: 150px;
-  gap: 6px;
-  padding: 10px 12px;
-  border: 1px solid rgb(255 255 255 / 55%);
-  border-radius: 9px;
-  background: rgb(3 12 72 / 94%);
-  box-shadow: 0 10px 24px rgb(0 0 0 / 25%);
-  color: white;
-  font-size: 0.7rem;
-}
-.reference-layer-debug-legend strong { margin-bottom: 2px; font-size: 0.75rem; }
-.reference-layer-debug-legend span { display: flex; align-items: center; gap: 7px; }
-.reference-layer-debug-legend i { width: 13px; height: 13px; flex: 0 0 13px; border: 1px solid rgb(255 255 255 / 35%); border-radius: 3px; }
-.reference-layer-debug-legend .layer-1 { background: #101b36; }
-.reference-layer-debug-legend .layer-2 { background: #57213d; }
-.reference-layer-debug-legend .layer-3 { background: #0b6b63; }
-.reference-layer-debug-legend .layer-4 { background: #8a5a00; }
-.reference-layer-debug-legend .layer-5 { background: #4b236d; }
-.reference-layer-debug-legend .layer-6 { background: #8d3f78; }
 
 @media (min-width: 560px) {
   .filter-row {
@@ -3292,7 +3276,10 @@ html[data-reference-layer-debug='on'] .reference-page .custom-filter-option {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .attribute-options {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+  }
+  .attribute-category-options {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
   .position-options {
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -3406,12 +3393,12 @@ html[data-reference-layer-debug='on'] .reference-page .custom-filter-option {
   .owned-skill-category-columns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .booster-toolbar {
+  .reference-toolbar {
     grid-template-columns: minmax(260px, 1fr);
     align-items: center;
   }
   .attribute-options {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 }
 
@@ -3455,20 +3442,20 @@ html[data-reference-layer-debug='on'] .reference-page .custom-filter-option {
   .site-nav-link small {
     display: block;
   }
-  .booster-intro {
+  .reference-intro-layout {
     grid-template-columns: 1fr;
   }
-  .booster-intro .reference-stats {
+  .reference-intro-layout .reference-stats {
     justify-self: start;
     margin-top: 4px;
   }
-  .booster-intro .usage-steps {
+  .reference-intro-layout .usage-steps {
     grid-template-columns: 1fr;
   }
-  .booster-intent-options {
+  .reference-intent-options {
     grid-template-columns: 1fr;
   }
-  .booster-intro .usage-guide-heading {
+  .reference-intro-layout .usage-guide-heading {
     display: grid;
     gap: 6px;
   }
@@ -3546,7 +3533,7 @@ html[data-reference-layer-debug='on'] .reference-page .custom-filter-option {
 }
 
 @media (min-width: 621px) {
-  .booster-intro .usage-steps {
+  .reference-intro-layout .usage-steps {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
@@ -3709,7 +3696,7 @@ html[data-reference-layer-debug='on'] .reference-page .custom-filter-option {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .attribute-options {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 }
 

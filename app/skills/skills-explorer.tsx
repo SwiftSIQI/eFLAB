@@ -1,11 +1,13 @@
 'use client';
 
 import { CircleHelp, Search, X } from 'lucide-react';
-import { useMemo, useState, type ReactNode } from 'react';
+import { useMemo, useState } from 'react';
 
+import { ReferenceIntentOption } from '@/components/reference-intent-option';
+import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
+import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import { Input } from '@/components/ui/input';
 import { SiteFooter } from '@/components/site-footer';
-import { ReferenceLayerDebug } from '@/components/reference-layer-debug';
 import { normalizeSearchText } from '@/lib/utils';
 import {
   playerSkills,
@@ -23,6 +25,7 @@ import { SkillCard } from './skill-card';
 type Category = (typeof skillCategories)[number]['id'];
 type SkillRecommendation = Exclude<PlayerSkill['recommendation'], null>;
 type SkillIntent = 'lookup' | 'value' | 'recommend';
+const isDebugBuild = import.meta.env.DEV || import.meta.env.MODE === 'test';
 const skillIntentDescriptions: Record<SkillIntent, string> = {
   lookup: '搜索技巧中文或英文名称，查看它的实际作用。',
   recommend: '通过 1-5 星的方式来区分不同球员技巧的价值。',
@@ -51,48 +54,6 @@ const displaySkillCategories = [
   ...orderedSkillCategories,
 ];
 
-type SkillIntentOptionProps = {
-  readonly intent: SkillIntent;
-  readonly selectedIntent: SkillIntent;
-  readonly title: string;
-  readonly description: string;
-  readonly onSelect: (intent: SkillIntent) => void;
-  readonly children: ReactNode;
-};
-
-function SkillIntentOption({
-  intent,
-  selectedIntent,
-  title,
-  description,
-  onSelect,
-  children,
-}: SkillIntentOptionProps) {
-  const selected = selectedIntent === intent;
-
-  return (
-    <div
-      className={`booster-intent-option skill-intent-option${selected ? ' is-selected' : ''}`}
-    >
-      <label className="booster-intent-summary">
-        <input
-          type="radio"
-          name="skill-intent"
-          value={intent}
-          checked={selected}
-          aria-label={title}
-          onChange={() => onSelect(intent)}
-        />
-        <span className="booster-intent-radio" aria-hidden="true" />
-        <span className="booster-intent-copy">
-          <strong>{title}</strong>
-          <small>{description}</small>
-        </span>
-      </label>
-      {children}
-    </div>
-  );
-}
 type RecommendationPosition = {
   readonly id: SkillPosition;
   readonly profiles: readonly string[];
@@ -130,6 +91,21 @@ const recommendationSourceUrls: Record<string, string> = {
   '冲啊大叔 CasToR': 'https://www.bilibili.com/video/BV1UuJazNE8s/',
   Skye: 'https://docs.google.com/spreadsheets/u/0/d/1A33zBtq6cVTghg6ytROST6k70SRMSFoOxEkSvdXSeRk/htmlview?pli=1#gid=2081134566',
 };
+const preferredRecommendationPlanLabels = ['冲啊大叔 CasToR'] as const;
+const orderedRecommendationPlans = [...skillRecommendationPlans].sort(
+  (first, second) => {
+    const firstOrder = preferredRecommendationPlanLabels.indexOf(
+      first.label as (typeof preferredRecommendationPlanLabels)[number],
+    );
+    const secondOrder = preferredRecommendationPlanLabels.indexOf(
+      second.label as (typeof preferredRecommendationPlanLabels)[number],
+    );
+    return (
+      (firstOrder === -1 ? preferredRecommendationPlanLabels.length : firstOrder) -
+      (secondOrder === -1 ? preferredRecommendationPlanLabels.length : secondOrder)
+    );
+  },
+);
 const getHighestPositionLevel = (
   values: Partial<Record<string, SkillPositionRecommendation>> | undefined,
 ) =>
@@ -169,6 +145,19 @@ export function SkillsExplorer() {
     [],
   );
 
+  function selectSkillIntent(intent: SkillIntent) {
+    setSkillIntent(intent);
+    setCategory('all');
+    setQuery('');
+    setSelectedRecommendation(null);
+    setSelectedPlan(null);
+    setSelectedPosition(null);
+    setSelectedProfile(null);
+    setSelectedPositionRecommendation(null);
+    setSelectedSkillCombo(null);
+    setSelectedOwnedSkillIds([]);
+  }
+
   const activePlan =
     selectedPlan === null
       ? undefined
@@ -183,7 +172,7 @@ export function SkillsExplorer() {
     const keyword =
       skillIntent === 'lookup' ? normalizeSearchText(query) : '';
     const selectedComboSkillIds =
-      selectedPosition === null || selectedSkillCombo === null
+      selectedSkillCombo === null
         ? undefined
         : (skillComboGroups.find((group) => group.id === selectedSkillCombo)
             ?.skillIds as readonly number[] | undefined);
@@ -301,18 +290,16 @@ export function SkillsExplorer() {
 
   return (
     <main id="main-content" className="site-shell reference-page skills-page">
-      <ReferenceLayerDebug />
+      {isDebugBuild && <ReferenceDebugPanel />}
       <section className="reference-workspace skills-reference-workspace">
-        <header className="reference-intro booster-intro">
-          <div className="skills-intro-copy booster-hero-copy booster-section-heading">
-            <p className="eyebrow">PLAYER SKILLS GUIDE</p>
-            <h1>球员技巧</h1>
-            <p>
-              {playerSkills.length} 个球员技巧分为 {skillCategories.length - 1}{' '}
-              类，涵盖 ShowTime
-              技能、射门、盘带、传球、防守、守门和其他，帮助你快速了解每项技巧的效果与适用场景。
-            </p>
-          </div>
+        <header className="reference-intro reference-intro-layout">
+          <ReferenceSectionHeading
+            className="skills-intro-copy reference-hero-copy"
+            eyebrow="PLAYER SKILLS GUIDE"
+            title="球员技巧"
+            description={`${playerSkills.length} 个球员技巧分为 ${skillCategories.length - 1} 类，涵盖 ShowTime 技能、射门、盘带、传球、防守、守门和其他，帮助你快速了解每项技巧的效果与适用场景。`}
+            level="h1"
+          />
           <div className="reference-stats" aria-label="球员技巧概览">
             {skillOverviewStats.map((item) => (
               <span key={item.label}>
@@ -322,7 +309,7 @@ export function SkillsExplorer() {
             ))}
           </div>
           <section
-            className="usage-guide booster-intent-guide skill-intent-guide"
+            className="usage-guide reference-intent-guide skill-intent-guide"
             aria-labelledby="skills-intent-title"
           >
             <div className="usage-guide-heading">
@@ -330,58 +317,56 @@ export function SkillsExplorer() {
               <span>选择一个使用方式，开始筛选球员技巧。</span>
             </div>
             <div
-              className="booster-intent-options"
+              className="reference-intent-options"
               role="radiogroup"
               aria-labelledby="skills-intent-title"
             >
-              <SkillIntentOption
+              <ReferenceIntentOption
                 intent="lookup"
                 selectedIntent={skillIntent}
                 title="我想查询某个技巧的作用"
                 description={skillIntentDescriptions.lookup}
-                onSelect={setSkillIntent}
-              >
-                <span />
-              </SkillIntentOption>
-              <SkillIntentOption
+                radioName="skill-intent"
+                onSelect={selectSkillIntent}
+              />
+              <ReferenceIntentOption
                 intent="recommend"
                 selectedIntent={skillIntent}
                 title="我想了解不同技巧的通用价值"
                 description={skillIntentDescriptions.recommend}
-                onSelect={setSkillIntent}
-              >
-                <span />
-              </SkillIntentOption>
-              <SkillIntentOption
+                radioName="skill-intent"
+                onSelect={selectSkillIntent}
+              />
+              <ReferenceIntentOption
                 intent="value"
                 selectedIntent={skillIntent}
                 title="我想给球员添加合适的技巧"
                 description={skillIntentDescriptions.value}
-                onSelect={setSkillIntent}
-              >
-                <span />
-              </SkillIntentOption>
+                radioName="skill-intent"
+                onSelect={selectSkillIntent}
+              />
             </div>
           </section>
         </header>
       </section>
 
       <section
-        className="skills-workspace skills-filter-workspace booster-filter-section"
+        className="skills-workspace skills-filter-workspace reference-filter-section"
         aria-label="球员技巧筛选"
       >
-        <div className="skills-controls booster-filter-panel reference-section-panel">
+        <div className="skills-controls reference-filter-panel reference-section-panel">
           <div className="skill-results">
             {skillIntent === 'lookup' && (
             <section className="skills-module skills-query-module">
-              <div className="skills-module-heading booster-filter-heading booster-section-heading">
-                <div>
-                  <p className="eyebrow">SKILL SEARCH AREA</p>
-                  <h2>技巧筛选区</h2>
-                  <p>{skillIntentDescriptions.lookup}</p>
-                </div>
+              <div className="skills-module-heading reference-filter-heading">
+                <ReferenceSectionHeading
+                  eyebrow="SKILL SEARCH AREA"
+                  title="技巧筛选区"
+                  description={skillIntentDescriptions.lookup}
+                  level="h2"
+                />
               </div>
-              <div className="skill-search-row booster-toolbar">
+              <div className="skill-search-row reference-toolbar">
                 <label className="search-box">
                   <span className="sr-only">搜索球员技巧</span>
                   <Search aria-hidden="true" />
@@ -408,12 +393,13 @@ export function SkillsExplorer() {
               <section
                 className={`skills-module skills-recommendation-module skill-intent-${skillIntent}`}
               >
-              <div className="skills-module-heading booster-filter-heading booster-section-heading">
-                <div>
-                  <p className="eyebrow">SKILL SEARCH AREA</p>
-                  <h2>技巧筛选区</h2>
-                  <p>{skillIntentDescriptions[skillIntent]}</p>
-                </div>
+              <div className="skills-module-heading reference-filter-heading">
+                <ReferenceSectionHeading
+                  eyebrow="SKILL SEARCH AREA"
+                  title="技巧筛选区"
+                  description={skillIntentDescriptions[skillIntent]}
+                  level="h2"
+                />
               </div>
               <section
                 className="position-filter reference-filter-module skill-recommendation-filter skill-value-filter"
@@ -507,7 +493,6 @@ export function SkillsExplorer() {
                         setSelectedPosition(null);
                         setSelectedProfile(null);
                         setSelectedPositionRecommendation(null);
-                        setSelectedSkillCombo(null);
                       }}
                     >
                       清除选择
@@ -515,7 +500,7 @@ export function SkillsExplorer() {
                   )}
                 </div>
                   <div className="recommendation-plan-options">
-                  {skillRecommendationPlans.map((plan) => {
+                  {orderedRecommendationPlans.map((plan) => {
                     const selected = selectedPlan === plan.id;
                     const sourceUrl = recommendationSourceUrls[plan.label];
                     return (
@@ -531,7 +516,6 @@ export function SkillsExplorer() {
                             setSelectedPosition(null);
                             setSelectedProfile(null);
                             setSelectedPositionRecommendation(null);
-                            setSelectedSkillCombo(null);
                           }}
                           aria-pressed={selected}
                           aria-describedby={
@@ -588,7 +572,6 @@ export function SkillsExplorer() {
                         setSelectedPosition(null);
                         setSelectedProfile(null);
                         setSelectedPositionRecommendation(null);
-                        setSelectedSkillCombo(null);
                       }}
                     >
                       显示全部
@@ -608,7 +591,6 @@ export function SkillsExplorer() {
                           setSelectedPosition(selected ? null : position.id);
                           setSelectedProfile(null);
                           setSelectedPositionRecommendation(null);
-                          setSelectedSkillCombo(null);
                         }}
                         aria-pressed={selected}
                       >
@@ -703,7 +685,7 @@ export function SkillsExplorer() {
                           key={level}
                           type="button"
                           className={selected ? 'is-selected' : ''}
-                          disabled={selectedPosition === null}
+                          disabled={selectedPlan === null}
                           onClick={() =>
                             setSelectedPositionRecommendation(
                               selected ? null : level,
@@ -721,7 +703,9 @@ export function SkillsExplorer() {
                   <div className="position-filter-heading">
                     <div>
                       <h2>定制化技能组</h2>
-                      <p>选择技能组后，在下方展示对应技能</p>
+                      <p>
+                        请注意选择任意技能组后，列表页的分类会自动切换到“全部”，并将对应技能追加到下方列表。
+                      </p>
                     </div>
                     {selectedSkillCombo !== null && (
                       <button
@@ -751,11 +735,13 @@ export function SkillsExplorer() {
                           <button
                             type="button"
                             className={`custom-filter-select${selected ? ' is-selected' : ''}`}
-                            onClick={() =>
-                              setSelectedSkillCombo(selected ? null : group.id)
-                            }
+                            onClick={() => {
+                              setSelectedSkillCombo(selected ? null : group.id);
+                              if (!selected) {
+                                setCategory('all');
+                              }
+                            }}
                             aria-pressed={selected}
-                            disabled={selectedPosition === null}
                           >
                             {group.label}
                           </button>
@@ -837,19 +823,20 @@ export function SkillsExplorer() {
       </section>
 
       <section
-        className="skills-workspace skills-list-workspace booster-content booster-results-section"
+        className="skills-workspace skills-list-workspace reference-content reference-results-section"
         aria-label="技巧列表"
       >
         <div className="skills-controls">
-          <div className="skill-results booster-results-panel reference-section-panel">
+          <div className="skill-results reference-results-panel reference-section-panel">
             <div
-              className="result-heading skill-result-heading booster-result-heading booster-section-heading"
+              className="result-heading skill-result-heading reference-result-heading"
               aria-live="polite"
             >
-              <div>
-                <p className="eyebrow">SKILL RESULT LIST</p>
-                <h2>技巧结果列表</h2>
-              </div>
+              <ReferenceSectionHeading
+                eyebrow="SKILL RESULT LIST"
+                title="技巧结果列表"
+                level="h2"
+              />
               <span className="skill-result-count">
                 显示 {results.length} / 共 {playerSkills.length}
               </span>
@@ -869,6 +856,7 @@ export function SkillsExplorer() {
                     type="button"
                     className={`skill-category ${category === item.id ? 'is-active' : ''}`}
                     onClick={() => setCategory(item.id)}
+                    disabled={selectedSkillCombo !== null && item.id !== 'all'}
                     aria-pressed={category === item.id}
                   >
                     <span>
