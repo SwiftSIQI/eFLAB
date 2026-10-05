@@ -17,6 +17,7 @@
     "prebuild": "npm run normalize:data && npm run generate:data",
     "build": "vite build",
     "start": "wrangler dev --config dist/server/wrangler.json",
+    "prelint": "npm run normalize:data && npm run generate:data",
     "lint": "oxlint",
     "format": "oxfmt",
     "normalize:data": "ruby script/normalize_skill_recommendations.rb",

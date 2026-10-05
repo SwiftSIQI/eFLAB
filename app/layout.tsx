@@ -5,6 +5,9 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'eFootball Lab',
   description: '快速查询 eFootball 比赛风格、球员技巧、球员属性与增能。',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export const dynamic = 'force-static';
