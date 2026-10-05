@@ -1,7 +1,7 @@
 'use client';
 
-import { ChevronDown, CircleHelp, Search, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { CircleHelp, Search, X } from 'lucide-react';
+import { useMemo, useState, type ReactNode } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { SiteFooter } from '@/components/site-footer';
@@ -21,6 +21,7 @@ import { SkillCard } from './skill-card';
 
 type Category = (typeof skillCategories)[number]['id'];
 type SkillRecommendation = Exclude<PlayerSkill['recommendation'], null>;
+type SkillIntent = 'lookup' | 'value' | 'recommend';
 type SkillCategoryDefinition = Extract<
   (typeof skillCategories)[number],
   { id: Exclude<Category, 'all'> }
@@ -42,6 +43,49 @@ const displaySkillCategories = [
   skillCategories.find((item) => item.id === 'all')!,
   ...orderedSkillCategories,
 ];
+
+type SkillIntentOptionProps = {
+  readonly intent: SkillIntent;
+  readonly selectedIntent: SkillIntent;
+  readonly title: string;
+  readonly description: string;
+  readonly onSelect: (intent: SkillIntent) => void;
+  readonly children: ReactNode;
+};
+
+function SkillIntentOption({
+  intent,
+  selectedIntent,
+  title,
+  description,
+  onSelect,
+  children,
+}: SkillIntentOptionProps) {
+  const selected = selectedIntent === intent;
+
+  return (
+    <div
+      className={`booster-intent-option skill-intent-option${selected ? ' is-selected' : ''}`}
+    >
+      <label className="booster-intent-summary">
+        <input
+          type="radio"
+          name="skill-intent"
+          value={intent}
+          checked={selected}
+          aria-label={title}
+          onChange={() => onSelect(intent)}
+        />
+        <span className="booster-intent-radio" aria-hidden="true" />
+        <span className="booster-intent-copy">
+          <strong>{title}</strong>
+          <small>{description}</small>
+        </span>
+      </label>
+      {children}
+    </div>
+  );
+}
 type RecommendationPosition = {
   readonly id: SkillPosition;
   readonly profiles: readonly string[];
@@ -101,6 +145,7 @@ const skillOverviewStats = [
 
 export function SkillsExplorer() {
   const [category, setCategory] = useState<Category>('all');
+  const [skillIntent, setSkillIntent] = useState<SkillIntent>('lookup');
   const [query, setQuery] = useState('');
   const [selectedRecommendation, setSelectedRecommendation] =
     useState<SkillRecommendation | null>(null);
@@ -128,7 +173,8 @@ export function SkillsExplorer() {
     activePlan?.positions ?? skillPositions.map((id) => ({ id, profiles: [] }));
 
   const results = useMemo(() => {
-    const keyword = normalizeSearchText(query);
+    const keyword =
+      skillIntent === 'lookup' ? normalizeSearchText(query) : '';
     const selectedComboSkillIds =
       selectedPosition === null || selectedSkillCombo === null
         ? undefined
@@ -164,7 +210,7 @@ export function SkillsExplorer() {
         (matchesPositionFilters || isSelectedComboSkill) &&
         (!keyword ||
           normalizeSearchText(
-            `${skill.nameZh} ${skill.nameEn} ${skill.description} ${skill.descriptionEn} ${skill.researchZh ?? ''} ${skill.researchEn ?? ''}`,
+            `${skill.nameZh} ${skill.nameEn}`,
           ).includes(keyword))
       );
     });
@@ -196,6 +242,7 @@ export function SkillsExplorer() {
   }, [
     category,
     query,
+    skillIntent,
     selectedOwnedSkillIds,
     selectedPlan,
     selectedPosition,
@@ -266,94 +313,109 @@ export function SkillsExplorer() {
               </span>
             ))}
           </div>
-          <details className="usage-guide skills-usage-guide">
-            <summary className="usage-guide-summary">
-              <span className="usage-guide-heading">
-                <strong id="skills-usage-title">技巧推荐怎么用？</strong>
-                <span>
-                  先了解技巧，再用推荐方案筛出适合当前球员的新增技巧。
-                </span>
-              </span>
-              <ChevronDown aria-hidden="true" />
-            </summary>
-            <ol className="usage-steps" aria-labelledby="skills-usage-title">
-              <li>
-                <strong>先看球员技巧</strong>
-                <span>按分类或关键词查看技巧效果、英文名称和研究说明。</span>
-              </li>
-              <li>
-                <strong>选择推荐方案</strong>
-                <span>选择你信任的专家方案，作为位置适配的参考来源。</span>
-              </li>
-              <li>
-                <strong>逐步缩小范围</strong>
-                <span>
-                  依次选择位置、球员定位和推荐度，结果会按适配度排序。
-                </span>
-              </li>
-              <li>
-                <strong>定制最终技能组</strong>
-                <span>可加入技能组合，并剔除球员已有技能，避免重复推荐。</span>
-              </li>
-            </ol>
-            <div className="usage-guide-notes">
-              <p>
-                <strong>两个模块的关系：</strong>
-                球员技巧模块负责查清“技能是什么”；技巧推荐模块负责结合方案和球员场景回答“优先加什么”。
-              </p>
-              <p>
-                <strong>技巧价值：</strong>
-                只评价技能本身，不包含位置维度，请结合具体位置、定位和使用场景参考。
-              </p>
+          <section
+            className="usage-guide booster-intent-guide skill-intent-guide"
+            aria-labelledby="skills-intent-title"
+          >
+            <div className="usage-guide-heading">
+              <strong id="skills-intent-title">我想：</strong>
+              <span>选择一个使用方式，开始查询球员技巧。</span>
             </div>
-          </details>
+            <div
+              className="booster-intent-options"
+              role="radiogroup"
+              aria-labelledby="skills-intent-title"
+            >
+              <SkillIntentOption
+                intent="lookup"
+                selectedIntent={skillIntent}
+                title="我想查询某个技巧的作用"
+                description="输入技巧中文或英文名称，查看详细说明。"
+                onSelect={setSkillIntent}
+              >
+                <span />
+              </SkillIntentOption>
+              <SkillIntentOption
+                intent="recommend"
+                selectedIntent={skillIntent}
+                title="我想了解不同技巧的通用价值"
+                description="根据推荐方案、位置适配和定制化技能组筛选技巧。"
+                onSelect={setSkillIntent}
+              >
+                <span />
+              </SkillIntentOption>
+              <SkillIntentOption
+                intent="value"
+                selectedIntent={skillIntent}
+                title="我想给球员添加合适的技巧"
+                description="根据技巧价值，选择更适合添加给球员的技巧。"
+                onSelect={setSkillIntent}
+              >
+                <span />
+              </SkillIntentOption>
+            </div>
+          </section>
         </header>
       </section>
 
-      <section className="skills-workspace" aria-label="球员技巧查询">
+      <section
+        className="skills-workspace skills-filter-workspace"
+        aria-label="球员技巧筛选"
+      >
         <div className="skills-controls">
           <div className="skill-results">
-            <div className="skill-search-row">
-              <label className="search-box">
-                <span className="sr-only">搜索球员技巧</span>
-                <Search aria-hidden="true" />
-                <Input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="搜索技巧名称或效果…"
-                />
-                {query && (
-                  <button
-                    type="button"
-                    onClick={() => setQuery('')}
-                    aria-label="清除搜索"
-                  >
-                    <X aria-hidden="true" />
-                  </button>
-                )}
-              </label>
-            </div>
+            {skillIntent === 'lookup' && (
+              <section className="skills-module skills-query-module">
+              <div className="skills-module-heading">
+                <div>
+                  <p className="eyebrow">SKILL SEARCH</p>
+                  <h2>技巧检索</h2>
+                  <p>输入技巧中文或英文名称，查看单项技巧的作用和说明。</p>
+                </div>
+              </div>
+              <div className="skill-search-row">
+                <label className="search-box">
+                  <span className="sr-only">搜索球员技巧</span>
+                  <Search aria-hidden="true" />
+                  <Input
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder="搜索技巧中文或英文名称…"
+                  />
+                  {query && (
+                    <button
+                      type="button"
+                      onClick={() => setQuery('')}
+                      aria-label="清除搜索"
+                    >
+                      <X aria-hidden="true" />
+                    </button>
+                  )}
+                </label>
+              </div>
+              </section>
+            )}
 
-            <section className="skills-module skills-recommendation-module">
+            {skillIntent !== 'lookup' && (
+              <section
+                className={`skills-module skills-recommendation-module skill-intent-${skillIntent}`}
+              >
               <div className="skills-module-heading">
                 <div>
                   <p className="eyebrow">RECOMMENDATION BUILDER</p>
-                  <h2>技巧推荐</h2>
-                  <p>
-                    根据专家方案、位置和球员定位，筛选当前更值得新增的技巧。
-                  </p>
+                  <h2>了解技巧通用价值</h2>
+                  <p>结合推荐方案和位置适配，了解不同技巧的通用价值。</p>
                 </div>
-                <span className="skills-module-step">02</span>
               </div>
               <section
-                className="recommendation-filter skill-recommendation-filter"
+                className="recommendation-filter skill-recommendation-filter skill-value-filter"
                 aria-labelledby="skill-recommendation-filter-title"
               >
                 <div className="recommendation-filter-heading">
                   <div className="recommendation-title-with-info">
                     <div>
                       <div className="recommendation-heading-title">
-                        <h2 id="skill-recommendation-filter-title">技巧价值</h2>
+                        <h2 id="skill-recommendation-filter-title">给球员添加合适的技巧</h2>
                         <span className="custom-filter-option recommendation-info-option">
                           <button
                             type="button"
@@ -380,7 +442,7 @@ export function SkillsExplorer() {
                           </span>
                         </span>
                       </div>
-                      <p>按价值等级筛选技巧</p>
+                      <p>按技巧价值筛选适合添加给球员的技巧</p>
                     </div>
                   </div>
                   {selectedRecommendation !== null && (
@@ -751,8 +813,19 @@ export function SkillsExplorer() {
                   </div>
                 </div>
               </section>
-            </section>
+              </section>
+            )}
 
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="skills-workspace skills-list-workspace"
+        aria-label="技巧列表"
+      >
+        <div className="skills-controls">
+          <div className="skill-results">
             <div
               className="result-heading skill-result-heading"
               aria-live="polite"

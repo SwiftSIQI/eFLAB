@@ -272,33 +272,45 @@ export function BoostersExplorer() {
 
       <section
         className="booster-content booster-filter-section"
-        aria-label="增能筛选"
+        aria-label="增能检索"
       >
-        {boosterIntent === 'lookup' && (
-          <div className="booster-toolbar">
-            <label className="search-box reference-search">
-              <span className="sr-only">搜索增能</span>
-              <Search aria-hidden="true" />
-              <Input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="搜索增能中文或英文名称…"
-              />
-              {query && (
-                <button
-                  type="button"
-                  onClick={() => setQuery('')}
-                  aria-label="清除搜索"
-                >
-                  <X aria-hidden="true" />
-                </button>
-              )}
-            </label>
+        <div className="booster-filter-panel">
+          <div className="booster-filter-heading">
+            <div>
+              <p className="eyebrow">BOOSTER SEARCH</p>
+              <h2>增能检索</h2>
+              <p>
+                {boosterIntent === 'lookup'
+                  ? '输入增能中文或英文名称，查看它会增加哪些属性。'
+                  : '根据球员位置、目标属性和增能价值，筛选适合添加给球员的增能。'}
+              </p>
+            </div>
           </div>
-        )}
+          {boosterIntent === 'lookup' && (
+            <div className="booster-toolbar">
+              <label className="search-box reference-search">
+                <span className="sr-only">搜索增能</span>
+                <Search aria-hidden="true" />
+                <Input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="搜索增能中文或英文名称…"
+                />
+                {query && (
+                  <button
+                    type="button"
+                    onClick={() => setQuery('')}
+                    aria-label="清除搜索"
+                  >
+                    <X aria-hidden="true" />
+                  </button>
+                )}
+              </label>
+            </div>
+          )}
 
-        {boosterIntent === 'recommend' && (
-          <>
+          {boosterIntent === 'recommend' && (
+            <>
             <section
               className="position-filter"
               aria-labelledby="position-filter-title"
@@ -473,8 +485,9 @@ export function BoostersExplorer() {
                 ))}
               </div>
             </section>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </section>
 
       <section

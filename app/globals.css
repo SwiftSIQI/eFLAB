@@ -1223,6 +1223,28 @@ summary {
   margin: 0 auto;
   padding: 28px 18px;
 }
+.skills-list-workspace {
+  margin-top: 16px;
+  padding-top: 0;
+}
+.skills-filter-workspace {
+  padding-top: 16px;
+  padding-bottom: 0;
+}
+.skills-filter-workspace .skills-controls,
+.skills-list-workspace .skills-controls {
+  margin-top: 0;
+}
+.skills-filter-workspace .skills-query-module,
+.skills-filter-workspace .skills-recommendation-module {
+  margin-bottom: 0;
+}
+.skills-list-workspace .skill-results {
+  padding: 15px 16px 1px;
+  border: 1px solid rgb(91 244 242 / 24%);
+  border-radius: 22px;
+  background: rgb(5 20 100 / 35%);
+}
 .skills-usage-guide {
   width: auto;
   margin: 22px 0 0;
@@ -1302,7 +1324,19 @@ summary {
 .skills-module {
   min-width: 0;
 }
+.skills-query-module {
+  margin-bottom: 24px;
+  padding: 15px 16px 1px;
+  border: 1px solid rgb(91 244 242 / 28%);
+  border-radius: 18px;
+  background: rgb(91 244 242 / 4%);
+}
+.skills-query-module .skill-search-row {
+  margin-bottom: 14px;
+}
 .skills-recommendation-module {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 24px;
   padding: 15px 16px 1px;
   border: 1px solid rgb(239 255 39 / 32%);
@@ -1336,6 +1370,19 @@ summary {
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.1em;
+}
+.skills-recommendation-module > .skills-module-heading {
+  order: 0;
+}
+.skills-recommendation-module > .skill-position-filter {
+  order: 1;
+}
+.skills-recommendation-module > .skill-value-filter {
+  order: 2;
+}
+.skill-intent-recommend > .skill-value-filter,
+.skill-intent-value > .skill-position-filter {
+  display: none;
 }
 .skill-category-list {
   display: flex;
@@ -1887,7 +1934,34 @@ summary {
 }
 .booster-filter-section {
   margin-top: 28px;
-  padding-bottom: 2px;
+  padding: 0 18px;
+}
+.booster-filter-panel {
+  padding: 15px 16px 1px;
+  border: 1px solid rgb(91 244 242 / 28%);
+  border-radius: 22px;
+  background: rgb(91 244 242 / 4%);
+}
+.booster-filter-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.booster-filter-heading h2,
+.booster-filter-heading p {
+  margin: 0;
+}
+.booster-filter-heading h2 {
+  margin-top: 3px;
+  font-size: 1.2rem;
+}
+.booster-filter-heading > div > p:last-child {
+  margin-top: 4px;
+  color: #91a4e7;
+  font-size: 0.75rem;
+  line-height: 1.5;
 }
 .booster-results-section {
   padding-top: 1px;
@@ -1896,7 +1970,7 @@ summary {
 .booster-toolbar {
   display: grid;
   gap: 12px;
-  margin: 22px 0;
+  margin: 0 0 14px;
 }
 .reference-tabs {
   display: flex;
@@ -3120,7 +3194,8 @@ summary {
     justify-self: end;
     margin-top: 0;
   }
-  .skills-reference-workspace .skills-usage-guide {
+  .skills-reference-workspace .skills-usage-guide,
+  .skills-reference-workspace .skill-intent-guide {
     grid-column: 1 / -1;
   }
   .skill-category-list {
