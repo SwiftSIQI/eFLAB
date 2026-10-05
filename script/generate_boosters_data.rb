@@ -11,6 +11,8 @@ CSV_PATH = File.join(ROOT, "csv/player_booster.csv")
 ATTRIBUTE_CSV_PATH = File.join(ROOT, "csv/player_ability.csv")
 OUTPUT_PATH = File.join(ROOT, "app/boosters/data.ts")
 POSITIONS = %w[CF SS RWF/LWF AMF RMF/LMF CMF DMF RB/LB CB GK].freeze
+BOOSTER_RECOMMENDATION_RANGE = 1..5
+BOOSTER_ATTRIBUTE_COUNT = 4
 FIXED_HEADERS = %w[序号 增能-中文 增能-英文 增能推荐度].freeze
 
 def fail_with(message)
@@ -49,12 +51,12 @@ attribute_ids = attribute_headers.to_h { |name| [name, attribute_by_name.fetch(n
 boosters = table.map do |row|
   recommendation = row["增能推荐度"].to_s.strip.delete_suffix("星")
   recommendation = Integer(recommendation, 10) rescue nil
-  fail_with("序号 #{row["序号"]} 的推荐度无效") unless recommendation && (1..5).include?(recommendation)
+  fail_with("序号 #{row["序号"]} 的推荐度无效") unless recommendation && BOOSTER_RECOMMENDATION_RANGE.include?(recommendation)
 
   attributes = attribute_headers.each_with_object([]) do |name, selected|
     selected << attribute_ids.fetch(name) if row[name].to_s.strip == "✓"
   end
-  fail_with("序号 #{row["序号"]} 没有四项属性") unless attributes.length == 4
+  fail_with("序号 #{row["序号"]} 没有 #{BOOSTER_ATTRIBUTE_COUNT} 项属性") unless attributes.length == BOOSTER_ATTRIBUTE_COUNT
 
   {
     id: Integer(row["序号"], 10),

@@ -15,11 +15,17 @@ import {
   type BoosterRecommendation,
 } from './data';
 
-const boosterAttributeCount = boosters[0]?.attributes.length ?? 0;
+const boosterAttributeCount = Math.max(
+  ...boosters.map((booster) => booster.attributes.length),
+  0,
+);
 
 const usedAttributeIds = new Set<AttributeId>(boosters.flatMap((booster) => [...booster.attributes]));
 const availableAttributes = playerAttributes.filter((item) => usedAttributeIds.has(item.id));
-const recommendationLevels = [5, 4, 3, 2, 1] as const satisfies readonly BoosterRecommendation[];
+const recommendationLevels = [
+  ...new Set(boosters.map((booster) => booster.recommendation)),
+].sort((first, second) => second - first);
+const maxRecommendationLevel = Math.max(...recommendationLevels, 0);
 
 export function BoostersExplorer() {
   const [query, setQuery] = useState('');
@@ -96,7 +102,7 @@ export function BoostersExplorer() {
               return (
                 <button key={level} type="button" className={selected ? 'is-selected' : ''} onClick={() => setSelectedRecommendation(selected ? null : level)} aria-pressed={selected}>
                   <strong>{level} 星</strong>
-                  <span aria-label={`${level} 颗星`}>{'★'.repeat(level)}<i>{'★'.repeat(5 - level)}</i></span>
+                  <span aria-label={`${level} 颗星`}>{'★'.repeat(level)}<i>{'★'.repeat(maxRecommendationLevel - level)}</i></span>
                 </button>
               );
             })}
@@ -169,7 +175,7 @@ export function BoostersExplorer() {
                 </div>
                 <div className="booster-recommendation" aria-label={`增能价值 ${booster.recommendation} 颗星`}>
                   <strong>{booster.recommendation} 星</strong>
-                  <span>{'★'.repeat(booster.recommendation)}<i>{'★'.repeat(5 - booster.recommendation)}</i></span>
+                  <span>{'★'.repeat(booster.recommendation)}<i>{'★'.repeat(maxRecommendationLevel - booster.recommendation)}</i></span>
                 </div>
               </div>
               <p className="booster-effect">提升以下 {boosterAttributeCount} 项球员属性</p>

@@ -11,15 +11,19 @@ import {
 import { SiteFooter } from '@/components/site-footer';
 import { styles } from './data';
 import { playerSkills, skillCategories } from './skills/data';
-import { playerAttributes } from './attributes/data';
+import { attributeCategories, playerAttributes } from './attributes/data';
 import { boosters } from './boosters/data';
+
+const skillCategoryCount = skillCategories.filter(
+  (category) => category.id !== 'all',
+).length;
 
 const tools = [
   {
     href: '/attributes',
     eyebrow: 'PLAYER ATTRIBUTES',
     title: '球员属性',
-    description: '按进攻技能、防守技能和力量 3 类查看属性说明，了解每个属性背后的运作机制。',
+    description: `按 ${attributeCategories.length} 类查看属性说明，了解每个属性背后的运作机制。`,
     count: playerAttributes.length,
     unit: '项球员属性',
     icon: Activity,
@@ -29,7 +33,7 @@ const tools = [
     href: '/styles',
     eyebrow: 'PLAYING STYLES',
     title: '比赛风格',
-    description: '按球场位置与攻防类型，快速了解 33 种比赛风格和其推荐程度。',
+    description: `按球场位置与攻防类型，快速了解 ${styles.length} 种比赛风格和其推荐程度。`,
     count: styles.length,
     unit: '种比赛风格',
     icon: Crosshair,
@@ -39,7 +43,7 @@ const tools = [
     href: '/skills',
     eyebrow: 'PLAYER SKILLS',
     title: '球员技巧',
-    description: `按 ${skillCategories.length - 1} 大分类了解 ${playerSkills.length} 个球员技能，并根据球员位置与定位推荐相应技巧。`,
+    description: `按 ${skillCategoryCount} 大分类了解 ${playerSkills.length} 个球员技能，并根据球员位置与定位推荐相应技巧。`,
     count: playerSkills.length,
     unit: '项球员技巧',
     icon: Sparkles,
@@ -49,7 +53,7 @@ const tools = [
     href: '/boosters',
     eyebrow: 'PLAYER BOOSTERS',
     title: '球员增能',
-    description: '快速了解 29 种增能，并根据球员位置推荐最合适的增能选项。',
+    description: `快速了解 ${boosters.length} 种增能，并根据球员位置推荐最合适的增能选项。`,
     count: boosters.length,
     unit: '种可制作增能',
     icon: Zap,

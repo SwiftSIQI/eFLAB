@@ -10,6 +10,7 @@ EXPERT_DIR = File.join(ROOT, 'csv', 'expert')
 OUTPUT_PATH = File.join(ROOT, 'csv', 'play_skill_rec_by_expert.csv')
 
 POSITIONS = %w[CF SS RWF/LWF AMF CMF DMF RMF/LMF RB/LB CB GK].freeze
+MAX_POSITION_RECOMMENDATION = 3
 IGNORED_HEADERS = /序号|技能|技巧|名称|技能推荐度|全局|global|rating|备注/i
 
 def fail_with(message)
@@ -25,7 +26,7 @@ def parse_cell(value)
   return nil if text.empty? || text == '—' || text.include?('❌')
   fail_with("专家推荐等级格式无效：#{text}") unless text.match?(/\A★{1,5}☆{0,4}\z/)
 
-  stars = [text.count('★'), 3].min
+  stars = [text.count('★'), MAX_POSITION_RECOMMENDATION].min
   stars.positive? ? stars : nil
 end
 

@@ -24,17 +24,34 @@ type RecommendationPosition = {
   readonly id: SkillPosition;
   readonly profiles: readonly string[];
 };
-const recommendationLevels = [
-  5, 4, 3, 2, 1,
-] as const satisfies readonly SkillRecommendation[];
+const recommendationLevels: SkillRecommendation[] = [
+  ...new Set(
+    playerSkills
+      .map((skill) => skill.recommendation)
+      .filter((level): level is SkillRecommendation => level !== null),
+  ),
+].sort((first, second) => second - first);
+const maxRecommendationLevel = Math.max(...recommendationLevels, 0);
 const positionRecommendationLabels = {
   3: '必备',
   2: '推荐',
   1: '可选',
 } as const;
-const positionRecommendationLevels = [
-  3, 2, 1,
-] as const satisfies readonly SkillPositionRecommendation[];
+const positionRecommendationLevels: SkillPositionRecommendation[] = [
+  ...new Set(
+    playerSkills.flatMap((skill) =>
+      Object.values(skill.positionRecommendations).flatMap((plan) =>
+        Object.values(plan ?? {}).flatMap((position) =>
+          Object.values(position ?? {}),
+        ),
+      ),
+    )
+      .filter(
+        (level): level is SkillPositionRecommendation =>
+          level !== null && level !== undefined,
+      ),
+  ),
+].sort((first, second) => second - first);
 const recommendationSourceUrls: Record<string, string> = {
   '冲啊大叔 CasToR': 'https://www.bilibili.com/video/BV1UuJazNE8s/',
   Skye:
@@ -306,7 +323,7 @@ export function SkillsExplorer() {
                       <strong>{level} 星</strong>
                       <span aria-label={`${level} 颗星`}>
                         {'★'.repeat(level)}
-                        <i>{'★'.repeat(5 - level)}</i>
+                        <i>{'★'.repeat(maxRecommendationLevel - level)}</i>
                       </span>
                     </button>
                   );

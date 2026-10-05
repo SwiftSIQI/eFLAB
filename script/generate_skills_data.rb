@@ -11,8 +11,9 @@ ROOT = File.expand_path("..", __dir__)
 CSV_PATH = File.join(ROOT, "csv/player_skill.csv")
 POSITION_RECOMMENDATION_PATH = File.join(ROOT, "csv/play_skill_rec_by_expert.csv")
 OUTPUT_PATH = File.join(ROOT, "app/skills/data.ts")
-CATEGORY_ORDER = %w[Showtime Shooting Dribbling Passing Defending Goalkeeping Other].freeze
 POSITION_ORDER = %w[CF SS RWF/LWF AMF CMF DMF RMF/LMF RB/LB CB GK].freeze
+SKILL_RECOMMENDATION_RANGE = 1..5
+POSITION_RECOMMENDATION_RANGE = 1..3
 
 def fail_with(message)
   abort("球员技巧生成失败：#{message}")
@@ -44,7 +45,7 @@ position_table.each do |row|
   fail_with("位置推荐中的定位为空") if profile.empty?
   fail_with("位置推荐中的技能为空") if skill_name.empty?
   fail_with("位置推荐中的技能不存在于 player_skill.csv：#{skill_name}") unless skill_names.include?(skill_name)
-  fail_with("技能 #{skill_name} 的位置推荐等级无效") unless level && (1..3).include?(level)
+  fail_with("技能 #{skill_name} 的位置推荐等级无效") unless level && POSITION_RECOMMENDATION_RANGE.include?(level)
   recommendation_plans[plan_id] ||= { label: plan_label, positions: Hash.new { |hash, key| hash[key] = [] } }
   recommendation_plans[plan_id][:positions][position] << profile unless recommendation_plans[plan_id][:positions][position].include?(profile)
   position_recommendations[skill_name][plan_id] ||= {}
@@ -71,7 +72,7 @@ skills = table.map do |row|
   fail_with("序号 #{row["序号"]} 的技巧分类中英文数量不一致") unless zh_categories.length == en_categories.length
 
   categories = zh_categories.zip(en_categories).map do |label, name_en|
-    fail_with("序号 #{row["序号"]} 的技巧分类不在允许列表") unless CATEGORY_ORDER.include?(name_en)
+    fail_with("序号 #{row["序号"]} 的技巧分类为空") if name_en.empty? || label.empty?
     category_pairs[name_en] ||= { label: label, nameEn: name_en }
     fail_with("技巧分类 #{name_en} 的中文名称不一致") unless category_pairs[name_en][:label] == label
     name_en
@@ -86,7 +87,7 @@ skills = table.map do |row|
     nil
   else
     recommendation_value = recommendation_text.count("★")
-    fail_with("序号 #{row["序号"]} 的推荐度无效") unless recommendation_text.match?(/\A★{1,5}☆{0,4}\z/) && recommendation_value.between?(1, 5)
+    fail_with("序号 #{row["序号"]} 的推荐度无效") unless recommendation_text.match?(/\A★{1,5}☆{0,4}\z/) && SKILL_RECOMMENDATION_RANGE.include?(recommendation_value)
     recommendation_value
   end
 
@@ -110,8 +111,7 @@ end
 
 fail_with("技巧序号重复") unless skills.map { |skill| skill[:id] }.uniq.length == skills.length
 json = ->(value) { JSON.generate(value, ensure_ascii: false) }
-category_rows = CATEGORY_ORDER.select { |category| category_pairs.key?(category) }.map do |category|
-  pair = category_pairs.fetch(category)
+category_rows = category_pairs.map do |category, pair|
   "  { id: #{json.call(category)}, label: #{json.call(pair[:label])}, nameEn: #{json.call(pair[:nameEn])} },"
 end.join("\n")
 plan_rows = recommendation_plans.map do |plan_id, plan|
