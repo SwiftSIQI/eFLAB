@@ -1,6 +1,6 @@
 'use client';
 
-import { CircleHelp, Search, X } from 'lucide-react';
+import { ChevronDown, CircleHelp, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { Input } from '@/components/ui/input';
@@ -189,13 +189,15 @@ export function SkillsExplorer() {
     <main id="main-content" className="site-shell reference-page skills-page">
       <section className="reference-workspace skills-reference-workspace">
         <header className="reference-intro">
-          <p className="eyebrow">PLAYER SKILLS GUIDE</p>
-          <h1>球员技巧</h1>
-          <p>
-            {playerSkills.length} 个球员技巧分为 {skillCategories.length - 1}{' '}
-            类，涵盖 ShowTime
-            技能、射门、盘带、传球、防守、守门和其他，帮助你快速了解每项技巧的效果与适用场景。
-          </p>
+          <div className="skills-intro-copy">
+            <p className="eyebrow">PLAYER SKILLS GUIDE</p>
+            <h1>球员技巧</h1>
+            <p>
+              {playerSkills.length} 个球员技巧分为 {skillCategories.length - 1}{' '}
+              类，涵盖 ShowTime
+              技能、射门、盘带、传球、防守、守门和其他，帮助你快速了解每项技巧的效果与适用场景。
+            </p>
+          </div>
           <div className="reference-stats" aria-label="球员技巧概览">
             {overviewStats.map((item) => (
               <span key={item.label}>
@@ -204,77 +206,80 @@ export function SkillsExplorer() {
               </span>
             ))}
           </div>
+          <details className="usage-guide skills-usage-guide">
+            <summary className="usage-guide-summary">
+              <span className="usage-guide-heading">
+                <strong id="skills-usage-title">技巧推荐怎么用？</strong>
+                <span>先了解技巧，再用推荐方案筛出适合当前球员的新增技巧。</span>
+              </span>
+              <ChevronDown aria-hidden="true" />
+            </summary>
+            <ol className="usage-steps" aria-labelledby="skills-usage-title">
+              <li>
+                <strong>先看球员技巧</strong>
+                <span>按分类或关键词查看技巧效果、英文名称和研究说明。</span>
+              </li>
+              <li>
+                <strong>选择推荐方案</strong>
+                <span>选择你信任的专家方案，作为位置适配的参考来源。</span>
+              </li>
+              <li>
+                <strong>逐步缩小范围</strong>
+                <span>依次选择位置、球员定位和推荐度，结果会按适配度排序。</span>
+              </li>
+              <li>
+                <strong>定制最终技能组</strong>
+                <span>可加入技能组合，并剔除球员已有技能，避免重复推荐。</span>
+              </li>
+            </ol>
+            <div className="usage-guide-notes">
+              <p>
+                <strong>两个模块的关系：</strong>
+                球员技巧模块负责查清“技能是什么”；技巧推荐模块负责结合方案和球员场景回答“优先加什么”。
+              </p>
+              <p>
+                <strong>技巧价值：</strong>
+                只评价技能本身，不包含位置维度，请结合具体位置、定位和使用场景参考。
+              </p>
+            </div>
+          </details>
         </header>
-      </section>
-
-      <section className="usage-guide" aria-labelledby="skills-usage-title">
-        <div className="usage-guide-heading">
-          <p className="eyebrow">HOW TO USE</p>
-          <h2 id="skills-usage-title">技巧推荐怎么用？</h2>
-          <p>按下面的顺序逐步筛选，最下面会显示当前最适合的技能。</p>
-        </div>
-        <ol className="usage-steps">
-          <li>
-            <strong>选择推荐方案</strong>
-            <span>先选择你比较信任的方案，例如大叔或 Skye。</span>
-          </li>
-          <li>
-            <strong>选择位置</strong>
-            <span>选择 CF、SS、RWF 等球员位置。</span>
-          </li>
-          <li>
-            <strong>选择球员定位</strong>
-            <span>例如 RWF/LWF 还可以进一步选择逆足内切或顺足传中。</span>
-          </li>
-          <li>
-            <strong>选择推荐度</strong>
-            <span>按必备、推荐或可选筛选，结果会在下方更新。</span>
-          </li>
-        </ol>
-        <div className="usage-guide-notes">
-          <p>
-            <strong>定制化技能组：</strong>
-            如果你特别在意某个组合，例如大丸子，选择后组合内的三个技能也会加入下方推荐列表。
-          </p>
-          <p>
-            <strong>剔除球员已有技能：</strong>
-            由于暂时没有接入
-            efhub，请手动选出球员已经拥有的技能，推荐结果就不会重复出现这些技能。
-          </p>
-          <p>
-            <strong>技巧价值：</strong>
-            这里只评价技能本身的价值，没有加入位置维度；请结合具体位置、定位和使用场景参考。
-          </p>
-        </div>
       </section>
 
       <section className="skills-workspace" aria-label="球员技巧查询">
         <div className="skills-controls">
-          <nav className="skill-category-list" aria-label="技巧分类">
-            {skillCategories.map((item) => {
-              const count =
-                item.id === 'all'
-                  ? playerSkills.length
-                  : playerSkills.filter((skill) =>
-                      skill.categories.includes(item.id),
-                    ).length;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={`skill-category ${category === item.id ? 'is-active' : ''}`}
-                  onClick={() => setCategory(item.id)}
-                  aria-pressed={category === item.id}
-                >
-                  <span>
-                    {item.label}
-                    <small>{item.nameEn}</small>
-                  </span>
-                  <b>{count}</b>
-                </button>
-              );
-            })}
-          </nav>
+          <div className="skills-library-module">
+            <div className="skills-module-label skills-module-label-browse">
+              <p className="eyebrow">SKILL LIBRARY</p>
+              <h2>球员技巧</h2>
+              <p>按分类和关键词了解每项技巧的效果。</p>
+            </div>
+            <nav className="skill-category-list" aria-label="技巧分类">
+              {skillCategories.map((item) => {
+                const count =
+                  item.id === 'all'
+                    ? playerSkills.length
+                    : playerSkills.filter((skill) =>
+                        skill.categories.includes(item.id),
+                      ).length;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`skill-category ${category === item.id ? 'is-active' : ''}`}
+                    onClick={() => setCategory(item.id)}
+                    aria-pressed={category === item.id}
+                  >
+                    <span>
+                      {item.label}
+                      <small>{item.nameEn}</small>
+                    </span>
+                    <b>{count}</b>
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
 
           <div className="skill-results">
             <div className="skill-search-row">
@@ -298,6 +303,15 @@ export function SkillsExplorer() {
               </label>
             </div>
 
+            <section className="skills-module skills-recommendation-module">
+              <div className="skills-module-heading">
+                <div>
+                  <p className="eyebrow">RECOMMENDATION BUILDER</p>
+                  <h2>技巧推荐</h2>
+                  <p>根据专家方案、位置和球员定位，筛选当前更值得新增的技巧。</p>
+                </div>
+                <span className="skills-module-step">02</span>
+              </div>
             <section
               className="recommendation-filter skill-recommendation-filter"
               aria-labelledby="skill-recommendation-filter-title"
@@ -687,6 +701,8 @@ export function SkillsExplorer() {
                   })}
                 </div>
               </div>
+            </section>
+
             </section>
 
             <div
