@@ -69,7 +69,7 @@ export default function HomePage() {
       <section className="home-hero">
         <div className="home-hero-copy">
           <p className="home-kicker">
-            <span /> eflab
+            <span /> eFLAB
           </p>
           <h1>
             你的球员，

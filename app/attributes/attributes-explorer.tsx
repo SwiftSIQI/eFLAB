@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
 import { Input } from '@/components/ui/input';
+import { normalizeSearchText } from '@/lib/utils';
 import {
   attributeCategories,
   playerAttributes,
@@ -13,19 +14,27 @@ import {
 
 type CategoryFilter = 'all' | AttributeCategory;
 
+const attributeCounts = new Map(
+  attributeCategories.map((category) => [
+    category.id,
+    playerAttributes.filter((attribute) => attribute.category === category.id)
+      .length,
+  ]),
+);
+
 export function AttributesExplorer() {
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [query, setQuery] = useState('');
 
   const results = useMemo(() => {
-    const keyword = query.trim().toLocaleLowerCase();
+    const keyword = normalizeSearchText(query);
     return playerAttributes.filter(
       (attribute) =>
         (category === 'all' || attribute.category === category) &&
         (!keyword ||
-          `${attribute.nameZh} ${attribute.nameEn} ${attribute.descriptionZh} ${attribute.descriptionEn}`
-            .toLocaleLowerCase()
-            .includes(keyword)),
+          normalizeSearchText(
+            `${attribute.nameZh} ${attribute.nameEn} ${attribute.descriptionZh} ${attribute.descriptionEn}`,
+          ).includes(keyword)),
     );
   }, [category, query]);
 
@@ -53,13 +62,7 @@ export function AttributesExplorer() {
             </span>
             {attributeCategories.map((item) => (
               <span key={item.id}>
-                <strong>
-                  {
-                    playerAttributes.filter(
-                      (attribute) => attribute.category === item.id,
-                    ).length
-                  }
-                </strong>
+                <strong>{attributeCounts.get(item.id) ?? 0}</strong>
                 {item.label}
               </span>
             ))}
@@ -88,9 +91,7 @@ export function AttributesExplorer() {
               <b>{playerAttributes.length}</b>
             </button>
             {attributeCategories.map((item) => {
-              const count = playerAttributes.filter(
-                (attribute) => attribute.category === item.id,
-              ).length;
+              const count = attributeCounts.get(item.id) ?? 0;
               return (
                 <button
                   key={item.id}

@@ -5,7 +5,7 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div>
         <Link className="footer-brand" href="/">
-          eflab
+          eFLAB
         </Link>
       </div>
       <p className="footer-credit">

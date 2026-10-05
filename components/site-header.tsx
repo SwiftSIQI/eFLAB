@@ -14,25 +14,11 @@ const links = [
   { href: '/boosters', label: '球员增能', description: 'BOOSTERS' },
 ] as const;
 
-export function SiteHeader() {
-  const pathname = usePathname();
+function SiteNavigation({ pathname }: { readonly pathname: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="topbar">
-      <a className="skip-link" href="#main-content">
-        跳到主要内容
-      </a>
-      <Link className="brand-lockup" href="/" aria-label="eflab 首页">
-        <Image
-          className="brand-logo"
-          src="/eflab-logo.svg"
-          alt="eflab"
-          width={205}
-          height={64}
-          priority
-        />
-      </Link>
+    <>
       <button
         className="mobile-nav-toggle"
         type="button"
@@ -66,6 +52,29 @@ export function SiteHeader() {
           </Link>
         ))}
       </nav>
+    </>
+  );
+}
+
+export function SiteHeader() {
+  const pathname = usePathname();
+
+  return (
+    <header className="topbar">
+      <a className="skip-link" href="#main-content">
+        跳到主要内容
+      </a>
+      <Link className="brand-lockup" href="/" aria-label="eFLAB 首页">
+        <Image
+          className="brand-logo"
+          src="/eflab-logo.svg"
+          alt="eFLAB"
+          width={136}
+          height={36}
+          priority
+        />
+      </Link>
+      <SiteNavigation key={pathname} pathname={pathname} />
     </header>
   );
 }

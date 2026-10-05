@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { SiteFooter } from '@/components/site-footer';
+import { normalizeSearchText } from '@/lib/utils';
 import {
   playerSkills,
   skillCategories,
@@ -66,6 +67,18 @@ const getHighestPositionLevel = (
       (level): level is SkillPositionRecommendation => level !== undefined,
     ),
   );
+
+const skillOverviewStats = [
+  { label: '球员技能', value: playerSkills.length },
+  ...skillCategories
+    .filter((item) => item.id !== 'all')
+    .map((item) => ({
+      label: item.id === 'Showtime' ? 'ST 技能' : `${item.label}技能`,
+      value: playerSkills.filter((skill) => skill.categories.includes(item.id))
+        .length,
+    })),
+];
+
 export function SkillsExplorer() {
   const [category, setCategory] = useState<Category>('all');
   const [query, setQuery] = useState('');
@@ -95,7 +108,7 @@ export function SkillsExplorer() {
     activePlan?.positions ?? skillPositions.map((id) => ({ id, profiles: [] }));
 
   const results = useMemo(() => {
-    const keyword = query.trim().toLocaleLowerCase();
+    const keyword = normalizeSearchText(query);
     const selectedComboSkillIds =
       selectedPosition === null || selectedSkillCombo === null
         ? undefined
@@ -130,9 +143,9 @@ export function SkillsExplorer() {
         !selectedOwnedSkillIds.includes(skill.id) &&
         (matchesPositionFilters || isSelectedComboSkill) &&
         (!keyword ||
-          `${skill.nameZh} ${skill.nameEn} ${skill.description} ${skill.descriptionEn} ${skill.researchZh ?? ''} ${skill.researchEn ?? ''}`
-            .toLocaleLowerCase()
-            .includes(keyword))
+          normalizeSearchText(
+            `${skill.nameZh} ${skill.nameEn} ${skill.description} ${skill.descriptionEn} ${skill.researchZh ?? ''} ${skill.researchEn ?? ''}`,
+          ).includes(keyword))
       );
     });
     return selectedPosition === null || selectedPlan === null
@@ -173,17 +186,6 @@ export function SkillsExplorer() {
   ]);
 
   const activeCategory = skillCategories.find((item) => item.id === category)!;
-  const overviewStats = [
-    { label: '球员技能', value: playerSkills.length },
-    ...skillCategories
-      .filter((item) => item.id !== 'all')
-      .map((item) => ({
-        label: item.id === 'Showtime' ? 'ST 技能' : `${item.label}技能`,
-        value: playerSkills.filter((skill) =>
-          skill.categories.includes(item.id),
-        ).length,
-      })),
-  ];
 
   return (
     <main id="main-content" className="site-shell reference-page skills-page">
@@ -199,7 +201,7 @@ export function SkillsExplorer() {
             </p>
           </div>
           <div className="reference-stats" aria-label="球员技巧概览">
-            {overviewStats.map((item) => (
+            {skillOverviewStats.map((item) => (
               <span key={item.label}>
                 <strong>{item.value}</strong>
                 {item.label}
@@ -210,7 +212,9 @@ export function SkillsExplorer() {
             <summary className="usage-guide-summary">
               <span className="usage-guide-heading">
                 <strong id="skills-usage-title">技巧推荐怎么用？</strong>
-                <span>先了解技巧，再用推荐方案筛出适合当前球员的新增技巧。</span>
+                <span>
+                  先了解技巧，再用推荐方案筛出适合当前球员的新增技巧。
+                </span>
               </span>
               <ChevronDown aria-hidden="true" />
             </summary>
@@ -225,7 +229,9 @@ export function SkillsExplorer() {
               </li>
               <li>
                 <strong>逐步缩小范围</strong>
-                <span>依次选择位置、球员定位和推荐度，结果会按适配度排序。</span>
+                <span>
+                  依次选择位置、球员定位和推荐度，结果会按适配度排序。
+                </span>
               </li>
               <li>
                 <strong>定制最终技能组</strong>
@@ -308,401 +314,411 @@ export function SkillsExplorer() {
                 <div>
                   <p className="eyebrow">RECOMMENDATION BUILDER</p>
                   <h2>技巧推荐</h2>
-                  <p>根据专家方案、位置和球员定位，筛选当前更值得新增的技巧。</p>
+                  <p>
+                    根据专家方案、位置和球员定位，筛选当前更值得新增的技巧。
+                  </p>
                 </div>
                 <span className="skills-module-step">02</span>
               </div>
-            <section
-              className="recommendation-filter skill-recommendation-filter"
-              aria-labelledby="skill-recommendation-filter-title"
-            >
-              <div className="recommendation-filter-heading">
-                <div className="recommendation-title-with-info">
-                  <div>
-                    <div className="recommendation-heading-title">
-                      <h2 id="skill-recommendation-filter-title">技巧价值</h2>
-                      <span className="custom-filter-option recommendation-info-option">
-                        <button
-                          type="button"
-                          className="recommendation-info-button"
-                          aria-label="查看技巧价值评分来源"
-                          aria-describedby="skill-recommendation-source"
-                        >
-                          <CircleHelp aria-hidden="true" />
-                        </button>
-                        <span
-                          id="skill-recommendation-source"
-                          className="custom-filter-tooltip recommendation-source-tooltip"
-                          role="tooltip"
-                        >
-                          技巧价值评分参考自珠海amadeusz的研究成果，
-                          <a
-                            href="https://mp.weixin.qq.com/s/2QyJhO7otdglQJKDAKldwA"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            查看相关资料
-                          </a>
-                          。
-                        </span>
-                      </span>
-                    </div>
-                    <p>按价值等级筛选技巧</p>
-                  </div>
-                </div>
-                {selectedRecommendation !== null && (
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRecommendation(null)}
-                  >
-                    显示全部
-                  </button>
-                )}
-              </div>
-              <div className="recommendation-options">
-                {recommendationLevels.map((level) => {
-                  const selected = selectedRecommendation === level;
-                  return (
-                    <button
-                      key={level}
-                      type="button"
-                      className={selected ? 'is-selected' : ''}
-                      onClick={() =>
-                        setSelectedRecommendation(selected ? null : level)
-                      }
-                      aria-pressed={selected}
-                    >
-                      <strong>{level} 星</strong>
-                      <span aria-label={`${level} 颗星`}>
-                        {'★'.repeat(level)}
-                        <i>{'★'.repeat(maxRecommendationLevel - level)}</i>
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-
-            <section
-              className="position-filter skill-position-filter"
-              aria-labelledby="skill-position-filter-title"
-            >
-              <div className="position-filter-heading">
-                <div>
-                  <h2 id="skill-position-filter-title">推荐方案</h2>
-                  <p>先选择专家方案，再按位置和球员定位查看技巧</p>
-                </div>
-                {selectedPlan !== null && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedPlan(null);
-                      setSelectedPosition(null);
-                      setSelectedProfile(null);
-                      setSelectedPositionRecommendation(null);
-                      setSelectedSkillCombo(null);
-                    }}
-                  >
-                    清除选择
-                  </button>
-                )}
-              </div>
-              <div className="recommendation-plan-options">
-                {skillRecommendationPlans.map((plan) => {
-                  const selected = selectedPlan === plan.id;
-                  const sourceUrl = recommendationSourceUrls[plan.label];
-                  return (
-                    <div
-                      key={plan.id}
-                      className={`recommendation-plan-option${selected ? ' is-selected' : ''}`}
-                    >
-                      <button
-                        type="button"
-                        className="recommendation-plan-select"
-                        onClick={() => {
-                          setSelectedPlan(plan.id);
-                          setSelectedPosition(null);
-                          setSelectedProfile(null);
-                          setSelectedPositionRecommendation(null);
-                          setSelectedSkillCombo(null);
-                        }}
-                        aria-pressed={selected}
-                        aria-describedby={
-                          sourceUrl
-                            ? `recommendation-plan-source-${plan.id}`
-                            : undefined
-                        }
-                      >
-                        <span>{plan.label}</span>
-                        <span
-                          className="recommendation-plan-info"
-                          aria-hidden="true"
-                        >
-                          <CircleHelp />
-                        </span>
-                      </button>
-                      {sourceUrl && (
-                        <span
-                          id={`recommendation-plan-source-${plan.id}`}
-                          className="custom-filter-tooltip recommendation-source-tooltip"
-                          role="tooltip"
-                        >
-                          推荐方案参考自{plan.label}的研究成果，
-                          <a href={sourceUrl} target="_blank" rel="noreferrer">
-                            查看相关资料
-                          </a>
-                          。
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="position-filter-heading">
-                <div>
-                  <h2>位置适配</h2>
-                  <p>
-                    {selectedPlan === null
-                      ? '请先选择专家方案'
-                      : '选择位置后，按适配度优先显示技巧'}
-                  </p>
-                </div>
-                {selectedPosition !== null && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedPosition(null);
-                      setSelectedProfile(null);
-                      setSelectedPositionRecommendation(null);
-                      setSelectedSkillCombo(null);
-                    }}
-                  >
-                    显示全部
-                  </button>
-                )}
-              </div>
-              <div className="position-options">
-                {positionOptions.map((position) => {
-                  const selected = selectedPosition === position.id;
-                  return (
-                    <button
-                      key={position.id}
-                      type="button"
-                      className={selected ? 'is-selected' : ''}
-                      disabled={selectedPlan === null}
-                      onClick={() => {
-                        setSelectedPosition(selected ? null : position.id);
-                        setSelectedProfile(null);
-                        setSelectedPositionRecommendation(null);
-                        setSelectedSkillCombo(null);
-                      }}
-                      aria-pressed={selected}
-                    >
-                      {position.id}
-                    </button>
-                  );
-                })}
-              </div>
-              {selectedPosition !== null &&
-                activePosition &&
-                activePosition.profiles.length > 0 && (
-                  <div className="skill-profile-filter">
-                    <div className="position-filter-heading">
-                      <div>
-                        <h2>球员定位</h2>
-                        <p>不同定位可以有不同的技能优先级</p>
-                      </div>
-                      {selectedProfile !== null &&
-                        activePosition.profiles.length > 1 && (
+              <section
+                className="recommendation-filter skill-recommendation-filter"
+                aria-labelledby="skill-recommendation-filter-title"
+              >
+                <div className="recommendation-filter-heading">
+                  <div className="recommendation-title-with-info">
+                    <div>
+                      <div className="recommendation-heading-title">
+                        <h2 id="skill-recommendation-filter-title">技巧价值</h2>
+                        <span className="custom-filter-option recommendation-info-option">
                           <button
                             type="button"
-                            onClick={() => {
-                              setSelectedProfile(null);
-                              setSelectedPositionRecommendation(null);
-                            }}
+                            className="recommendation-info-button"
+                            aria-label="查看技巧价值评分来源"
+                            aria-describedby="skill-recommendation-source"
                           >
-                            显示全部
+                            <CircleHelp aria-hidden="true" />
                           </button>
-                        )}
-                    </div>
-                    {activePosition.profiles.length === 1 &&
-                    String(activePosition.profiles[0]) === '通用' ? (
-                      <p className="skill-profile-note">
-                        <span aria-hidden="true">NOTE</span>
-                        当前方案未在该位置做球员定位细化
-                      </p>
-                    ) : (
-                      <div className="profile-options">
-                        {activePosition.profiles
-                          .filter((profile) => profile !== '通用')
-                          .map((profile) => (
-                            <button
-                              key={profile}
-                              type="button"
-                              className={
-                                selectedProfile === profile ? 'is-selected' : ''
-                              }
-                              onClick={() => {
-                                setSelectedProfile(
-                                  selectedProfile === profile ? null : profile,
-                                );
-                                setSelectedPositionRecommendation(null);
-                              }}
-                              aria-pressed={selectedProfile === profile}
+                          <span
+                            id="skill-recommendation-source"
+                            className="custom-filter-tooltip recommendation-source-tooltip"
+                            role="tooltip"
+                          >
+                            技巧价值评分参考自珠海amadeusz的研究成果，
+                            <a
+                              href="https://mp.weixin.qq.com/s/2QyJhO7otdglQJKDAKldwA"
+                              target="_blank"
+                              rel="noreferrer"
                             >
-                              {profile}
-                            </button>
-                          ))}
+                              查看相关资料
+                            </a>
+                            。
+                          </span>
+                        </span>
                       </div>
-                    )}
+                      <p>按价值等级筛选技巧</p>
+                    </div>
                   </div>
-                )}
-              <div className="skill-position-level-filter">
-                <div className="position-filter-heading">
-                  <div>
-                    <h2>位置适配等级</h2>
-                    <p>
-                      {selectedPosition === null
-                        ? '请先选择位置'
-                        : '按必备、推荐或可选筛选'}
-                    </p>
-                  </div>
-                  {selectedPositionRecommendation !== null && (
+                  {selectedRecommendation !== null && (
                     <button
                       type="button"
-                      onClick={() => setSelectedPositionRecommendation(null)}
+                      onClick={() => setSelectedRecommendation(null)}
                     >
                       显示全部
                     </button>
                   )}
                 </div>
-                <div className="position-level-options">
-                  {positionRecommendationLevels.map((level) => {
-                    const selected = selectedPositionRecommendation === level;
+                <div className="recommendation-options">
+                  {recommendationLevels.map((level) => {
+                    const selected = selectedRecommendation === level;
                     return (
                       <button
                         key={level}
                         type="button"
                         className={selected ? 'is-selected' : ''}
-                        disabled={selectedPosition === null}
                         onClick={() =>
-                          setSelectedPositionRecommendation(
-                            selected ? null : level,
-                          )
+                          setSelectedRecommendation(selected ? null : level)
                         }
                         aria-pressed={selected}
                       >
-                        {positionRecommendationLabels[level]}
+                        <strong>{level} 星</strong>
+                        <span aria-label={`${level} 颗星`}>
+                          {'★'.repeat(level)}
+                          <i>{'★'.repeat(maxRecommendationLevel - level)}</i>
+                        </span>
                       </button>
                     );
                   })}
                 </div>
-              </div>
-              <div className="skill-custom-filter">
+              </section>
+
+              <section
+                className="position-filter skill-position-filter"
+                aria-labelledby="skill-position-filter-title"
+              >
                 <div className="position-filter-heading">
                   <div>
-                    <h2>定制化技能组</h2>
-                    <p>选择技能组后，在下方展示对应技能</p>
+                    <h2 id="skill-position-filter-title">推荐方案</h2>
+                    <p>先选择专家方案，再按位置和球员定位查看技巧</p>
                   </div>
-                  {selectedSkillCombo !== null && (
+                  {selectedPlan !== null && (
                     <button
                       type="button"
-                      onClick={() => setSelectedSkillCombo(null)}
+                      onClick={() => {
+                        setSelectedPlan(null);
+                        setSelectedPosition(null);
+                        setSelectedProfile(null);
+                        setSelectedPositionRecommendation(null);
+                        setSelectedSkillCombo(null);
+                      }}
+                    >
+                      清除选择
+                    </button>
+                  )}
+                </div>
+                <div className="recommendation-plan-options">
+                  {skillRecommendationPlans.map((plan) => {
+                    const selected = selectedPlan === plan.id;
+                    const sourceUrl = recommendationSourceUrls[plan.label];
+                    return (
+                      <div
+                        key={plan.id}
+                        className={`recommendation-plan-option${selected ? ' is-selected' : ''}`}
+                      >
+                        <button
+                          type="button"
+                          className="recommendation-plan-select"
+                          onClick={() => {
+                            setSelectedPlan(plan.id);
+                            setSelectedPosition(null);
+                            setSelectedProfile(null);
+                            setSelectedPositionRecommendation(null);
+                            setSelectedSkillCombo(null);
+                          }}
+                          aria-pressed={selected}
+                          aria-describedby={
+                            sourceUrl
+                              ? `recommendation-plan-source-${plan.id}`
+                              : undefined
+                          }
+                        >
+                          <span>{plan.label}</span>
+                          <span
+                            className="recommendation-plan-info"
+                            aria-hidden="true"
+                          >
+                            <CircleHelp />
+                          </span>
+                        </button>
+                        {sourceUrl && (
+                          <span
+                            id={`recommendation-plan-source-${plan.id}`}
+                            className="custom-filter-tooltip recommendation-source-tooltip"
+                            role="tooltip"
+                          >
+                            推荐方案参考自{plan.label}的研究成果，
+                            <a
+                              href={sourceUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              查看相关资料
+                            </a>
+                            。
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="position-filter-heading">
+                  <div>
+                    <h2>位置适配</h2>
+                    <p>
+                      {selectedPlan === null
+                        ? '请先选择专家方案'
+                        : '选择位置后，按适配度优先显示技巧'}
+                    </p>
+                  </div>
+                  {selectedPosition !== null && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedPosition(null);
+                        setSelectedProfile(null);
+                        setSelectedPositionRecommendation(null);
+                        setSelectedSkillCombo(null);
+                      }}
                     >
                       显示全部
                     </button>
                   )}
                 </div>
-                <div className="custom-filter-options">
-                  {skillComboGroups.map((group) => {
-                    const selected = selectedSkillCombo === group.id;
-                    const comboSkills = group.skillIds
-                      .map(
-                        (id) =>
-                          playerSkills.find((skill) => skill.id === id)?.nameZh,
-                      )
-                      .filter(Boolean)
-                      .join('、');
-                    return (
-                      <div
-                        key={group.id}
-                        className={`custom-filter-option${selected ? ' is-selected' : ''}`}
-                      >
-                        <button
-                          type="button"
-                          className={`custom-filter-select${selected ? ' is-selected' : ''}`}
-                          onClick={() =>
-                            setSelectedSkillCombo(selected ? null : group.id)
-                          }
-                          aria-pressed={selected}
-                          disabled={selectedPosition === null}
-                        >
-                          {group.label}
-                        </button>
-                        <span className="custom-filter-info-wrap">
-                          <button
-                            type="button"
-                            className="custom-filter-info"
-                            aria-label={`查看${group.label}包含的技能`}
-                            aria-describedby={`skill-combo-${group.id}`}
-                          >
-                            <CircleHelp aria-hidden="true" />
-                          </button>
-                          <span
-                            id={`skill-combo-${group.id}`}
-                            className="custom-filter-tooltip"
-                            role="tooltip"
-                          >
-                            包含技能：{comboSkills || '暂无技能'}
-                          </span>
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="skill-owned-filter">
-                <div className="position-filter-heading">
-                  <div>
-                    <h2>剔除球员已有技能</h2>
-                    <p>
-                      通过剔除球员已经拥有的技能，帮助玩家更好的聚焦应该新增的技能。
-                    </p>
-                  </div>
-                  {selectedOwnedSkillIds.length > 0 && (
-                    <button
-                      type="button"
-                      onClick={() => setSelectedOwnedSkillIds([])}
-                    >
-                      清空已选
-                    </button>
-                  )}
-                </div>
-                <div className="owned-skill-options">
-                  {playerSkills.map((skill) => {
-                    const selected = selectedOwnedSkillIds.includes(skill.id);
+                <div className="position-options">
+                  {positionOptions.map((position) => {
+                    const selected = selectedPosition === position.id;
                     return (
                       <button
-                        key={skill.id}
+                        key={position.id}
                         type="button"
                         className={selected ? 'is-selected' : ''}
-                        onClick={() =>
-                          setSelectedOwnedSkillIds((current) =>
-                            selected
-                              ? current.filter((id) => id !== skill.id)
-                              : [...current, skill.id],
-                          )
-                        }
+                        disabled={selectedPlan === null}
+                        onClick={() => {
+                          setSelectedPosition(selected ? null : position.id);
+                          setSelectedProfile(null);
+                          setSelectedPositionRecommendation(null);
+                          setSelectedSkillCombo(null);
+                        }}
                         aria-pressed={selected}
                       >
-                        {skill.nameZh}
+                        {position.id}
                       </button>
                     );
                   })}
                 </div>
-              </div>
-            </section>
-
+                {selectedPosition !== null &&
+                  activePosition &&
+                  activePosition.profiles.length > 0 && (
+                    <div className="skill-profile-filter">
+                      <div className="position-filter-heading">
+                        <div>
+                          <h2>球员定位</h2>
+                          <p>不同定位可以有不同的技能优先级</p>
+                        </div>
+                        {selectedProfile !== null &&
+                          activePosition.profiles.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedProfile(null);
+                                setSelectedPositionRecommendation(null);
+                              }}
+                            >
+                              显示全部
+                            </button>
+                          )}
+                      </div>
+                      {activePosition.profiles.length === 1 &&
+                      String(activePosition.profiles[0]) === '通用' ? (
+                        <p className="skill-profile-note">
+                          <span aria-hidden="true">NOTE</span>
+                          当前方案未在该位置做球员定位细化
+                        </p>
+                      ) : (
+                        <div className="profile-options">
+                          {activePosition.profiles
+                            .filter((profile) => profile !== '通用')
+                            .map((profile) => (
+                              <button
+                                key={profile}
+                                type="button"
+                                className={
+                                  selectedProfile === profile
+                                    ? 'is-selected'
+                                    : ''
+                                }
+                                onClick={() => {
+                                  setSelectedProfile(
+                                    selectedProfile === profile
+                                      ? null
+                                      : profile,
+                                  );
+                                  setSelectedPositionRecommendation(null);
+                                }}
+                                aria-pressed={selectedProfile === profile}
+                              >
+                                {profile}
+                              </button>
+                            ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                <div className="skill-position-level-filter">
+                  <div className="position-filter-heading">
+                    <div>
+                      <h2>位置适配等级</h2>
+                      <p>
+                        {selectedPosition === null
+                          ? '请先选择位置'
+                          : '按必备、推荐或可选筛选'}
+                      </p>
+                    </div>
+                    {selectedPositionRecommendation !== null && (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedPositionRecommendation(null)}
+                      >
+                        显示全部
+                      </button>
+                    )}
+                  </div>
+                  <div className="position-level-options">
+                    {positionRecommendationLevels.map((level) => {
+                      const selected = selectedPositionRecommendation === level;
+                      return (
+                        <button
+                          key={level}
+                          type="button"
+                          className={selected ? 'is-selected' : ''}
+                          disabled={selectedPosition === null}
+                          onClick={() =>
+                            setSelectedPositionRecommendation(
+                              selected ? null : level,
+                            )
+                          }
+                          aria-pressed={selected}
+                        >
+                          {positionRecommendationLabels[level]}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="skill-custom-filter">
+                  <div className="position-filter-heading">
+                    <div>
+                      <h2>定制化技能组</h2>
+                      <p>选择技能组后，在下方展示对应技能</p>
+                    </div>
+                    {selectedSkillCombo !== null && (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedSkillCombo(null)}
+                      >
+                        显示全部
+                      </button>
+                    )}
+                  </div>
+                  <div className="custom-filter-options">
+                    {skillComboGroups.map((group) => {
+                      const selected = selectedSkillCombo === group.id;
+                      const comboSkills = group.skillIds
+                        .map(
+                          (id) =>
+                            playerSkills.find((skill) => skill.id === id)
+                              ?.nameZh,
+                        )
+                        .filter(Boolean)
+                        .join('、');
+                      return (
+                        <div
+                          key={group.id}
+                          className={`custom-filter-option${selected ? ' is-selected' : ''}`}
+                        >
+                          <button
+                            type="button"
+                            className={`custom-filter-select${selected ? ' is-selected' : ''}`}
+                            onClick={() =>
+                              setSelectedSkillCombo(selected ? null : group.id)
+                            }
+                            aria-pressed={selected}
+                            disabled={selectedPosition === null}
+                          >
+                            {group.label}
+                          </button>
+                          <span className="custom-filter-info-wrap">
+                            <button
+                              type="button"
+                              className="custom-filter-info"
+                              aria-label={`查看${group.label}包含的技能`}
+                              aria-describedby={`skill-combo-${group.id}`}
+                            >
+                              <CircleHelp aria-hidden="true" />
+                            </button>
+                            <span
+                              id={`skill-combo-${group.id}`}
+                              className="custom-filter-tooltip"
+                              role="tooltip"
+                            >
+                              包含技能：{comboSkills || '暂无技能'}
+                            </span>
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="skill-owned-filter">
+                  <div className="position-filter-heading">
+                    <div>
+                      <h2>剔除球员已有技能</h2>
+                      <p>
+                        通过剔除球员已经拥有的技能，帮助玩家更好的聚焦应该新增的技能。
+                      </p>
+                    </div>
+                    {selectedOwnedSkillIds.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedOwnedSkillIds([])}
+                      >
+                        清空已选
+                      </button>
+                    )}
+                  </div>
+                  <div className="owned-skill-options">
+                    {playerSkills.map((skill) => {
+                      const selected = selectedOwnedSkillIds.includes(skill.id);
+                      return (
+                        <button
+                          key={skill.id}
+                          type="button"
+                          className={selected ? 'is-selected' : ''}
+                          onClick={() =>
+                            setSelectedOwnedSkillIds((current) =>
+                              selected
+                                ? current.filter((id) => id !== skill.id)
+                                : [...current, skill.id],
+                            )
+                          }
+                          aria-pressed={selected}
+                        >
+                          {skill.nameZh}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </section>
             </section>
 
             <div

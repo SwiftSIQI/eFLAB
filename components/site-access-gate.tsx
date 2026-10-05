@@ -56,9 +56,9 @@ export function SiteAccessGate({ children }: { readonly children: ReactNode }) {
   return (
     <main className="access-gate">
       <section className="access-card" aria-labelledby="access-title">
-        <p className="eyebrow">eflab private preview</p>
+        <p className="eyebrow">eFLAB private preview</p>
         <h1 id="access-title">输入访问密码</h1>
-        <p>请输入密码后继续使用 eflab。</p>
+        <p>请输入密码后继续使用 eFLAB。</p>
         <form onSubmit={handleSubmit}>
           <label htmlFor="site-access-password">访问密码</label>
           <input
@@ -72,7 +72,7 @@ export function SiteAccessGate({ children }: { readonly children: ReactNode }) {
             autoComplete="current-password"
             aria-describedby={error ? 'site-access-error' : undefined}
           />
-          <button type="submit">进入 eflab</button>
+          <button type="submit">进入 eFLAB</button>
           <p
             id="site-access-error"
             className="access-error"

@@ -5,6 +5,7 @@ import { useMemo, useState, type ReactNode } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
 import { Input } from '@/components/ui/input';
+import { normalizeSearchText } from '@/lib/utils';
 import {
   getAttribute,
   playerAttributes,
@@ -133,15 +134,17 @@ export function BoostersExplorer() {
   }
 
   const results = useMemo(() => {
-    const keyword = query.trim().toLocaleLowerCase();
+    const keyword = normalizeSearchText(query);
     const isRecommendationMode = boosterIntent === 'recommend';
     return boosters.filter((booster) => {
-      const text = `${booster.nameZh} ${booster.nameEn} ${booster.attributes
-        .map((id) => {
-          const item = getAttribute(id);
-          return `${item.nameZh} ${item.nameEn}`;
-        })
-        .join(' ')}`.toLocaleLowerCase();
+      const text = normalizeSearchText(
+        `${booster.nameZh} ${booster.nameEn} ${booster.attributes
+          .map((id) => {
+            const item = getAttribute(id);
+            return `${item.nameZh} ${item.nameEn}`;
+          })
+          .join(' ')}`,
+      );
       const matchesPosition =
         !isRecommendationMode ||
         selectedPosition === null ||

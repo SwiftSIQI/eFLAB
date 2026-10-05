@@ -17,7 +17,7 @@
 ## 1. 项目概况
 
 - 项目是 eFootball 中文工具站，使用 React、TypeScript、Vite、Vinext 适配层和 Tailwind CSS。
-- 网站品牌统一使用 `eflab`；不要再新增或恢复旧品牌名称或旧 Logo 资源名。
+- 网站品牌统一使用 `eFLAB`（只有首字母 `e` 小写，其余字母大写）；所有可见文案、页面标题、元数据、Logo 文本、alt/aria 文案都必须保持这一大小写。不要再新增或恢复旧品牌名称或旧 Logo 资源名。密码、localStorage key、事件名等技术标识若已有固定值，必须保持原值，不要为了品牌大小写改动兼容性标识。
 - `app/page.tsx` 是首页；`app/styles/`、`app/skills/`、`app/boosters/`、`app/attributes/` 分别负责比赛风格、球员技巧、增能和属性页面。
 - `app/data.ts` 保存位置和比赛风格数据；`components/` 保存共用组件；`app/globals.css` 保存全局样式。
 

@@ -1583,16 +1583,16 @@ summary {
   font-size: 0.7rem;
   letter-spacing: 0.08em;
 }
-.skill-research-copy {
+.skill-detail .skill-research-copy {
   white-space: pre-line;
-  color: #f4dc91 !important;
+  color: #f4dc91;
   font-size: 0.86rem;
   font-weight: 450;
-  line-height: 1.72 !important;
+  line-height: 1.72;
 }
-.skill-research-copy-en {
-  margin-top: 11px !important;
-  color: #c4d0f5 !important;
+.skill-detail .skill-research-copy-en {
+  margin-top: 11px;
+  color: #c4d0f5;
   font-size: 0.78rem;
 }
 .clear-search {
@@ -1696,8 +1696,7 @@ summary {
   transition-delay: 0s;
 }
 .booster-source-tooltip a {
-  text-decoration: none !important;
-  text-decoration-line: none !important;
+  text-decoration: none;
 }
 .booster-intro {
   overflow: visible;
@@ -2624,8 +2623,7 @@ summary {
   display: inline;
   margin-left: 4px;
   color: var(--yellow);
-  text-decoration: none !important;
-  text-decoration-line: none !important;
+  text-decoration: none;
   white-space: nowrap;
 }
 .recommendation-filter-heading button {
@@ -2990,9 +2988,6 @@ summary {
   }
   .brand-lockup {
     flex: 0 0 auto;
-  }
-  .brand-logo {
-    width: 92px;
   }
   .mobile-nav-toggle {
     display: inline-flex;
@@ -3387,9 +3382,6 @@ summary {
 @media (max-width: 420px) {
   .brand-lockup {
     min-width: 0;
-  }
-  .brand-logo {
-    width: 92px;
   }
   .workspace {
     padding: 18px 14px;

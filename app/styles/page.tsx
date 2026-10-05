@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SiteFooter } from '@/components/site-footer';
+import { normalizeSearchText } from '@/lib/utils';
 import { positions, styles, type Side } from '../data';
 
 export const dynamic = 'force-static';
@@ -34,9 +35,16 @@ const pitchNodes: Array<{
   { position: 'GK', x: 50, y: 94 },
 ];
 
-function normalize(value: string) {
-  return value.trim().toLocaleLowerCase();
-}
+const totalAttackCount = styles.filter(
+  (style) => style.side === 'attack',
+).length;
+const totalDefenseCount = styles.length - totalAttackCount;
+const stylePositionCounts = new Map(
+  positions.map((position) => [
+    position,
+    styles.filter((style) => style.positions.includes(position)).length,
+  ]),
+);
 
 type WebMcpContext = {
   registerTool: (
@@ -129,14 +137,14 @@ export default function StylesPage() {
   }, []);
 
   const results = useMemo(() => {
-    const keyword = normalize(query);
+    const keyword = normalizeSearchText(query);
     return styles.filter((style) => {
       const positionMatches =
         position === 'ALL' || style.positions.includes(position);
       const sideMatches = side === 'all' || style.side === side;
       const searchMatches =
         !keyword ||
-        normalize(
+        normalizeSearchText(
           `${style.nameZh} ${style.nameEn} ${style.descriptionZh} ${style.descriptionEn} ${style.positions.join(' ')}`,
         ).includes(keyword);
       return positionMatches && sideMatches && searchMatches;
@@ -145,10 +153,6 @@ export default function StylesPage() {
 
   const attackCount = results.filter((style) => style.side === 'attack').length;
   const defenseCount = results.length - attackCount;
-  const totalAttackCount = styles.filter(
-    (style) => style.side === 'attack',
-  ).length;
-  const totalDefenseCount = styles.length - totalAttackCount;
   const overviewStats = [
     { label: '球员风格', value: styles.length },
     { label: '进攻', value: totalAttackCount },
@@ -198,9 +202,7 @@ export default function StylesPage() {
             <span className="pitch-circle" />
             <span className="pitch-half" />
             {pitchNodes.map((node) => {
-              const count = styles.filter((style) =>
-                style.positions.includes(node.position),
-              ).length;
+              const count = stylePositionCounts.get(node.position) ?? 0;
               return (
                 <button
                   key={node.position}
