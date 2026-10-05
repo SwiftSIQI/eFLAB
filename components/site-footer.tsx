@@ -5,7 +5,7 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div>
         <Link className="footer-brand" href="/">
-          eFootball Lab
+          eflab
         </Link>
         <p>
           快速查询比赛风格、球员技巧、球员属性与增能，资料以游戏内说明为准。

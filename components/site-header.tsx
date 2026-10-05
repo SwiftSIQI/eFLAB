@@ -20,11 +20,11 @@ export function SiteHeader() {
       <a className="skip-link" href="#main-content">
         跳到主要内容
       </a>
-      <Link className="brand-lockup" href="/" aria-label="eFootball Lab 首页">
+      <Link className="brand-lockup" href="/" aria-label="eflab 首页">
         <Image
           className="brand-logo"
-          src="/efootball-lab-logo.svg"
-          alt="eFootball Lab"
+          src="/eflab-logo.svg"
+          alt="eflab"
           width={205}
           height={64}
           priority

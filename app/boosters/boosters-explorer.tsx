@@ -94,6 +94,28 @@ export function BoostersExplorer() {
           </div>
         </header>
 
+        <section className="usage-guide" aria-labelledby="boosters-usage-title">
+          <div className="usage-guide-heading">
+            <p className="eyebrow">HOW TO USE</p>
+            <h2 id="boosters-usage-title">增能查询怎么用？</h2>
+            <p>根据球员位置、想提升的属性和增能价值逐步缩小结果。</p>
+          </div>
+          <ol className="usage-steps">
+            <li>
+              <strong>选择球员位置</strong>
+              <span>只显示该位置可以通过随机增能代币获得的增能。</span>
+            </li>
+            <li>
+              <strong>选择想提升的属性</strong>
+              <span>支持多选，结果会同时满足所有已选属性。</span>
+            </li>
+            <li>
+              <strong>选择增能价值</strong>
+              <span>按必备、推荐或可选查看不同优先级的增能。</span>
+            </li>
+          </ol>
+        </section>
+
         <div className="booster-toolbar">
           <label className="search-box reference-search">
             <span className="sr-only">搜索增能</span>

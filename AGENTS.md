@@ -17,6 +17,7 @@
 ## 1. 项目概况
 
 - 项目是 eFootball 中文工具站，使用 React、TypeScript、Vite、Vinext 适配层和 Tailwind CSS。
+- 网站品牌统一使用 `eflab`；不要再新增或恢复旧品牌名称或旧 Logo 资源名。
 - `app/page.tsx` 是首页；`app/styles/`、`app/skills/`、`app/boosters/`、`app/attributes/` 分别负责比赛风格、球员技巧、增能和属性页面。
 - `app/data.ts` 保存位置和比赛风格数据；`components/` 保存共用组件；`app/globals.css` 保存全局样式。
 
@@ -31,7 +32,7 @@
 
 ### 3.1 基本原则
 
-- 不编辑或提交 `node_modules/`、`.next/`、`.vinext/`、`.wrangler/`、`dist/`、构建缓存和 `.env*` 敏感内容。
+- 不编辑或提交 `node_modules/`、`.next/`、`.vinext/`、`.wrangler/`、`dist/`、构建缓存和 `.env*` 敏感内容。`node_modules/` 是 npm 安装产物，不是 source of truth；每次正式构建前会删除并通过 `npm ci` 重新安装。
 
 ### 3.2 数据来源与生成
 
@@ -55,7 +56,7 @@
 - `csv/player_skill.csv` 是技巧名称、描述和分类的唯一来源，不得添加其中不存在的技能或分类。
 - 技巧分类允许重叠，以 CSV 的“技巧类型-中文”和“技巧类型-英文”为准。
 - 遇到别名、缩写或组合简称时，查阅 `csv/player_skill.csv` 和 `csv/player_skill_combo.csv`。网页数据和代码使用 CSV 标准名称；无法对应时，先询问标准技能及是否需要补充映射。
-- 技巧图片位于 `public/skills/`，按序号使用 `01.webp`～`67.webp`；原始高清资源已移出本工程，不参与构建和发布。
+- 技巧原始高清图片位于 `media/skills-hd/`，发布用的 WebP 位于 `public/skills/`，按序号使用 `01.webp`～`67.webp`。修改或补充原始 PNG 后运行 `npm run convert:skills` 更新发布资源；`media/` 不参与网站路由，但属于工程 source of truth 资料。
 
 ### 3.6 技能推荐归一化
 
@@ -65,20 +66,35 @@
 - 输出为 `csv/play_skill_rec_by_expert.csv`，随后由 `generate_skills_data.rb` 转换为 `app/skills/data.ts`。修改脚本或输入时，校验技能清单、位置映射和输出行数。
 - `npm test` 会重新生成数据并执行 `test/data_pipeline_test.rb`，用于校验 CSV、专家推荐、图片和生成链路。
 
+### 3.7 网站访问门禁
+
+- `components/site-access-gate.tsx` 负责首次访问密码校验；正确密码为 `eflab666`，验证通过后仅在当前浏览器的 `localStorage` 中记录解锁状态。
+- 门禁包裹整个站点布局，未解锁时不得展示首页、导航或工具页面内容。修改门禁时要同时检查首次加载、错误密码、刷新后状态和无 `localStorage` 环境。
+- 这是前端访问门槛，不是服务端安全认证；不要把它描述为保护源代码、接口或敏感数据的安全机制。
+
+### 3.8 技巧与增能使用说明
+
+- 技巧页面的说明必须保持与实际筛选顺序一致：推荐方案 → 位置 → 球员定位 → 推荐度。定制化技能组是将组合内技能加入当前推荐列表；剔除球员已有技能是让用户手动排除已有技能，避免因暂未接入 efhub 而重复推荐。
+- 技巧价值只评价技能本身，不包含位置维度；相关文案必须提醒用户结合具体位置、球员定位和使用场景参考。
+- 增能页面的说明应解释位置筛选、属性多选和增能价值筛选；属性多选是同时满足所有已选属性，而不是满足任意一个。
+
 ## 4. 运行与验证
 
 ### 4.1 常规检查
 
 - 使用本地 Node.js 24 和 `package-lock.json` 锁定的 npm 依赖；本地 Node.js 或 npm 不可用时，才使用 workspace dependencies 作为备用运行时。
 - 常用命令：`npm run dev`、`npm run lint`、`npm run build`。
-- `npm run dev` 和 `npm run build` 会自动依次执行技能推荐归一化和四类数据生成。
+- 访问本地站点时，首次打开需要输入访问密码 `eflab666`；验证状态保存在当前浏览器本地存储中。
+- `npm run prepare:build` 是正式构建前的完整准备流程：清理可重建缓存、`node_modules/`、生成产物和旧的技能 WebP；按 `package-lock.json` 执行 `npm ci`；再依次执行技能推荐归一化、数据生成和 PNG→WebP 转换。
+- `npm run build` 会自动先执行 `npm run prepare:build`，因此每次正式构建都从全新的依赖和生成产物开始，不复用本地依赖或构建缓存。该流程不删除 `.env*`、源码 CSV 或 `media/` 原始资源；不要把这些 source of truth 或本地配置加入清理列表。
+- 仅修改数据或开发调试时，不需要执行完整清理流程；使用 `npm run normalize:data`、`npm run generate:data` 或 `npm run convert:skills` 更新对应产物即可。
 - 需要单独更新技能推荐归一化结果时，运行 `npm run normalize:data`。
 - 修改后运行最相关的检查；涉及交互时检查对应页面。无法验证时说明原因和风险。
 
 ### 4.2 Chrome 本地预览
 
 - 只有用户明确要求预览时才启动。项目使用 `.openai/hosting.json`、Vite 和 Vinext 适配层，优先使用项目现有 npm 命令 `npm run dev`。
-- 预览前确认 `node_modules/.bin/vite` 存在。依赖缺失时使用 `npm ci`，不得使用 pnpm；除非用户明确要求，否则不要手工修改或删除 `node_modules/`。
+- 预览前确认 `node_modules/.bin/vite` 存在。依赖缺失时使用 `npm ci`，不得使用 pnpm；不要手工修改 `node_modules/`，需要完整重装时使用 `npm run prepare:build`。
 - 在可保留的终端会话中运行 `npm run dev -- --host 127.0.0.1`，等待实际的 `Local` 地址，不重复启动服务或扫描端口。
 - 用同一环境对该地址发起一次轻量 HTTP 请求，确认返回非错误状态后，再在 Chrome 中打开该准确地址；请求失败不能视为预览成功。
 - 不得留下预览适配配置。若环境限制要求临时修改，启动后立即恢复，并说明临时调整及恢复结果。

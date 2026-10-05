@@ -7,7 +7,7 @@ const categoryLabels = skillCategories
   .map((category) => category.label);
 
 export const metadata: Metadata = {
-  title: '球员技巧 | eFootball Lab',
+  title: '球员技巧 | eflab',
   description: `按 ${categoryLabels.join('、')} 等 ${categoryLabels.length} 类查询球员技巧。`,
 };
 

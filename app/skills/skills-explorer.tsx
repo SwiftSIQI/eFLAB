@@ -102,6 +102,8 @@ export function SkillsExplorer() {
         : (skillComboGroups.find((group) => group.id === selectedSkillCombo)
             ?.skillIds as readonly number[] | undefined);
     const filtered = playerSkills.filter((skill) => {
+      const isSelectedComboSkill =
+        selectedComboSkillIds?.includes(skill.id) ?? false;
       const matchesPositionFilters =
         selectedPosition === null ||
         (selectedPlan !== null &&
@@ -121,17 +123,12 @@ export function SkillsExplorer() {
               : skill.positionRecommendations[selectedPlan]?.[
                   selectedPosition
                 ]?.[selectedProfile] === selectedPositionRecommendation)));
-      const matchesSelectedCombo =
-        selectedComboSkillIds === undefined ||
-        selectedComboSkillIds.includes(skill.id);
-
       return (
         (category === 'all' || skill.categories.includes(category)) &&
         (selectedRecommendation === null ||
           skill.recommendation === selectedRecommendation) &&
         !selectedOwnedSkillIds.includes(skill.id) &&
-        matchesPositionFilters &&
-        matchesSelectedCombo &&
+        (matchesPositionFilters || isSelectedComboSkill) &&
         (!keyword ||
           `${skill.nameZh} ${skill.nameEn} ${skill.description} ${skill.descriptionEn} ${skill.researchZh ?? ''} ${skill.researchEn ?? ''}`
             .toLocaleLowerCase()
@@ -208,6 +205,47 @@ export function SkillsExplorer() {
             ))}
           </div>
         </header>
+      </section>
+
+      <section className="usage-guide" aria-labelledby="skills-usage-title">
+        <div className="usage-guide-heading">
+          <p className="eyebrow">HOW TO USE</p>
+          <h2 id="skills-usage-title">技巧推荐怎么用？</h2>
+          <p>按下面的顺序逐步筛选，最下面会显示当前最适合的技能。</p>
+        </div>
+        <ol className="usage-steps">
+          <li>
+            <strong>选择推荐方案</strong>
+            <span>先选择你比较信任的方案，例如大叔或 Skye。</span>
+          </li>
+          <li>
+            <strong>选择位置</strong>
+            <span>选择 CF、SS、RWF 等球员位置。</span>
+          </li>
+          <li>
+            <strong>选择球员定位</strong>
+            <span>例如 RWF/LWF 还可以进一步选择逆足内切或顺足传中。</span>
+          </li>
+          <li>
+            <strong>选择推荐度</strong>
+            <span>按必备、推荐或可选筛选，结果会在下方更新。</span>
+          </li>
+        </ol>
+        <div className="usage-guide-notes">
+          <p>
+            <strong>定制化技能组：</strong>
+            如果你特别在意某个组合，例如大丸子，选择后组合内的三个技能也会加入下方推荐列表。
+          </p>
+          <p>
+            <strong>剔除球员已有技能：</strong>
+            由于暂时没有接入
+            efhub，请手动选出球员已经拥有的技能，推荐结果就不会重复出现这些技能。
+          </p>
+          <p>
+            <strong>技巧价值：</strong>
+            这里只评价技能本身的价值，没有加入位置维度；请结合具体位置、定位和使用场景参考。
+          </p>
+        </div>
       </section>
 
       <section className="skills-workspace" aria-label="球员技巧查询">
