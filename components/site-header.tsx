@@ -17,7 +17,9 @@ export function SiteHeader() {
 
   return (
     <header className="topbar">
-      <a className="skip-link" href="#main-content">跳到主要内容</a>
+      <a className="skip-link" href="#main-content">
+        跳到主要内容
+      </a>
       <Link className="brand-lockup" href="/" aria-label="eFootball Lab 首页">
         <Image
           className="brand-logo"

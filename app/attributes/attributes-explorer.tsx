@@ -35,7 +35,10 @@ export function AttributesExplorer() {
       : attributeCategories.find((item) => item.id === category)!;
 
   return (
-    <main id="main-content" className="site-shell reference-page attributes-page">
+    <main
+      id="main-content"
+      className="site-shell reference-page attributes-page"
+    >
       <section className="reference-workspace">
         <header className="reference-intro">
           <p className="eyebrow">PLAYER ATTRIBUTES</p>

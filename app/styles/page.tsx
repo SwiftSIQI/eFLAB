@@ -14,7 +14,11 @@ export const dynamic = 'force-static';
 type SideFilter = 'all' | Side;
 type Position = (typeof positions)[number];
 
-const pitchNodes: Array<{ position: Exclude<Position, 'ALL'>; x: number; y: number }> = [
+const pitchNodes: Array<{
+  position: Exclude<Position, 'ALL'>;
+  x: number;
+  y: number;
+}> = [
   { position: 'CF', x: 50, y: 8 },
   { position: 'LWF', x: 16, y: 22 },
   { position: 'SS', x: 50, y: 25 },
@@ -59,7 +63,8 @@ export default function StylesPage() {
   }, [position, query, side]);
 
   useEffect(() => {
-    const context = (document as Document & { modelContext?: WebMcpContext }).modelContext;
+    const context = (document as Document & { modelContext?: WebMcpContext })
+      .modelContext;
     if (!context?.registerTool) return;
     const lifecycle = new AbortController();
 
@@ -68,7 +73,8 @@ export default function StylesPage() {
         {
           name: 'filter_playing_styles',
           title: '筛选比赛风格',
-          description: '按兼容位置、进攻或防守类型以及中英文关键词筛选页面中的比赛风格。',
+          description:
+            '按兼容位置、进攻或防守类型以及中英文关键词筛选页面中的比赛风格。',
           inputSchema: {
             type: 'object',
             properties: {
@@ -80,15 +86,29 @@ export default function StylesPage() {
           },
           annotations: { readOnlyHint: false, untrustedContentHint: false },
           execute(input) {
-            if (!input || typeof input !== 'object') throw new Error('筛选参数必须是对象。');
-            const values = input as { position?: string; side?: string; query?: string };
-            if (values.position && !positions.includes(values.position as Position)) {
+            if (!input || typeof input !== 'object')
+              throw new Error('筛选参数必须是对象。');
+            const values = input as {
+              position?: string;
+              side?: string;
+              query?: string;
+            };
+            if (
+              values.position &&
+              !positions.includes(values.position as Position)
+            ) {
               throw new Error('不支持该位置。');
             }
-            if (values.side && !['all', 'attack', 'defense'].includes(values.side)) {
+            if (
+              values.side &&
+              !['all', 'attack', 'defense'].includes(values.side)
+            ) {
               throw new Error('不支持该比赛风格类型。');
             }
-            if (values.query !== undefined && typeof values.query !== 'string') {
+            if (
+              values.query !== undefined &&
+              typeof values.query !== 'string'
+            ) {
               throw new Error('搜索词必须是字符串。');
             }
             if (values.position) setPosition(values.position as Position);
@@ -111,7 +131,8 @@ export default function StylesPage() {
   const results = useMemo(() => {
     const keyword = normalize(query);
     return styles.filter((style) => {
-      const positionMatches = position === 'ALL' || style.positions.includes(position);
+      const positionMatches =
+        position === 'ALL' || style.positions.includes(position);
       const sideMatches = side === 'all' || style.side === side;
       const searchMatches =
         !keyword ||
@@ -124,7 +145,9 @@ export default function StylesPage() {
 
   const attackCount = results.filter((style) => style.side === 'attack').length;
   const defenseCount = results.length - attackCount;
-  const totalAttackCount = styles.filter((style) => style.side === 'attack').length;
+  const totalAttackCount = styles.filter(
+    (style) => style.side === 'attack',
+  ).length;
   const totalDefenseCount = styles.length - totalAttackCount;
   const overviewStats = [
     { label: '球员风格', value: styles.length },
@@ -138,10 +161,16 @@ export default function StylesPage() {
         <header className="reference-intro">
           <p className="eyebrow">PLAYING STYLES</p>
           <h1>比赛风格</h1>
-          <p>{styles.length} 项比赛风格分为进攻和防守两大类，帮助你快速了解球员在场上的跑位倾向与职责。</p>
+          <p>
+            {styles.length}{' '}
+            项比赛风格分为进攻和防守两大类，帮助你快速了解球员在场上的跑位倾向与职责。
+          </p>
           <div className="reference-stats" aria-label="比赛风格概览">
             {overviewStats.map((item) => (
-              <span key={item.label}><strong>{item.value}</strong>{item.label}</span>
+              <span key={item.label}>
+                <strong>{item.value}</strong>
+                {item.label}
+              </span>
             ))}
           </div>
         </header>
@@ -169,7 +198,9 @@ export default function StylesPage() {
             <span className="pitch-circle" />
             <span className="pitch-half" />
             {pitchNodes.map((node) => {
-              const count = styles.filter((style) => style.positions.includes(node.position)).length;
+              const count = styles.filter((style) =>
+                style.positions.includes(node.position),
+              ).length;
               return (
                 <button
                   key={node.position}
@@ -207,14 +238,19 @@ export default function StylesPage() {
             </div>
 
             <div className="filter-row">
-              <Tabs value={side} onValueChange={(value) => setSide(value as SideFilter)}>
+              <Tabs
+                value={side}
+                onValueChange={(value) => setSide(value as SideFilter)}
+              >
                 <TabsList className="side-tabs" aria-label="比赛风格类型">
                   <TabsTrigger value="all">全部</TabsTrigger>
                   <TabsTrigger value="attack" className="attack-tab">
-                    <Swords aria-hidden="true" />进攻型
+                    <Swords aria-hidden="true" />
+                    进攻型
                   </TabsTrigger>
                   <TabsTrigger value="defense" className="defense-tab">
-                    <Shield aria-hidden="true" />防守型
+                    <Shield aria-hidden="true" />
+                    防守型
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
@@ -227,7 +263,11 @@ export default function StylesPage() {
                   placeholder="搜索中英文名称…"
                 />
                 {query && (
-                  <button type="button" onClick={() => setQuery('')} aria-label="清除搜索">
+                  <button
+                    type="button"
+                    onClick={() => setQuery('')}
+                    aria-label="清除搜索"
+                  >
                     <X aria-hidden="true" />
                   </button>
                 )}
@@ -238,9 +278,14 @@ export default function StylesPage() {
           <div className="result-heading" aria-live="polite">
             <div>
               <p className="eyebrow">COMPATIBLE STYLES</p>
-              <h2>{position === 'ALL' ? '全部位置' : position} 可触发的比赛风格</h2>
+              <h2>
+                {position === 'ALL' ? '全部位置' : position} 可触发的比赛风格
+              </h2>
             </div>
-            <div className="result-counts" aria-label={`${results.length} 项结果`}>
+            <div
+              className="result-counts"
+              aria-label={`${results.length} 项结果`}
+            >
               <span className="attack-count">攻 {attackCount}</span>
               <span className="defense-count">防 {defenseCount}</span>
             </div>
@@ -277,7 +322,11 @@ export default function StylesPage() {
                 <Search aria-hidden="true" />
                 <h3>没有找到相关风格</h3>
                 <p>尝试更换位置、类型或搜索词。</p>
-                <Button type="button" variant="outline" onClick={() => setQuery('')}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setQuery('')}
+                >
                   清除搜索
                 </Button>
               </div>

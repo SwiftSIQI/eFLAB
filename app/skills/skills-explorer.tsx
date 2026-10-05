@@ -39,13 +39,14 @@ const positionRecommendationLabels = {
 } as const;
 const positionRecommendationLevels: SkillPositionRecommendation[] = [
   ...new Set(
-    playerSkills.flatMap((skill) =>
-      Object.values(skill.positionRecommendations).flatMap((plan) =>
-        Object.values(plan ?? {}).flatMap((position) =>
-          Object.values(position ?? {}),
+    playerSkills
+      .flatMap((skill) =>
+        Object.values(skill.positionRecommendations).flatMap((plan) =>
+          Object.values(plan ?? {}).flatMap((position) =>
+            Object.values(position ?? {}),
+          ),
         ),
-      ),
-    )
+      )
       .filter(
         (level): level is SkillPositionRecommendation =>
           level !== null && level !== undefined,
@@ -54,8 +55,7 @@ const positionRecommendationLevels: SkillPositionRecommendation[] = [
 ].sort((first, second) => second - first);
 const recommendationSourceUrls: Record<string, string> = {
   '冲啊大叔 CasToR': 'https://www.bilibili.com/video/BV1UuJazNE8s/',
-  Skye:
-    'https://docs.google.com/spreadsheets/u/0/d/1A33zBtq6cVTghg6ytROST6k70SRMSFoOxEkSvdXSeRk/htmlview?pli=1#gid=2081134566',
+  Skye: 'https://docs.google.com/spreadsheets/u/0/d/1A33zBtq6cVTghg6ytROST6k70SRMSFoOxEkSvdXSeRk/htmlview?pli=1#gid=2081134566',
 };
 const getHighestPositionLevel = (
   values: Partial<Record<string, SkillPositionRecommendation>> | undefined,
@@ -674,7 +674,9 @@ export function SkillsExplorer() {
                   selectedPlan={selectedPlan}
                   selectedPosition={selectedPosition}
                   selectedProfile={selectedProfile}
-                  selectedPositionRecommendation={selectedPositionRecommendation}
+                  selectedPositionRecommendation={
+                    selectedPositionRecommendation
+                  }
                 />
               ))}
               {results.length === 0 && (

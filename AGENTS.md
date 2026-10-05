@@ -35,7 +35,7 @@
 
 ### 3.2 数据来源与生成
 
-- CSV 是结构化数据的唯一来源：比赛风格使用 `csv/player_style.csv`，增能使用 `csv/player_booster.csv`，技巧使用 `csv/player_skill.csv`，球员属性使用 `csv/player_ability.csv`。`app/data.ts`、`app/skills/data.ts`、`app/boosters/data.ts` 和 `app/attributes/data.ts` 都是构建时生成的临时产物，不需要提交或手工编辑。
+- CSV 是结构化数据的唯一来源：比赛风格使用 `csv/player_style.csv`，增能使用 `csv/player_booster.csv`，技巧使用 `csv/player_skill.csv`，技能组合使用 `csv/player_skill_combo.csv`，球员属性使用 `csv/player_ability.csv`。对应的 `app/data.ts`、`app/skills/data.ts`、`app/skills/skill-combos.ts`、`app/boosters/data.ts` 和 `app/attributes/data.ts` 都是构建时生成的临时产物，不需要提交或手工编辑。唯一例外是 `csv/play_skill_rec_by_expert.csv`，它由 `csv/expert/` 下的专家 CSV 归一化生成。
 - 主数据 CSV 第一列统一为连续唯一的 `序号`，直接作为对应 `data.ts` 的 `id`，不得生成英文 slug ID；技能组合 CSV 的序号同样必须与技巧 CSV 对齐。
 - 五个生成脚本位于 `script/`：`generate_playing_styles_data.rb`、`generate_boosters_data.rb`、`generate_skills_data.rb`、`generate_attributes_data.rb` 和 `generate_skill_combo_data.rb`。修改数据时先改 CSV，再运行对应脚本；`npm run dev` 和 `npm run build` 会自动生成，禁止直接编辑生成的 `data.ts`。
 - CSV 字段名含 `-中文` 或 `-英文` 时，修改一侧要提醒用户是否同步修改另一侧。

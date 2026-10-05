@@ -8,6 +8,7 @@
     "pnpm-lock.yaml",
     "yarn.lock",
     "bun.lock",
-    "bun.lockb"
+    "bun.lockb",
+    "app/skills/skill-combos.ts"
   ]
 }

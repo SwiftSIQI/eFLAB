@@ -71,7 +71,9 @@ export function SkillCard({
   return (
     <details className="skill-card">
       <summary>
-        <span className="skill-number">{String(skill.id).padStart(2, '0')}</span>
+        <span className="skill-number">
+          {String(skill.id).padStart(2, '0')}
+        </span>
         <span className="skill-title">
           <strong>
             {skill.nameZh}
@@ -111,7 +113,9 @@ export function SkillCard({
               : `技能价值 ${skill.recommendation} 星`}
           </strong>
         </span>
-        <span className="skill-expand" aria-hidden="true">＋</span>
+        <span className="skill-expand" aria-hidden="true">
+          ＋
+        </span>
       </summary>
       <div className="skill-detail">
         <Image

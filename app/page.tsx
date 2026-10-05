@@ -78,8 +78,8 @@ export default function HomePage() {
           </h1>
           <p className="home-tagline">自由构建球员，不再四处求人。</p>
           <p className="home-lead">
-            面向 eFootball 玩家打造的球员自定义构建工具。当前收录 {styles.length}{' '}
-            种比赛风格、{playerSkills.length} 项球员技巧、
+            面向 eFootball 玩家打造的球员自定义构建工具。当前收录{' '}
+            {styles.length} 种比赛风格、{playerSkills.length} 项球员技巧、
             {playerAttributes.length} 项球员属性和 {boosters.length}{' '}
             种球员增能。
           </p>

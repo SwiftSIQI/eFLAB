@@ -42,6 +42,8 @@ next-env.d.ts
 /app/skills/data.ts
 /app/boosters/data.ts
 /app/attributes/data.ts
+/app/skills/skill-combos.ts
+/csv/play_skill_rec_by_expert.csv
 
 # local tooling and operating-system files
 .ruby-version
