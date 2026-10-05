@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: '快速查询 eFootball 比赛风格、球员技巧、球员属性与增能。',
 };
 
+export const dynamic = 'force-static';
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN">

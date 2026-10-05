@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: '按 ShowTime、射门、盘带、传球、防守、守门和其他 7 类查询球员技巧。',
 };
 
+export const dynamic = 'force-static';
+
 export default function SkillsPage() {
   return <SkillsExplorer />;
 }

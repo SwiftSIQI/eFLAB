@@ -9,6 +9,8 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SiteFooter } from '@/components/site-footer';
 import { positions, styles, type Side } from '../data';
 
+export const dynamic = 'force-static';
+
 type SideFilter = 'all' | Side;
 type Position = (typeof positions)[number];
 

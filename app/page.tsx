@@ -57,6 +57,8 @@ const tools = [
   },
 ] as const;
 
+export const dynamic = 'force-static';
+
 export default function HomePage() {
   return (
     <main id="main-content" className="site-shell home-page">
