@@ -35,6 +35,7 @@ groups = group_names.map do |group_name|
   skill_ids = table.each_with_object([]) do |row, ids_for_group|
     ids_for_group << Integer(row["序号"].to_s, 10) if row[group_name].to_s.strip.match?(/\A(?:✓|√|是|true|1)\z/i)
   end
+  fail_with("技能组 #{group_name} 没有包含任何技能") if skill_ids.empty?
   { id: group_name, label: group_name, skillIds: skill_ids }
 end
 

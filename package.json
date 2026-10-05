@@ -19,7 +19,7 @@
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",
     "format": "oxfmt",
-    "normalize:data": "ruby script/normalize_skill_recommendations.rb --expert '冲啊大叔 CasToR=csv/player_skill_rec_from_大叔.csv' --expert 'Skye=csv/player_skill_rec_from_skye.csv'"
+    "normalize:data": "ruby script/normalize_skill_recommendations.rb --expert '1=冲啊大叔 CasToR=csv/player_skill_rec_from_大叔.csv' --expert '2=Skye=csv/player_skill_rec_from_skye.csv'"
   },
   "dependencies": {
     "react": "19.2.6",

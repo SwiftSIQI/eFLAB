@@ -44,6 +44,20 @@ const getHighestPositionLevel = (
       (level): level is SkillPositionRecommendation => level !== undefined,
     ),
   );
+
+const getDisplayedPositionLevel = (
+  skill: PlayerSkill,
+  plan: SkillRecommendationPlanId,
+  position: SkillPosition,
+  profile: string | null,
+  selectedLevel: SkillPositionRecommendation | null,
+) => {
+  if (selectedLevel !== null) return selectedLevel;
+
+  const values = skill.positionRecommendations[plan]?.[position];
+  if (profile !== null && profile !== '通用') return values?.[profile] ?? 0;
+  return getHighestPositionLevel(values);
+};
 export function SkillsExplorer() {
   const [category, setCategory] = useState<Category>('all');
   const [query, setQuery] = useState('');
@@ -338,11 +352,11 @@ export function SkillsExplorer() {
                 {skillRecommendationPlans.map((plan) => {
                   const selected = selectedPlan === plan.id;
                   const sourceUrl =
-                    plan.id === 'castor'
+                    plan.id === '1'
                       ? 'https://www.bilibili.com/video/BV1UuJazNE8s/'
                       : 'https://docs.google.com/spreadsheets/u/0/d/1A33zBtq6cVTghg6ytROST6k70SRMSFoOxEkSvdXSeRk/htmlview?pli=1#gid=2081134566';
                   const sourceName =
-                    plan.id === 'castor' ? '冲啊大叔 CasToR' : 'Skye';
+                    plan.id === '1' ? '冲啊大叔 CasToR' : 'Skye';
                   return (
                     <div
                       key={plan.id}
@@ -645,8 +659,24 @@ export function SkillsExplorer() {
             </div>
 
             <div className="skill-list">
-              {results.map((skill) => (
-                <details key={skill.id} className="skill-card">
+              {results.map((skill) => {
+                const displayedPositionLevel =
+                  selectedPlan !== null && selectedPosition !== null
+                    ? getDisplayedPositionLevel(
+                        skill,
+                        selectedPlan,
+                        selectedPosition,
+                        selectedProfile,
+                        selectedPositionRecommendation,
+                      )
+                    : 0;
+                const displayedPositionLabel =
+                  positionRecommendationLabels[
+                    displayedPositionLevel as SkillPositionRecommendation
+                  ] ?? '暂无适配';
+
+                return (
+                  <details key={skill.id} className="skill-card">
                   <summary>
                     <span className="skill-number">
                       {String(skill.id).padStart(2, '0')}
@@ -670,22 +700,13 @@ export function SkillsExplorer() {
                     {selectedPosition !== null && selectedPlan !== null && (
                       <span
                         className="skill-position-fit"
-                        aria-label={`${selectedPosition} 位置适配 ${selectedProfile && selectedProfile !== '通用' ? `${selectedProfile} ` : ''}${positionRecommendationLabels[selectedPositionRecommendation ?? (getHighestPositionLevel(skill.positionRecommendations[selectedPlan]?.[selectedPosition]) as SkillPositionRecommendation)]}`}
+                        aria-label={`${selectedPosition} 位置适配 ${selectedProfile && selectedProfile !== '通用' ? `${selectedProfile} ` : ''}${displayedPositionLabel}`}
                       >
                         {selectedPosition}{' '}
                         {selectedProfile && selectedProfile !== '通用'
                           ? `${selectedProfile} `
                           : ''}
-                        {
-                          positionRecommendationLabels[
-                            selectedPositionRecommendation ??
-                              (getHighestPositionLevel(
-                                skill.positionRecommendations[selectedPlan]?.[
-                                  selectedPosition
-                                ],
-                              ) as SkillPositionRecommendation)
-                          ]
-                        }
+                        {displayedPositionLabel}
                       </span>
                     )}
                     <span
@@ -746,8 +767,9 @@ export function SkillsExplorer() {
                       )}
                     </div>
                   </div>
-                </details>
-              ))}
+                  </details>
+                );
+              })}
               {results.length === 0 && (
                 <div className="empty-state">
                   <Search aria-hidden="true" />
