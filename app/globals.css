@@ -1727,14 +1727,6 @@ summary {
   margin-top: 3px;
   font-size: 0.82rem;
 }
-.booster-intro .usage-steps {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-.booster-intro .usage-steps li {
-  min-height: 0;
-  min-width: 0;
-  padding: 14px;
-}
 .booster-intent-guide {
   gap: 14px;
 }
@@ -1771,10 +1763,6 @@ summary {
   gap: 10px;
   padding: 14px 150px 14px 14px;
   cursor: pointer;
-  list-style: none;
-}
-.booster-intent-summary::-webkit-details-marker {
-  display: none;
 }
 .booster-intent-option.is-expanded .booster-intent-summary {
   padding-bottom: 10px;
@@ -1828,10 +1816,10 @@ summary {
   margin: 0;
   padding: 0 14px 14px;
 }
-.booster-intent-detail:not(ol) {
-  color: #c3cff5;
-  font-size: 0.8rem;
-  line-height: 1.6;
+.booster-intent-detail li {
+  min-width: 0;
+  min-height: 0;
+  padding: 14px;
 }
 .booster-intent-lookup-steps {
   grid-template-columns: 1fr;

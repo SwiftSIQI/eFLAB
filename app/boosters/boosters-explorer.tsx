@@ -1,7 +1,7 @@
 'use client';
 
 import { Check, ChevronDown, CircleHelp, Search, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
 import { Input } from '@/components/ui/input';
@@ -35,6 +35,69 @@ const recommendationLevels = [
 ].sort((first, second) => second - first);
 const maxRecommendationLevel = Math.max(...recommendationLevels, 0);
 type BoosterIntent = 'lookup' | 'recommend';
+
+type BoosterIntentOptionProps = {
+  readonly intent: BoosterIntent;
+  readonly selectedIntent: BoosterIntent;
+  readonly expandedIntent: BoosterIntent | null;
+  readonly title: string;
+  readonly description: string;
+  readonly detailId: string;
+  readonly onSelect: (intent: BoosterIntent) => void;
+  readonly onToggle: (intent: BoosterIntent) => void;
+  readonly children: ReactNode;
+};
+
+function BoosterIntentOption({
+  intent,
+  selectedIntent,
+  expandedIntent,
+  title,
+  description,
+  detailId,
+  onSelect,
+  onToggle,
+  children,
+}: BoosterIntentOptionProps) {
+  const selected = selectedIntent === intent;
+  const expanded = expandedIntent === intent;
+
+  return (
+    <div
+      className={`booster-intent-option${selected ? ' is-selected' : ''}${expanded ? ' is-expanded' : ''}`}
+    >
+      <label className="booster-intent-summary">
+        <input
+          type="radio"
+          name="booster-intent"
+          value={intent}
+          checked={selected}
+          aria-label={title}
+          onChange={() => onSelect(intent)}
+        />
+        <span className="booster-intent-radio" aria-hidden="true" />
+        <span className="booster-intent-copy">
+          <strong>{title}</strong>
+          <small>{description}</small>
+        </span>
+      </label>
+      <button
+        type="button"
+        className="booster-intent-expand"
+        aria-label={
+          expanded ? `收起${title}的使用说明` : `展开${title}的使用说明`
+        }
+        aria-expanded={expanded}
+        aria-controls={detailId}
+        onClick={() => onToggle(intent)}
+      >
+        <span>{expanded ? '收起使用说明' : '查看使用说明'}</span>
+        <ChevronDown aria-hidden="true" />
+      </button>
+      {expanded && children}
+    </div>
+  );
+}
 
 export function BoostersExplorer() {
   const [query, setQuery] = useState('');
@@ -71,6 +134,7 @@ export function BoostersExplorer() {
 
   const results = useMemo(() => {
     const keyword = query.trim().toLocaleLowerCase();
+    const isRecommendationMode = boosterIntent === 'recommend';
     return boosters.filter((booster) => {
       const text = `${booster.nameZh} ${booster.nameEn} ${booster.attributes
         .map((id) => {
@@ -78,21 +142,30 @@ export function BoostersExplorer() {
           return `${item.nameZh} ${item.nameEn}`;
         })
         .join(' ')}`.toLocaleLowerCase();
+      const matchesPosition =
+        !isRecommendationMode ||
+        selectedPosition === null ||
+        !respectRandomBoosterLimit ||
+        (
+          boosterIdsByPosition[selectedPosition] as readonly BoosterId[]
+        ).includes(booster.id);
+      const matchesRecommendation =
+        !isRecommendationMode ||
+        selectedRecommendation === null ||
+        booster.recommendation === selectedRecommendation;
+      const matchesAttributes =
+        !isRecommendationMode ||
+        selectedAttributes.every((attribute) =>
+          (booster.attributes as readonly AttributeId[]).includes(attribute),
+        );
+      const matchesKeyword =
+        !isRecommendationMode || !keyword || text.includes(keyword);
+
       return (
-        (boosterIntent === 'lookup' ||
-          (selectedPosition === null ||
-            !respectRandomBoosterLimit ||
-            (
-              boosterIdsByPosition[selectedPosition] as readonly BoosterId[]
-            ).includes(booster.id))) &&
-        (boosterIntent === 'lookup' ||
-          selectedRecommendation === null ||
-          booster.recommendation === selectedRecommendation) &&
-        (boosterIntent === 'lookup' ||
-          selectedAttributes.every((attribute) =>
-            (booster.attributes as readonly AttributeId[]).includes(attribute),
-          )) &&
-        (boosterIntent === 'recommend' || !keyword || text.includes(keyword))
+        matchesPosition &&
+        matchesRecommendation &&
+        matchesAttributes &&
+        matchesKeyword
       );
     });
   }, [
@@ -103,6 +176,19 @@ export function BoostersExplorer() {
     selectedPosition,
     selectedRecommendation,
   ]);
+
+  const resultTitle =
+    boosterIntent === 'lookup'
+      ? query
+        ? `搜索「${query}」的增能`
+        : '全部增能'
+      : selectedPosition
+        ? respectRandomBoosterLimit
+          ? `${selectedPosition} 可随机获得的增能`
+          : `${selectedPosition} 的增能（已忽略随机限制）`
+        : selectedAttributes.length === 0
+          ? '全部增能'
+          : `同时提升「${selectedAttributes.map((id) => getAttribute(id).nameZh).join('＋')}」`;
 
   return (
     <main id="main-content" className="site-shell reference-page boosters-page">
@@ -122,102 +208,55 @@ export function BoostersExplorer() {
               <strong>{boosters.length}</strong>球员增能
             </span>
           </div>
-          <section className="usage-guide booster-intent-guide" aria-labelledby="boosters-usage-title">
+          <section
+            className="usage-guide booster-intent-guide"
+            aria-labelledby="boosters-usage-title"
+          >
             <div className="usage-guide-heading">
               <strong id="boosters-usage-title">我想：</strong>
               <span>选择一个使用方式，开始查询增能。</span>
             </div>
-            <div className="booster-intent-options" role="radiogroup" aria-labelledby="boosters-usage-title">
-              <div
-                className={`booster-intent-option${boosterIntent === 'lookup' ? ' is-selected' : ''}${expandedBoosterIntent === 'lookup' ? ' is-expanded' : ''}`}
+            <div
+              className="booster-intent-options"
+              role="radiogroup"
+              aria-labelledby="boosters-usage-title"
+            >
+              <BoosterIntentOption
+                intent="lookup"
+                selectedIntent={boosterIntent}
+                expandedIntent={expandedBoosterIntent}
+                title="我想查询某个增能的作用"
+                description="搜索增能中文或英文名称，查看它会增加哪些属性。"
+                detailId="booster-lookup-steps"
+                onSelect={selectBoosterIntent}
+                onToggle={toggleBoosterIntent}
               >
-                <label className="booster-intent-summary">
-                  <input
-                    type="radio"
-                    name="booster-intent"
-                    value="lookup"
-                    checked={boosterIntent === 'lookup'}
-                    aria-label="我想查询某个增能的作用"
-                    onChange={() => selectBoosterIntent('lookup')}
-                  />
-                  <span className="booster-intent-radio" aria-hidden="true" />
-                  <span className="booster-intent-copy">
-                    <strong>我想查询某个增能的作用</strong>
-                    <small>搜索增能中文或英文名称，查看它会增加哪些属性。</small>
-                  </span>
-                </label>
-                <button
-                  type="button"
-                  className="booster-intent-expand"
-                  aria-label={
-                    expandedBoosterIntent === 'lookup'
-                      ? '收起查询增能作用的使用说明'
-                      : '展开查询增能作用的使用说明'
-                  }
-                  aria-expanded={expandedBoosterIntent === 'lookup'}
-                  aria-controls="booster-lookup-steps"
-                  onClick={() => toggleBoosterIntent('lookup')}
+                <ol
+                  id="booster-lookup-steps"
+                  className="usage-steps booster-intent-detail booster-intent-lookup-steps"
                 >
-                  <span>
-                    {expandedBoosterIntent === 'lookup'
-                      ? '收起使用说明'
-                      : '查看使用说明'}
-                  </span>
-                  <ChevronDown aria-hidden="true" />
-                </button>
-                {expandedBoosterIntent === 'lookup' && (
-                  <ol
-                    id="booster-lookup-steps"
-                    className="usage-steps booster-intent-detail booster-intent-lookup-steps"
-                  >
-                    <li>
-                      <strong>搜索增能名称</strong>
-                      <span>
-                        在搜索框输入增能的中文或英文名称，即可查看该增能对属性的提升情况。
-                      </span>
-                    </li>
-                  </ol>
-                )}
-              </div>
-              <div
-                className={`booster-intent-option${boosterIntent === 'recommend' ? ' is-selected' : ''}${expandedBoosterIntent === 'recommend' ? ' is-expanded' : ''}`}
+                  <li>
+                    <strong>搜索增能名称</strong>
+                    <span>
+                      在搜索框输入增能的中文或英文名称，即可查看该增能对属性的提升情况。
+                    </span>
+                  </li>
+                </ol>
+              </BoosterIntentOption>
+              <BoosterIntentOption
+                intent="recommend"
+                selectedIntent={boosterIntent}
+                expandedIntent={expandedBoosterIntent}
+                title="我想给球员添加合适的增能"
+                description="根据球员位置、目标属性和增能价值筛选结果。"
+                detailId="booster-recommend-steps"
+                onSelect={selectBoosterIntent}
+                onToggle={toggleBoosterIntent}
               >
-                <label className="booster-intent-summary">
-                  <input
-                    type="radio"
-                    name="booster-intent"
-                    value="recommend"
-                    checked={boosterIntent === 'recommend'}
-                    aria-label="我想给球员添加合适的增能"
-                    onChange={() => selectBoosterIntent('recommend')}
-                  />
-                  <span className="booster-intent-radio" aria-hidden="true" />
-                  <span className="booster-intent-copy">
-                    <strong>我想给球员添加合适的增能</strong>
-                    <small>根据球员位置、目标属性和增能价值筛选结果。</small>
-                  </span>
-                </label>
-                <button
-                  type="button"
-                  className="booster-intent-expand"
-                  aria-label={
-                    expandedBoosterIntent === 'recommend'
-                      ? '收起添加合适增能的使用说明'
-                      : '展开添加合适增能的使用说明'
-                  }
-                  aria-expanded={expandedBoosterIntent === 'recommend'}
-                  aria-controls="booster-recommend-steps"
-                  onClick={() => toggleBoosterIntent('recommend')}
+                <ol
+                  id="booster-recommend-steps"
+                  className="usage-steps booster-intent-detail"
                 >
-                  <span>
-                    {expandedBoosterIntent === 'recommend'
-                      ? '收起使用说明'
-                      : '查看使用说明'}
-                  </span>
-                  <ChevronDown aria-hidden="true" />
-                </button>
-                {expandedBoosterIntent === 'recommend' && (
-                <ol id="booster-recommend-steps" className="usage-steps booster-intent-detail">
                   <li>
                     <strong>选择球员位置</strong>
                     <span>只显示该位置可以通过随机增能代币获得的增能。</span>
@@ -235,8 +274,7 @@ export function BoostersExplorer() {
                     <span>根据需要决定是否遵守游戏对随机增能的系统限制。</span>
                   </li>
                 </ol>
-                )}
-              </div>
+              </BoosterIntentOption>
             </div>
           </section>
         </div>
@@ -271,178 +309,180 @@ export function BoostersExplorer() {
 
         {boosterIntent === 'recommend' && (
           <>
-        <section
-          className="position-filter"
-          aria-labelledby="position-filter-title"
-        >
-          <div className="position-filter-heading">
-            <div>
-              <h2 id="position-filter-title">球员位置</h2>
-              <p>只显示该位置可通过随机增能代币获得的增能</p>
-            </div>
-            {selectedPosition !== null && (
-              <button type="button" onClick={() => setSelectedPosition(null)}>
-                显示全部
-              </button>
-            )}
-          </div>
-          <div className="position-options">
-            {boosterPositions.map((position) => {
-              const selected = selectedPosition === position;
-              return (
-                <button
-                  key={position}
-                  type="button"
-                  className={selected ? 'is-selected' : ''}
-                  onClick={() =>
-                    setSelectedPosition(selected ? null : position)
-                  }
-                  aria-pressed={selected}
-                >
-                  {position}
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        <section
-          className="attribute-filter"
-          aria-labelledby="attribute-filter-title"
-        >
-          <div className="attribute-filter-heading">
-            <div>
-              <h2 id="attribute-filter-title">想提升哪些属性？</h2>
-              <p>可多选；结果需同时提升所有已选属性。</p>
-            </div>
-            {selectedAttributes.length > 0 && (
-              <button
-                type="button"
-                className="attribute-filter-clear"
-                onClick={() => setSelectedAttributes([])}
-              >
-                清除 {selectedAttributes.length} 项
-              </button>
-            )}
-          </div>
-          <div className="attribute-options">
-            {availableAttributes.map((item) => {
-              const selected = selectedAttributes.includes(item.id);
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={selected ? 'is-selected' : ''}
-                  onClick={() => toggleAttribute(item.id)}
-                  aria-pressed={selected}
-                >
-                  <span className="attribute-check">
-                    {selected && <Check aria-hidden="true" />}
-                  </span>
-                  <span>
-                    {item.nameZh}
-                    <small>{item.nameEn}</small>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        <section
-          className="recommendation-filter"
-          aria-labelledby="recommendation-filter-title"
-        >
-          <div className="recommendation-filter-heading">
-            <div>
-              <div className="recommendation-heading-title">
-                <h2 id="recommendation-filter-title">增能价值</h2>
-                <span className="booster-source-info">
+            <section
+              className="position-filter"
+              aria-labelledby="position-filter-title"
+            >
+              <div className="position-filter-heading">
+                <div>
+                  <h2 id="position-filter-title">球员位置</h2>
+                  <p>只显示该位置可通过随机增能代币获得的增能</p>
+                </div>
+                {selectedPosition !== null && (
                   <button
                     type="button"
-                    aria-label="查看球员增能价值来源"
-                    aria-describedby="booster-source"
+                    onClick={() => setSelectedPosition(null)}
                   >
-                    <CircleHelp aria-hidden="true" />
+                    显示全部
                   </button>
-                  <span
-                    id="booster-source"
-                    className="custom-filter-tooltip recommendation-source-tooltip booster-source-tooltip"
-                    role="tooltip"
-                  >
-                    球员增能价值参考自vearwu的研究成果，
-                    <a
-                      href="https://www.bilibili.com/video/BV1M3m3BaEuM/"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      查看相关资料。
-                    </a>
-                  </span>
-                </span>
+                )}
               </div>
-              <p>按价值等级筛选增能</p>
-            </div>
-            {selectedRecommendation !== null && (
-              <button
-                type="button"
-                onClick={() => setSelectedRecommendation(null)}
-              >
-                显示全部
-              </button>
-            )}
-          </div>
-          <div className="recommendation-options">
-            {recommendationLevels.map((level) => {
-              const selected = selectedRecommendation === level;
-              return (
-                <button
-                  key={level}
-                  type="button"
-                  className={selected ? 'is-selected' : ''}
-                  onClick={() =>
-                    setSelectedRecommendation(selected ? null : level)
-                  }
-                  aria-pressed={selected}
-                >
-                  <strong>{level} 星</strong>
-                  <span aria-label={`${level} 颗星`}>
-                    {'★'.repeat(level)}
-                    <i>{'★'.repeat(maxRecommendationLevel - level)}</i>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </section>
+              <div className="position-options">
+                {boosterPositions.map((position) => {
+                  const selected = selectedPosition === position;
+                  return (
+                    <button
+                      key={position}
+                      type="button"
+                      className={selected ? 'is-selected' : ''}
+                      onClick={() =>
+                        setSelectedPosition(selected ? null : position)
+                      }
+                      aria-pressed={selected}
+                    >
+                      {position}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
 
-        <section
-          className="random-limit-filter"
-          aria-labelledby="random-limit-filter-title"
-        >
-          <div className="position-filter-heading">
-            <div>
-              <h2 id="random-limit-filter-title">随机增能限制</h2>
-              <p>控制是否遵守游戏对随机增能的系统限制</p>
-            </div>
-          </div>
-          <div className="random-limit-options">
-            {[false, true].map((enabled) => (
-              <button
-                key={String(enabled)}
-                type="button"
-                className={
-                  respectRandomBoosterLimit === enabled ? 'is-selected' : ''
-                }
-                onClick={() => setRespectRandomBoosterLimit(enabled)}
-                aria-pressed={respectRandomBoosterLimit === enabled}
-              >
-                {enabled ? '开启随机增能限制' : '不开启随机增能限制'}
-              </button>
-            ))}
-          </div>
-        </section>
+            <section
+              className="attribute-filter"
+              aria-labelledby="attribute-filter-title"
+            >
+              <div className="attribute-filter-heading">
+                <div>
+                  <h2 id="attribute-filter-title">想提升哪些属性？</h2>
+                  <p>可多选；结果需同时提升所有已选属性。</p>
+                </div>
+                {selectedAttributes.length > 0 && (
+                  <button
+                    type="button"
+                    className="attribute-filter-clear"
+                    onClick={() => setSelectedAttributes([])}
+                  >
+                    清除 {selectedAttributes.length} 项
+                  </button>
+                )}
+              </div>
+              <div className="attribute-options">
+                {availableAttributes.map((item) => {
+                  const selected = selectedAttributes.includes(item.id);
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      className={selected ? 'is-selected' : ''}
+                      onClick={() => toggleAttribute(item.id)}
+                      aria-pressed={selected}
+                    >
+                      <span className="attribute-check">
+                        {selected && <Check aria-hidden="true" />}
+                      </span>
+                      <span>
+                        {item.nameZh}
+                        <small>{item.nameEn}</small>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
 
+            <section
+              className="recommendation-filter"
+              aria-labelledby="recommendation-filter-title"
+            >
+              <div className="recommendation-filter-heading">
+                <div>
+                  <div className="recommendation-heading-title">
+                    <h2 id="recommendation-filter-title">增能价值</h2>
+                    <span className="booster-source-info">
+                      <button
+                        type="button"
+                        aria-label="查看球员增能价值来源"
+                        aria-describedby="booster-source"
+                      >
+                        <CircleHelp aria-hidden="true" />
+                      </button>
+                      <span
+                        id="booster-source"
+                        className="custom-filter-tooltip recommendation-source-tooltip booster-source-tooltip"
+                        role="tooltip"
+                      >
+                        球员增能价值参考自vearwu的研究成果，
+                        <a
+                          href="https://www.bilibili.com/video/BV1M3m3BaEuM/"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          查看相关资料。
+                        </a>
+                      </span>
+                    </span>
+                  </div>
+                  <p>按价值等级筛选增能</p>
+                </div>
+                {selectedRecommendation !== null && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedRecommendation(null)}
+                  >
+                    显示全部
+                  </button>
+                )}
+              </div>
+              <div className="recommendation-options">
+                {recommendationLevels.map((level) => {
+                  const selected = selectedRecommendation === level;
+                  return (
+                    <button
+                      key={level}
+                      type="button"
+                      className={selected ? 'is-selected' : ''}
+                      onClick={() =>
+                        setSelectedRecommendation(selected ? null : level)
+                      }
+                      aria-pressed={selected}
+                    >
+                      <strong>{level} 星</strong>
+                      <span aria-label={`${level} 颗星`}>
+                        {'★'.repeat(level)}
+                        <i>{'★'.repeat(maxRecommendationLevel - level)}</i>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            <section
+              className="random-limit-filter"
+              aria-labelledby="random-limit-filter-title"
+            >
+              <div className="position-filter-heading">
+                <div>
+                  <h2 id="random-limit-filter-title">随机增能限制</h2>
+                  <p>控制是否遵守游戏对随机增能的系统限制</p>
+                </div>
+              </div>
+              <div className="random-limit-options">
+                {[false, true].map((enabled) => (
+                  <button
+                    key={String(enabled)}
+                    type="button"
+                    className={
+                      respectRandomBoosterLimit === enabled ? 'is-selected' : ''
+                    }
+                    onClick={() => setRespectRandomBoosterLimit(enabled)}
+                    aria-pressed={respectRandomBoosterLimit === enabled}
+                  >
+                    {enabled ? '开启随机增能限制' : '不开启随机增能限制'}
+                  </button>
+                ))}
+              </div>
+            </section>
           </>
         )}
       </section>
@@ -454,19 +494,7 @@ export function BoostersExplorer() {
         <div className="booster-result-heading" aria-live="polite">
           <div>
             <p className="eyebrow">BOOSTER LIST</p>
-            <h2>
-              {boosterIntent === 'lookup'
-                ? query
-                  ? `搜索「${query}」的增能`
-                  : '全部增能'
-                : selectedPosition
-                ? respectRandomBoosterLimit
-                  ? `${selectedPosition} 可随机获得的增能`
-                  : `${selectedPosition} 的增能（已忽略随机限制）`
-                : selectedAttributes.length === 0
-                  ? '全部增能'
-                  : `同时提升「${selectedAttributes.map((id) => getAttribute(id).nameZh).join('＋')}」`}
-            </h2>
+            <h2>{resultTitle}</h2>
           </div>
           <span>
             {results.length} / {boosters.length}
