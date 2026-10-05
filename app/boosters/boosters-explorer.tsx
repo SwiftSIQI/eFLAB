@@ -125,7 +125,11 @@ export function BoostersExplorer() {
 
   function selectBoosterIntent(intent: BoosterIntent) {
     setBoosterIntent(intent);
-    if (intent === 'recommend') setQuery('');
+    setQuery('');
+    setSelectedAttributes([]);
+    setSelectedRecommendation(null);
+    setSelectedPosition(null);
+    setRespectRandomBoosterLimit(false);
   }
 
   function toggleBoosterIntent(intent: BoosterIntent) {
@@ -137,14 +141,6 @@ export function BoostersExplorer() {
     const keyword = normalizeSearchText(query);
     const isRecommendationMode = boosterIntent === 'recommend';
     return boosters.filter((booster) => {
-      const text = normalizeSearchText(
-        `${booster.nameZh} ${booster.nameEn} ${booster.attributes
-          .map((id) => {
-            const item = getAttribute(id);
-            return `${item.nameZh} ${item.nameEn}`;
-          })
-          .join(' ')}`,
-      );
       const matchesPosition =
         !isRecommendationMode ||
         selectedPosition === null ||
@@ -162,7 +158,11 @@ export function BoostersExplorer() {
           (booster.attributes as readonly AttributeId[]).includes(attribute),
         );
       const matchesKeyword =
-        !isRecommendationMode || !keyword || text.includes(keyword);
+        isRecommendationMode ||
+        !keyword ||
+        [booster.nameZh, booster.nameEn].some(
+          (name) => normalizeSearchText(name).includes(keyword),
+        );
 
       return (
         matchesPosition &&
@@ -271,7 +271,7 @@ export function BoostersExplorer() {
       </section>
 
       <section
-        className="booster-content booster-filter-section"
+        className="booster-filter-section"
         aria-label="增能检索"
       >
         <div className="booster-filter-panel">
@@ -306,6 +306,16 @@ export function BoostersExplorer() {
                   </button>
                 )}
               </label>
+              {query && (
+                <p className="booster-search-feedback" aria-live="polite">
+                  {results.length > 0
+                    ? `已匹配：${results
+                        .slice(0, 3)
+                        .map((booster) => `${booster.nameZh} / ${booster.nameEn}`)
+                        .join('、')}`
+                    : '没有匹配的增能，请尝试输入完整的中文或英文名称。'}
+                </p>
+              )}
             </div>
           )}
 
@@ -522,6 +532,9 @@ export function BoostersExplorer() {
                       {booster.nameEn}
                     </span>
                   </h3>
+                  <p className="booster-effect">
+                    提升以下 {boosterAttributeCount} 项球员属性
+                  </p>
                 </div>
                 <div
                   className="booster-recommendation"
@@ -538,9 +551,6 @@ export function BoostersExplorer() {
                   </span>
                 </div>
               </div>
-              <p className="booster-effect">
-                提升以下 {boosterAttributeCount} 项球员属性
-              </p>
               <div className="booster-attributes">
                 {booster.attributes.map((id) => {
                   const item = getAttribute(id);
