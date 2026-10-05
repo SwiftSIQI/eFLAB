@@ -41,8 +41,8 @@ export function AttributesExplorer() {
           <p className="eyebrow">PLAYER ATTRIBUTES</p>
           <h1>球员属性</h1>
           <p>
-            26 项球员属性分为进攻技能、防守技能和力量 3
-            大类，包含游戏内中英文说明。
+            {playerAttributes.length} 项球员属性分为
+            {attributeCategories.length} 大类，包含游戏内中英文说明。
           </p>
           <div className="reference-stats" aria-label="属性概览">
             <span>

@@ -10,7 +10,7 @@ import {
 
 import { SiteFooter } from '@/components/site-footer';
 import { styles } from './data';
-import { playerSkills } from './skills/data';
+import { playerSkills, skillCategories } from './skills/data';
 import { playerAttributes } from './attributes/data';
 import { boosters } from './boosters/data';
 
@@ -39,7 +39,7 @@ const tools = [
     href: '/skills',
     eyebrow: 'PLAYER SKILLS',
     title: '球员技巧',
-    description: '按 7 大分类了解 67 个球员技能，并根据球员位置与定位推荐相应技巧。',
+    description: `按 ${skillCategories.length - 1} 大分类了解 ${playerSkills.length} 个球员技能，并根据球员位置与定位推荐相应技巧。`,
     count: playerSkills.length,
     unit: '项球员技巧',
     icon: Sparkles,

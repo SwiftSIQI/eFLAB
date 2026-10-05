@@ -9,16 +9,6 @@ ROOT = File.expand_path('..', __dir__)
 EXPERT_DIR = File.join(ROOT, 'csv', 'expert')
 OUTPUT_PATH = File.join(ROOT, 'csv', 'play_skill_rec_by_expert.csv')
 
-# 固定的技能清单。专家 CSV 必须完整覆盖这 67 项技能，且不能出现额外名称。
-SKILLS = %w[
-  剪刀脚假动作 两次触球 牛摆尾 马赛回旋 挑球过顶 脚后跟磕球变向 向后切球并转身 磕球过人 后脚磕球变向 足底控球
-  旋风盘带 瞬间加速 磁力脚 头球 炮弹式头球 远距离弧线球 弧线落叶射门 吊射控制 落叶球射门 急坠射门 急升射门
-  远射 掠地瞬击 瞬发射门 杂技般进球 脚跟绝技 一脚射门 无定型射门 百折不挠 一脚传球 直传球 精准长传 精确横传球
-  急坠传中 外脚背弧线球 插花脚 不看球员传球 翻盘传球 到位传球 无定型传球 低空传球 守门员低弹道凌空球
-  守门员高弹道凌空球 长距离投掷 守门员长距离投掷 点球专家 守门员扑点球 守门员指挥防守 门神战吼 假摔 盯人 压迫
-  截球 封堵 空中优势 飞身铲球 伸脚抢截 后防领袖 杂技般解围 空中堡垒 紧急回防 队长 进攻号手 超级候补 战斗精神 进攻提速 强力抢断
-].freeze
-
 POSITIONS = %w[CF SS RWF/LWF AMF CMF DMF RMF/LMF RB/LB CB GK].freeze
 IGNORED_HEADERS = /序号|技能|技巧|名称|技能推荐度|全局|global|rating|备注/i
 
@@ -33,6 +23,7 @@ end
 def parse_cell(value)
   text = value.to_s.strip
   return nil if text.empty? || text == '—' || text.include?('❌')
+  fail_with("专家推荐等级格式无效：#{text}") unless text.match?(/\A★{1,5}☆{0,4}\z/)
 
   stars = [text.count('★'), 3].min
   stars.positive? ? stars : nil
@@ -73,7 +64,7 @@ def display_name(path)
   { '大叔' => '冲啊大叔 CasToR', 'skye' => 'Skye' }.fetch(name, name)
 end
 
-def load_expert(id, path)
+def load_expert(id, path, skills)
   rows = CSV.read(path, headers: true, encoding: 'bom|utf-8')
   fail_with("#{path}: CSV 没有表头") if rows.headers.empty?
 
@@ -87,8 +78,8 @@ def load_expert(id, path)
     skill_rows[skill] = row.to_h
   end
 
-  missing = SKILLS - skill_rows.keys
-  extra = skill_rows.keys - SKILLS
+  missing = skills - skill_rows.keys
+  extra = skill_rows.keys - skills
   fail_with("#{path}: 包含 player_skill.csv 中不存在的技能：#{extra.join('、')}") unless extra.empty?
   fail_with("#{path}: 缺少技能：#{missing.join('、')}") unless missing.empty?
 
@@ -117,14 +108,21 @@ paths = Dir.glob(File.join(options[:expert_dir], '*.csv')).sort.reject do |path|
 end
 fail_with("#{options[:expert_dir]} 中没有可用专家 CSV") if paths.empty?
 
-experts = paths.each_with_index.map { |path, index| load_expert(index + 1, path) }
+skill_table = CSV.read(File.join(ROOT, 'csv', 'player_skill.csv'), headers: true, encoding: 'bom|utf-8')
+skill_column = '技巧名称-中文'
+fail_with("player_skill.csv 缺少字段：#{skill_column}") unless skill_table.headers.include?(skill_column)
+skills = skill_table.map { |row| row[skill_column].to_s.strip }
+fail_with('player_skill.csv 存在空技能名称') if skills.any?(&:empty?)
+fail_with('player_skill.csv 存在重复技能名称') unless skills.uniq.length == skills.length
+
+experts = paths.each_with_index.map { |path, index| load_expert(index + 1, path, skills) }
 expert_detail = []
 
 experts.each do |expert|
   expert[:mappings].each do |position, columns|
     columns.each do |header|
       profile = position_profile(header)
-      SKILLS.each do |skill|
+      skills.each do |skill|
         level = parse_cell(expert[:rows][skill][header])
         next unless level
 

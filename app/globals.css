@@ -1909,6 +1909,12 @@ summary {
   transform: translateY(0);
   transition-delay: 0s;
 }
+.custom-filter-info-wrap:focus-within > .custom-filter-tooltip {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
 .custom-filter-tooltip {
   position: absolute;
   z-index: 5;

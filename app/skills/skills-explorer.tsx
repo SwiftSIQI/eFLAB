@@ -90,8 +90,7 @@ export function SkillsExplorer() {
         (selectedPlan !== null &&
           skill.positionRecommendations[selectedPlan]?.[selectedPosition] !==
             undefined &&
-          (selectedPosition === null ||
-            selectedProfile === null ||
+          (selectedProfile === null ||
             skill.positionRecommendations[selectedPlan]?.[selectedPosition]?.[
               selectedProfile
             ] !== undefined) &&

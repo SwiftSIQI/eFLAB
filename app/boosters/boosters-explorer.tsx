@@ -15,6 +15,8 @@ import {
   type BoosterRecommendation,
 } from './data';
 
+const boosterAttributeCount = boosters[0]?.attributes.length ?? 0;
+
 const usedAttributeIds = new Set<AttributeId>(boosters.flatMap((booster) => [...booster.attributes]));
 const availableAttributes = playerAttributes.filter((item) => usedAttributeIds.has(item.id));
 const recommendationLevels = [5, 4, 3, 2, 1] as const satisfies readonly BoosterRecommendation[];
@@ -54,7 +56,7 @@ export function BoostersExplorer() {
           <p className="eyebrow">CRAFTABLE BOOSTERS</p>
           <h1>球员增能</h1>
           <p>
-            有 {boosters.length} 个球员增能可以同时提升 4 项球员属性，选择合适的增能可以进一步强化球员的场上竞争力。
+            有 {boosters.length} 个球员增能可以同时提升 {boosterAttributeCount} 项球员属性，选择合适的增能可以进一步强化球员的场上竞争力。
           </p>
           <div className="reference-stats" aria-label="球员增能概览">
             <span><strong>{boosters.length}</strong>球员增能</span>
@@ -170,7 +172,7 @@ export function BoostersExplorer() {
                   <span>{'★'.repeat(booster.recommendation)}<i>{'★'.repeat(5 - booster.recommendation)}</i></span>
                 </div>
               </div>
-              <p className="booster-effect">提升以下 4 项球员属性</p>
+              <p className="booster-effect">提升以下 {boosterAttributeCount} 项球员属性</p>
               <div className="booster-attributes">
                 {booster.attributes.map((id) => {
                   const item = getAttribute(id);

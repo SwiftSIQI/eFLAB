@@ -120,7 +120,6 @@ export function SkillCard({
           alt={`${skill.nameZh}技巧示意图`}
           width={567}
           height={319}
-          unoptimized
           loading="lazy"
           decoding="async"
         />

@@ -76,6 +76,46 @@ class DataPipelineTest < Minitest::Test
     end
   end
 
+  def test_invalid_expert_rating_fails_during_normalization
+    source = Dir.glob(File.join(EXPERT_DIR, '*.csv')).find do |path|
+      !File.basename(path).match?(/\Anouse(?:-|_)/i)
+    end
+
+    Dir.mktmpdir do |directory|
+      invalid = File.join(directory, File.basename(source))
+      FileUtils.cp(source, invalid)
+      content = File.read(invalid, encoding: 'bom|utf-8')
+      content.sub!('★★', '★★推荐')
+      File.write(invalid, content, encoding: 'utf-8')
+
+      _output, error, status = Open3.capture3(
+        'ruby',
+        File.join(ROOT, 'script/normalize_skill_recommendations.rb'),
+        '--expert-dir',
+        directory,
+        '--output',
+        File.join(directory, 'output.csv'),
+      )
+
+      refute status.success?
+      assert_includes error, '专家推荐等级格式无效'
+    end
+  end
+
+  def test_generated_data_matches_source_counts
+    generated = {
+      'app/data.ts' => [csv('csv/player_style.csv').length, /nameZh: "/],
+      'app/attributes/data.ts' => [csv('csv/player_ability.csv').length, /"nameZh":"/],
+      'app/boosters/data.ts' => [csv('csv/player_booster.csv').length, /nameZh: "/],
+      'app/skills/data.ts' => [SKILLS.length, /nameZh: "/],
+    }
+
+    generated.each do |path, (expected, marker)|
+      content = File.read(File.join(ROOT, path), encoding: 'UTF-8')
+      assert_equal expected, content.scan(marker).length, "生成产物数量不一致：#{path}"
+    end
+  end
+
   def test_attributes_and_boosters_share_one_catalog
     attributes = csv('csv/player_ability.csv')
     boosters = csv('csv/player_booster.csv')
@@ -91,9 +131,12 @@ class DataPipelineTest < Minitest::Test
 
   def test_skill_images_exist
     SKILLS.each do |row|
-      image = row['技巧图片索引'].to_s.strip
+      source_image = row['技巧图片索引'].to_s.strip
+      assert_match(/\A\d{2}\.png\z/, source_image)
+      image = source_image.sub(/\.png\z/, '.webp')
       assert File.file?(File.join(ROOT, 'public', 'skills', image)), image
     end
+    assert_empty Dir.glob(File.join(ROOT, 'public', 'skills', '*.png'))
   end
 
   def test_styles_use_known_positions

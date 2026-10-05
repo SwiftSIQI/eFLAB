@@ -79,6 +79,7 @@ skills = table.map do |row|
 
   image = row["技巧图片索引"].to_s.strip
   fail_with("序号 #{row["序号"]} 的图片索引无效") unless image.match?(/\A\d{2}\.png\z/)
+  image = image.sub(/\.png\z/, '.webp')
 
   recommendation_text = row["技能推荐度"].to_s.strip
   recommendation = if recommendation_text == "—" || recommendation_text.empty?
