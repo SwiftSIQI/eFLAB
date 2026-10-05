@@ -4,6 +4,7 @@ import { Check, ChevronDown, CircleHelp, Search, X } from 'lucide-react';
 import { useMemo, useState, type ReactNode } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
+import { ReferenceLayerDebug } from '@/components/reference-layer-debug';
 import { Input } from '@/components/ui/input';
 import { normalizeSearchText } from '@/lib/utils';
 import {
@@ -182,9 +183,10 @@ export function BoostersExplorer() {
 
   return (
     <main id="main-content" className="site-shell reference-page boosters-page">
+      <ReferenceLayerDebug />
       <section className="reference-workspace">
         <div className="reference-intro booster-intro">
-          <div className="booster-hero-copy">
+          <div className="booster-hero-copy booster-section-heading">
             <p className="eyebrow">CRAFTABLE BOOSTERS</p>
             <h1>球员增能</h1>
             <p>
@@ -238,7 +240,7 @@ export function BoostersExplorer() {
                 selectedIntent={boosterIntent}
                 expandedIntent={expandedBoosterIntent}
                 title="我想给球员添加合适的增能"
-                description="根据球员位置、目标属性和增能价值筛选结果。"
+                description="根据球员位置、球员属性和增能价值等维度筛选出最合适的球员增能。"
                 detailId="booster-recommend-steps"
                 onSelect={selectBoosterIntent}
                 onToggle={toggleBoosterIntent}
@@ -270,16 +272,16 @@ export function BoostersExplorer() {
         </div>
       </section>
 
-      <section className="booster-filter-section" aria-label="增能检索">
-        <div className="booster-filter-panel">
-          <div className="booster-filter-heading">
+      <section className="booster-filter-section" aria-label="增能筛选">
+        <div className="booster-filter-panel reference-section-panel">
+          <div className="booster-filter-heading booster-section-heading">
             <div>
-              <p className="eyebrow">BOOSTER SEARCH</p>
-              <h2>增能检索</h2>
+              <p className="eyebrow">BOOSTER SEARCH AREA</p>
+              <h2>增能筛选区</h2>
               <p>
                 {boosterIntent === 'lookup'
-                  ? '输入增能中文或英文名称，查看它会增加哪些属性。'
-                  : '根据球员位置、目标属性和增能价值，筛选适合添加给球员的增能。'}
+                  ? '搜索增能中文或英文名称，查看它会增加哪些属性。'
+                  : '根据球员位置、球员属性和增能价值等维度筛选出最合适的球员增能。'}
               </p>
             </div>
           </div>
@@ -397,13 +399,13 @@ export function BoostersExplorer() {
               </section>
 
               <section
-                className="recommendation-filter"
+                className="recommendation-filter reference-filter-module"
                 aria-labelledby="recommendation-filter-title"
               >
                 <div className="recommendation-filter-heading">
                   <div>
                     <div className="recommendation-heading-title">
-                      <h2 id="recommendation-filter-title">增能价值</h2>
+                      <h2 id="recommendation-filter-title">增能通用价值</h2>
                       <span
                         className={`booster-source-info${showBoosterSource ? ' is-visible' : ''}`}
                       >
@@ -506,11 +508,14 @@ export function BoostersExplorer() {
         className="booster-content booster-results-section"
         aria-label="增能查询结果"
       >
-        <div className="booster-results-panel">
-          <div className="booster-result-heading" aria-live="polite">
+        <div className="booster-results-panel reference-section-panel">
+          <div
+            className="booster-result-heading booster-section-heading"
+            aria-live="polite"
+          >
             <div>
-              <p className="eyebrow">BOOSTER LIST</p>
-              <h2>增能列表</h2>
+              <p className="eyebrow">BOOSTER RESULT LIST</p>
+              <h2>增能结果列表</h2>
             </div>
             <span>
               显示 {results.length} / 共 {boosters.length}

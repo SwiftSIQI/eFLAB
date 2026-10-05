@@ -5,6 +5,7 @@ import { useMemo, useState, type ReactNode } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { SiteFooter } from '@/components/site-footer';
+import { ReferenceLayerDebug } from '@/components/reference-layer-debug';
 import { normalizeSearchText } from '@/lib/utils';
 import {
   playerSkills,
@@ -22,6 +23,12 @@ import { SkillCard } from './skill-card';
 type Category = (typeof skillCategories)[number]['id'];
 type SkillRecommendation = Exclude<PlayerSkill['recommendation'], null>;
 type SkillIntent = 'lookup' | 'value' | 'recommend';
+const skillIntentDescriptions: Record<SkillIntent, string> = {
+  lookup: '搜索技巧中文或英文名称，查看它的实际作用。',
+  recommend: '通过 1-5 星的方式来区分不同球员技巧的价值。',
+  value:
+    '根据球员位置、场上定位、技能推荐度等维度筛选出最合适的球员技巧。',
+};
 type SkillCategoryDefinition = Extract<
   (typeof skillCategories)[number],
   { id: Exclude<Category, 'all'> }
@@ -294,9 +301,10 @@ export function SkillsExplorer() {
 
   return (
     <main id="main-content" className="site-shell reference-page skills-page">
+      <ReferenceLayerDebug />
       <section className="reference-workspace skills-reference-workspace">
-        <header className="reference-intro">
-          <div className="skills-intro-copy">
+        <header className="reference-intro booster-intro">
+          <div className="skills-intro-copy booster-hero-copy booster-section-heading">
             <p className="eyebrow">PLAYER SKILLS GUIDE</p>
             <h1>球员技巧</h1>
             <p>
@@ -319,7 +327,7 @@ export function SkillsExplorer() {
           >
             <div className="usage-guide-heading">
               <strong id="skills-intent-title">我想：</strong>
-              <span>选择一个使用方式，开始查询球员技巧。</span>
+              <span>选择一个使用方式，开始筛选球员技巧。</span>
             </div>
             <div
               className="booster-intent-options"
@@ -330,7 +338,7 @@ export function SkillsExplorer() {
                 intent="lookup"
                 selectedIntent={skillIntent}
                 title="我想查询某个技巧的作用"
-                description="输入技巧中文或英文名称，查看详细说明。"
+                description={skillIntentDescriptions.lookup}
                 onSelect={setSkillIntent}
               >
                 <span />
@@ -339,7 +347,7 @@ export function SkillsExplorer() {
                 intent="recommend"
                 selectedIntent={skillIntent}
                 title="我想了解不同技巧的通用价值"
-                description="根据推荐方案、位置适配和定制化技能组筛选技巧。"
+                description={skillIntentDescriptions.recommend}
                 onSelect={setSkillIntent}
               >
                 <span />
@@ -348,7 +356,7 @@ export function SkillsExplorer() {
                 intent="value"
                 selectedIntent={skillIntent}
                 title="我想给球员添加合适的技巧"
-                description="根据技巧价值，选择更适合添加给球员的技巧。"
+                description={skillIntentDescriptions.value}
                 onSelect={setSkillIntent}
               >
                 <span />
@@ -359,21 +367,21 @@ export function SkillsExplorer() {
       </section>
 
       <section
-        className="skills-workspace skills-filter-workspace"
+        className="skills-workspace skills-filter-workspace booster-filter-section"
         aria-label="球员技巧筛选"
       >
-        <div className="skills-controls">
+        <div className="skills-controls booster-filter-panel reference-section-panel">
           <div className="skill-results">
             {skillIntent === 'lookup' && (
-              <section className="skills-module skills-query-module">
-              <div className="skills-module-heading">
+            <section className="skills-module skills-query-module">
+              <div className="skills-module-heading booster-filter-heading booster-section-heading">
                 <div>
-                  <p className="eyebrow">SKILL SEARCH</p>
-                  <h2>技巧检索</h2>
-                  <p>输入技巧中文或英文名称，查看单项技巧的作用和说明。</p>
+                  <p className="eyebrow">SKILL SEARCH AREA</p>
+                  <h2>技巧筛选区</h2>
+                  <p>{skillIntentDescriptions.lookup}</p>
                 </div>
               </div>
-              <div className="skill-search-row">
+              <div className="skill-search-row booster-toolbar">
                 <label className="search-box">
                   <span className="sr-only">搜索球员技巧</span>
                   <Search aria-hidden="true" />
@@ -400,22 +408,26 @@ export function SkillsExplorer() {
               <section
                 className={`skills-module skills-recommendation-module skill-intent-${skillIntent}`}
               >
-              <div className="skills-module-heading">
+              <div className="skills-module-heading booster-filter-heading booster-section-heading">
                 <div>
-                  <p className="eyebrow">RECOMMENDATION BUILDER</p>
-                  <h2>了解技巧通用价值</h2>
-                  <p>结合推荐方案和位置适配，了解不同技巧的通用价值。</p>
+                  <p className="eyebrow">SKILL SEARCH AREA</p>
+                  <h2>技巧筛选区</h2>
+                  <p>{skillIntentDescriptions[skillIntent]}</p>
                 </div>
               </div>
               <section
-                className="recommendation-filter skill-recommendation-filter skill-value-filter"
+                className="position-filter reference-filter-module skill-recommendation-filter skill-value-filter"
                 aria-labelledby="skill-recommendation-filter-title"
               >
                 <div className="recommendation-filter-heading">
                   <div className="recommendation-title-with-info">
                     <div>
                       <div className="recommendation-heading-title">
-                        <h2 id="skill-recommendation-filter-title">给球员添加合适的技巧</h2>
+                        <h2 id="skill-recommendation-filter-title">
+                          {skillIntent === 'recommend'
+                            ? '技巧通用价值'
+                            : '给球员添加合适的技巧'}
+                        </h2>
                         <span className="custom-filter-option recommendation-info-option">
                           <button
                             type="button"
@@ -442,7 +454,6 @@ export function SkillsExplorer() {
                           </span>
                         </span>
                       </div>
-                      <p>按技巧价值筛选适合添加给球员的技巧</p>
                     </div>
                   </div>
                   {selectedRecommendation !== null && (
@@ -478,11 +489,12 @@ export function SkillsExplorer() {
                 </div>
               </section>
 
-              <section
-                className="position-filter skill-position-filter"
-                aria-labelledby="skill-position-filter-title"
-              >
-                <div className="position-filter-heading">
+              <div className="skill-position-filter">
+                <section
+                  className="position-filter reference-filter-module"
+                  aria-labelledby="skill-position-filter-title"
+                >
+                  <div className="position-filter-heading">
                   <div>
                     <h2 id="skill-position-filter-title">推荐方案</h2>
                     <p>先选择专家方案，再按位置和球员定位查看技巧</p>
@@ -502,7 +514,7 @@ export function SkillsExplorer() {
                     </button>
                   )}
                 </div>
-                <div className="recommendation-plan-options">
+                  <div className="recommendation-plan-options">
                   {skillRecommendationPlans.map((plan) => {
                     const selected = selectedPlan === plan.id;
                     const sourceUrl = recommendationSourceUrls[plan.label];
@@ -556,8 +568,11 @@ export function SkillsExplorer() {
                       </div>
                     );
                   })}
-                </div>
-                <div className="position-filter-heading">
+                  </div>
+                </section>
+
+                <section className="position-filter reference-filter-module">
+                  <div className="position-filter-heading">
                   <div>
                     <h2>位置适配</h2>
                     <p>
@@ -580,7 +595,7 @@ export function SkillsExplorer() {
                     </button>
                   )}
                 </div>
-                <div className="position-options">
+                  <div className="position-options">
                   {positionOptions.map((position) => {
                     const selected = selectedPosition === position.id;
                     return (
@@ -601,7 +616,7 @@ export function SkillsExplorer() {
                       </button>
                     );
                   })}
-                </div>
+                  </div>
                 {selectedPosition !== null &&
                   activePosition &&
                   activePosition.profiles.length > 0 && (
@@ -660,7 +675,8 @@ export function SkillsExplorer() {
                       )}
                     </div>
                   )}
-                <div className="skill-position-level-filter">
+                </section>
+                <section className="position-filter reference-filter-module skill-position-level-filter">
                   <div className="position-filter-heading">
                     <div>
                       <h2>位置适配等级</h2>
@@ -700,8 +716,8 @@ export function SkillsExplorer() {
                       );
                     })}
                   </div>
-                </div>
-                <div className="skill-custom-filter">
+                </section>
+                <section className="reference-filter-module skill-custom-filter">
                   <div className="position-filter-heading">
                     <div>
                       <h2>定制化技能组</h2>
@@ -764,8 +780,8 @@ export function SkillsExplorer() {
                       );
                     })}
                   </div>
-                </div>
-                <div className="skill-owned-filter">
+                </section>
+                <section className="reference-filter-module skill-owned-filter">
                   <div className="position-filter-heading">
                     <div>
                       <h2>剔除球员已有技能</h2>
@@ -811,8 +827,8 @@ export function SkillsExplorer() {
                       )}
                     </div>
                   </div>
-                </div>
-              </section>
+                </section>
+              </div>
               </section>
             )}
 
@@ -821,20 +837,22 @@ export function SkillsExplorer() {
       </section>
 
       <section
-        className="skills-workspace skills-list-workspace"
+        className="skills-workspace skills-list-workspace booster-content booster-results-section"
         aria-label="技巧列表"
       >
         <div className="skills-controls">
-          <div className="skill-results">
+          <div className="skill-results booster-results-panel reference-section-panel">
             <div
-              className="result-heading skill-result-heading"
+              className="result-heading skill-result-heading booster-result-heading booster-section-heading"
               aria-live="polite"
             >
               <div>
-                <p className="eyebrow">SKILLS LIST</p>
-                <h2>技巧列表</h2>
+                <p className="eyebrow">SKILL RESULT LIST</p>
+                <h2>技巧结果列表</h2>
               </div>
-              <span className="skill-result-count">{results.length} 项</span>
+              <span className="skill-result-count">
+                显示 {results.length} / 共 {playerSkills.length}
+              </span>
             </div>
 
             <nav className="skill-category-list" aria-label="技巧分类">
@@ -877,17 +895,10 @@ export function SkillsExplorer() {
                 />
               ))}
               {results.length === 0 && (
-                <div className="empty-state">
+                <div className="empty-state booster-empty">
                   <Search aria-hidden="true" />
                   <h3>没有找到相关技巧</h3>
-                  <p>试试其他分类或搜索词。</p>
-                  <button
-                    type="button"
-                    className="clear-search"
-                    onClick={() => setQuery('')}
-                  >
-                    清除搜索
-                  </button>
+                  <p>请尝试其他中文或英文关键词。</p>
                 </div>
               )}
             </div>

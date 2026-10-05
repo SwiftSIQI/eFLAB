@@ -46,6 +46,7 @@ body {
     radial-gradient(circle at 90% 2%, rgb(255 47 179 / 22%), transparent 28rem),
     radial-gradient(circle at 5% 25%, rgb(91 244 242 / 17%), transparent 30rem),
     linear-gradient(180deg, #071a91 0%, #04106a 33%, #030b4e 100%);
+  background-attachment: fixed;
   color: var(--foreground);
   font-family:
     'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', system-ui, sans-serif;
@@ -96,6 +97,18 @@ summary {
 
 .site-shell {
   min-height: 100vh;
+}
+
+.reference-page {
+  --booster-panel-padding: 20px;
+  --booster-heading-content-gap: 16px;
+  --reference-intro-bg: rgb(5 20 100 / 88%);
+  --reference-section-bg: rgb(7 24 111 / 72%);
+  --reference-guide-bg: rgb(7 24 111 / 84%);
+  --reference-option-bg: rgb(16 36 126 / 92%);
+  --reference-filter-bg: rgb(3 14 74 / 90%);
+  --reference-control-bg: rgb(4 16 88 / 80%);
+  --reference-control-muted-bg: rgb(4 16 88 / 65%);
 }
 
 .access-gate {
@@ -1240,10 +1253,7 @@ summary {
   margin-bottom: 0;
 }
 .skills-list-workspace .skill-results {
-  padding: 15px 16px 1px;
-  border: 1px solid rgb(91 244 242 / 24%);
-  border-radius: 22px;
-  background: rgb(5 20 100 / 35%);
+  min-width: 0;
 }
 .skills-usage-guide {
   width: auto;
@@ -1325,23 +1335,15 @@ summary {
   min-width: 0;
 }
 .skills-query-module {
-  margin-bottom: 24px;
-  padding: 15px 16px;
-  border: 1px solid rgb(91 244 242 / 28%);
-  border-radius: 18px;
-  background: rgb(91 244 242 / 4%);
+  margin-bottom: 0;
 }
 .skills-query-module .skill-search-row {
-  margin-bottom: 14px;
+  margin-bottom: 0;
 }
 .skills-recommendation-module {
   display: flex;
   flex-direction: column;
-  margin-bottom: 24px;
-  padding: 15px 16px 1px;
-  border: 1px solid rgb(239 255 39 / 32%);
-  border-radius: 18px;
-  background: rgb(239 255 39 / 4%);
+  margin-bottom: 0;
 }
 .skills-module-heading {
   display: flex;
@@ -1380,8 +1382,8 @@ summary {
 .skills-recommendation-module > .skill-value-filter {
   order: 2;
 }
-.skill-intent-recommend > .skill-value-filter,
-.skill-intent-value > .skill-position-filter {
+.skill-intent-recommend > .skill-position-filter,
+.skill-intent-value > .skill-value-filter {
   display: none;
 }
 .skill-category-list {
@@ -1413,17 +1415,20 @@ summary {
 }
 .skill-category span {
   display: flex;
-  align-items: baseline;
-  gap: 6px;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
   font-weight: 700;
-  white-space: nowrap;
+  line-height: 1.1;
 }
 .skill-category small {
-  display: inline;
+  display: block;
   margin-top: 0;
   color: #9fafe9;
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
   font-size: 0.7rem;
+  line-height: 1;
 }
 .skill-category b {
   color: #aebeff;
@@ -1456,6 +1461,16 @@ summary {
 .skill-recommendation-module .skill-position-filter {
   border-color: rgb(91 244 242 / 28%);
   background: rgb(91 244 242 / 5%);
+}
+.skills-filter-workspace .booster-section-heading > div > p:last-child {
+  color: #c3cff5;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.booster-filter-section .booster-section-heading > div > p:last-child {
+  color: #c3cff5;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 .skill-search-row {
   margin-bottom: 24px;
@@ -1676,7 +1691,16 @@ summary {
   border-radius: 22px;
   background:
     radial-gradient(circle at 90% 20%, rgb(255 47 179 / 20%), transparent 34%),
-    rgb(5 20 100 / 78%);
+    var(--reference-intro-bg);
+}
+.booster-intro {
+  display: grid;
+  overflow: visible;
+  padding: var(--booster-panel-padding);
+  grid-template-columns: minmax(0, 1fr) auto;
+  row-gap: var(--booster-heading-content-gap);
+  column-gap: 44px;
+  align-items: center;
 }
 .reference-intro h1 {
   margin: 5px 0 8px;
@@ -1757,13 +1781,6 @@ summary {
 .booster-source-tooltip a {
   text-decoration: none;
 }
-.booster-intro {
-  overflow: visible;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 14px 44px;
-  align-items: center;
-}
 .booster-hero-copy > p:not(.eyebrow) {
   max-width: none;
 }
@@ -1774,10 +1791,11 @@ summary {
 .booster-intro > .usage-guide {
   grid-column: 1 / -1;
   width: auto;
-  margin: 22px 0 0;
-  padding: 14px 18px;
+  margin: 0;
+  padding-block: var(--booster-panel-padding);
+  padding-inline: var(--booster-panel-padding);
   border-color: rgb(123 158 255 / 28%);
-  background: rgb(7 24 111 / 42%);
+  background: var(--reference-guide-bg);
 }
 .booster-intro .usage-guide-heading {
   display: flex;
@@ -1794,11 +1812,13 @@ summary {
   font-size: 0.82rem;
 }
 .booster-intent-guide {
-  gap: 14px;
+  align-content: start;
+  gap: var(--booster-heading-content-gap);
 }
 .booster-intent-guide .usage-guide-heading {
   display: grid;
-  gap: 4px;
+  gap: 6px;
+  line-height: 1.4;
 }
 .booster-intent-guide .usage-guide-heading strong {
   font-size: 1.2rem;
@@ -1819,7 +1839,7 @@ summary {
   overflow: hidden;
   border: 1px solid rgb(123 158 255 / 28%);
   border-radius: 12px;
-  background: rgb(16 36 126 / 48%);
+  background: var(--reference-option-bg);
   color: #e8edff;
   cursor: pointer;
 }
@@ -1928,67 +1948,49 @@ summary {
   font-size: 0.76rem;
   line-height: 1.5;
 }
-.booster-content {
+.booster-content,
+.booster-filter-section {
   width: min(1280px, 100%);
   margin: 0 auto;
   padding: 0 18px;
 }
 .booster-filter-section {
-  width: min(1280px, 100%);
   margin-top: 28px;
-  margin-right: auto;
-  margin-left: auto;
-  padding: 0 18px;
 }
-.booster-filter-panel {
-  padding: 15px 16px;
+.reference-section-panel {
+  padding: var(--booster-panel-padding);
   border: 1px solid rgb(91 244 242 / 28%);
   border-radius: 22px;
-  background: rgb(91 244 242 / 4%);
+  background: var(--reference-section-bg);
 }
 .booster-filter-heading {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: var(--booster-heading-content-gap);
 }
 .booster-filter-heading h2,
-.booster-filter-heading p {
+.booster-filter-heading p,
+.booster-result-heading p {
   margin: 0;
-}
-.booster-filter-heading h2 {
-  margin-top: 3px;
-  font-size: 1.2rem;
 }
 .booster-filter-heading > div > p:last-child {
   margin-top: 4px;
   color: #91a4e7;
-  font-size: 0.75rem;
-  line-height: 1.5;
 }
 .booster-filter-panel > .position-filter,
 .booster-filter-panel > .recommendation-filter,
-.booster-filter-panel > .random-limit-filter {
-  border-color: rgb(142 169 255 / 28%);
-  background: rgb(5 20 100 / 45%);
-}
+.booster-filter-panel > .random-limit-filter,
 .booster-filter-panel > .attribute-filter {
   border-color: rgb(142 169 255 / 28%);
-  background: rgb(5 20 100 / 45%);
+  background: var(--reference-filter-bg);
 }
 .booster-filter-panel > :last-child {
   margin-bottom: 0;
 }
 .booster-results-section {
   margin-top: 28px;
-  padding: 0 18px;
-}
-.booster-results-panel {
-  padding: 15px 16px 18px;
-  border: 1px solid rgb(91 244 242 / 28%);
-  border-radius: 22px;
-  background: rgb(91 244 242 / 4%);
 }
 .reference-toolbar,
 .booster-toolbar {
@@ -2217,7 +2219,24 @@ summary {
   background:
     radial-gradient(circle at 92% 20%, rgb(239 255 39 / 16%), transparent 34%),
     radial-gradient(circle at 8% 100%, rgb(255 47 179 / 13%), transparent 28%),
-    rgb(5 20 100 / 78%);
+    var(--reference-intro-bg);
+}
+.booster-section-heading .eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+}
+.booster-section-heading h1,
+.booster-section-heading h2 {
+  margin: 5px 0 8px;
+  font-size: clamp(1.65rem, 3vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+.booster-section-heading p:not(.eyebrow) {
+  margin: 0;
+  color: #c3cff5;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 .booster-rule {
   display: flex;
@@ -2245,7 +2264,7 @@ summary {
   padding: 15px 16px;
   border: 1px solid rgb(91 244 242 / 28%);
   border-radius: 16px;
-  background: rgb(91 244 242 / 5%);
+  background: var(--reference-filter-bg);
 }
 .position-filter-heading {
   display: flex;
@@ -2479,7 +2498,6 @@ summary {
 }
 .custom-filter-option:has(.custom-filter-select:disabled) {
   cursor: not-allowed;
-  opacity: 0.45;
 }
 .custom-filter-select {
   min-width: 0;
@@ -2507,6 +2525,7 @@ summary {
 }
 .custom-filter-select:disabled {
   cursor: not-allowed;
+  opacity: 0.45;
 }
 .custom-filter-info-wrap {
   position: relative;
@@ -2698,7 +2717,7 @@ summary {
   padding: 15px 16px;
   border: 1px solid rgb(239 255 39 / 28%);
   border-radius: 16px;
-  background: rgb(239 255 39 / 6%);
+  background: var(--reference-filter-bg);
 }
 .recommendation-filter-heading {
   display: flex;
@@ -2773,7 +2792,8 @@ summary {
   z-index: 20;
   width: max-content;
   max-width: calc(100vw - 32px);
-  white-space: nowrap;
+  white-space: normal;
+  line-height: 1.5;
 }
 .recommendation-source-tooltip a {
   display: inline;
@@ -2969,15 +2989,10 @@ summary {
   align-items: end;
   justify-content: space-between;
   gap: 16px;
-  margin: 0 0 14px;
+  margin: 0 0 var(--booster-heading-content-gap);
 }
-.booster-result-heading p,
-.booster-result-heading h2 {
+.booster-result-heading p {
   margin: 0;
-}
-.booster-result-heading h2 {
-  margin-top: 4px;
-  font-size: clamp(1.25rem, 2.5vw, 1.65rem);
 }
 .booster-result-heading > span {
   padding: 5px 10px;
@@ -3100,6 +3115,164 @@ summary {
   grid-column: 1 / -1;
   min-height: 180px;
 }
+
+/* Shared reference-page surfaces take precedence over page-specific modules. */
+.reference-page .reference-filter-module {
+  margin-bottom: 14px;
+  padding: 15px 16px;
+  border: 1px solid rgb(142 169 255 / 28%);
+  border-radius: 16px;
+  background: var(--reference-filter-bg);
+}
+.reference-page .position-filter,
+.reference-page .random-limit-filter,
+.reference-page .recommendation-filter,
+.reference-page .attribute-filter,
+.reference-page .skill-owned-filter {
+  background: var(--reference-filter-bg);
+}
+.reference-page .position-options button:not(.is-selected),
+.reference-page .random-limit-options button:not(.is-selected),
+.reference-page .recommendation-plan-option:not(.is-selected),
+.reference-page .profile-options button:not(.is-selected),
+.reference-page .position-level-options button:not(.is-selected),
+.reference-page .custom-filter-option:not(.is-selected),
+.reference-page .recommendation-options button:not(.is-selected) {
+  background: var(--reference-control-bg);
+}
+.reference-page .skill-owned-filter {
+  border-color: rgb(142 169 255 / 28%);
+}
+.reference-page .owned-skill-category {
+  background: var(--reference-control-bg);
+}
+.reference-page .owned-skill-category-options button {
+  background: var(--reference-control-muted-bg);
+}
+
+.reference-layer-debug-toggle {
+  position: fixed;
+  z-index: 100;
+  top: 12px;
+  right: 16px;
+  padding: 7px 10px;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 8px;
+  background: rgb(3 12 72 / 92%);
+  color: white;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.reference-layer-debug-toggle[aria-pressed='true'] {
+  border-color: #fff;
+  background: #fff;
+  color: #06115c;
+}
+
+html[data-reference-layer-debug='on'] body {
+  background: #101b36;
+}
+html[data-reference-layer-debug='on'] .reference-page .reference-intro,
+html[data-reference-layer-debug='on'] .reference-page .reference-section-panel {
+  background: #57213d !important;
+}
+html[data-reference-layer-debug='on'] .reference-page .booster-intro > .usage-guide,
+html[data-reference-layer-debug='on'] .reference-page .reference-stats span,
+html[data-reference-layer-debug='on'] .reference-page .booster-result-heading > span,
+html[data-reference-layer-debug='on'] .reference-page .reference-filter-module,
+html[data-reference-layer-debug='on'] .reference-page .position-filter,
+html[data-reference-layer-debug='on'] .reference-page .attribute-filter,
+html[data-reference-layer-debug='on'] .reference-page .recommendation-filter,
+html[data-reference-layer-debug='on'] .reference-page .random-limit-filter,
+html[data-reference-layer-debug='on'] .reference-page .skill-owned-filter,
+html[data-reference-layer-debug='on'] .reference-page .search-box input,
+html[data-reference-layer-debug='on'] .reference-page .booster-card,
+html[data-reference-layer-debug='on'] .reference-page .booster-card-heading,
+html[data-reference-layer-debug='on'] .reference-page .booster-attributes,
+html[data-reference-layer-debug='on'] .reference-page .skill-category-list,
+html[data-reference-layer-debug='on'] .reference-page .skill-list,
+html[data-reference-layer-debug='on'] .reference-page .skill-result-count {
+  background: #0b6b63 !important;
+}
+html[data-reference-layer-debug='on'] .reference-page .booster-intent-option,
+html[data-reference-layer-debug='on'] .reference-page .position-options,
+html[data-reference-layer-debug='on'] .reference-page .random-limit-options,
+html[data-reference-layer-debug='on'] .reference-page .recommendation-options,
+html[data-reference-layer-debug='on'] .reference-page .recommendation-plan-options,
+html[data-reference-layer-debug='on'] .reference-page .attribute-options,
+html[data-reference-layer-debug='on'] .reference-page .position-level-options,
+html[data-reference-layer-debug='on'] .reference-page .custom-filter-options,
+html[data-reference-layer-debug='on'] .reference-page .owned-skill-options,
+html[data-reference-layer-debug='on'] .reference-page .skill-category,
+html[data-reference-layer-debug='on'] .reference-page .skill-card,
+html[data-reference-layer-debug='on'] .reference-page .skill-card summary {
+  background: #8a5a00 !important;
+}
+html[data-reference-layer-debug='on'] .reference-page .booster-intent-option button,
+html[data-reference-layer-debug='on'] .reference-page .position-options button,
+html[data-reference-layer-debug='on'] .reference-page .random-limit-options button,
+html[data-reference-layer-debug='on'] .reference-page .recommendation-options button,
+html[data-reference-layer-debug='on'] .reference-page .recommendation-plan-option,
+html[data-reference-layer-debug='on'] .reference-page .attribute-options > button,
+html[data-reference-layer-debug='on'] .reference-page .position-level-options button,
+html[data-reference-layer-debug='on'] .reference-page .custom-filter-option,
+html[data-reference-layer-debug='on'] .reference-page .owned-skill-category,
+html[data-reference-layer-debug='on'] .reference-page .skill-detail {
+  background: #4b236d !important;
+}
+html[data-reference-layer-debug='on']
+  .reference-page
+  .owned-skill-category-options
+  button {
+  background: #8d3f78 !important;
+}
+html[data-reference-layer-debug='on'] .reference-page .booster-attributes > span,
+html[data-reference-layer-debug='on'] .reference-page .booster-index,
+html[data-reference-layer-debug='on']
+  .reference-page
+  .booster-recommendation
+  strong {
+  background: #8a5a00 !important;
+}
+html[data-reference-layer-debug='on'] .reference-page .skill-number,
+html[data-reference-layer-debug='on'] .reference-page .skill-category-tag,
+html[data-reference-layer-debug='on'] .reference-page .skill-research-tag,
+html[data-reference-layer-debug='on'] .reference-page .skill-position-fit,
+html[data-reference-layer-debug='on'] .reference-page .skill-recommendation strong,
+html[data-reference-layer-debug='on'] .reference-page .skill-research {
+  background: #8d3f78 !important;
+}
+/* Disabled controls otherwise blend the debug colors with their parent layer. */
+html[data-reference-layer-debug='on'] .reference-page .position-level-options button,
+html[data-reference-layer-debug='on'] .reference-page .custom-filter-option {
+  opacity: 1 !important;
+}
+.reference-layer-debug-legend {
+  position: fixed;
+  z-index: 100;
+  top: 48px;
+  right: 16px;
+  display: grid;
+  min-width: 150px;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 9px;
+  background: rgb(3 12 72 / 94%);
+  box-shadow: 0 10px 24px rgb(0 0 0 / 25%);
+  color: white;
+  font-size: 0.7rem;
+}
+.reference-layer-debug-legend strong { margin-bottom: 2px; font-size: 0.75rem; }
+.reference-layer-debug-legend span { display: flex; align-items: center; gap: 7px; }
+.reference-layer-debug-legend i { width: 13px; height: 13px; flex: 0 0 13px; border: 1px solid rgb(255 255 255 / 35%); border-radius: 3px; }
+.reference-layer-debug-legend .layer-1 { background: #101b36; }
+.reference-layer-debug-legend .layer-2 { background: #57213d; }
+.reference-layer-debug-legend .layer-3 { background: #0b6b63; }
+.reference-layer-debug-legend .layer-4 { background: #8a5a00; }
+.reference-layer-debug-legend .layer-5 { background: #4b236d; }
+.reference-layer-debug-legend .layer-6 { background: #8d3f78; }
 
 @media (min-width: 560px) {
   .filter-row {
