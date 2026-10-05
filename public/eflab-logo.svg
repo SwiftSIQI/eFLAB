@@ -1,4 +1,5 @@
-<svg width="205" height="64" viewBox="0 0 205 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="136" height="36" viewBox="0 0 136 36" fill="none" xmlns="http://www.w3.org/2000/svg">
   <title>eflab</title>
-  <text x="0" y="44" fill="#EFFF27" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="42" font-weight="400" textLength="205" lengthAdjust="spacingAndGlyphs">eflab</text>
+  <text x="0" y="30" fill="#EFFF27" font-family="'SF Mono', 'Roboto Mono', 'Cascadia Mono', 'Liberation Mono', monospace" font-size="30" font-weight="800" letter-spacing="-1">eF</text>
+  <text x="34" y="30" fill="#63F4F1" font-family="'SF Mono', 'Roboto Mono', 'Cascadia Mono', 'Liberation Mono', monospace" font-size="30" font-weight="800" letter-spacing="-1">LAB</text>
 </svg>
