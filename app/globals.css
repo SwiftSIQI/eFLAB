@@ -1747,7 +1747,8 @@ summary {
   height: 16px;
 }
 .booster-source-info:hover > .booster-source-tooltip,
-.booster-source-info:focus-within > .booster-source-tooltip {
+.booster-source-info:focus-within > .booster-source-tooltip,
+.booster-source-info.is-visible > .booster-source-tooltip {
   visibility: visible;
   opacity: 1;
   transform: translateY(0);
@@ -1980,7 +1981,14 @@ summary {
   margin-bottom: 0;
 }
 .booster-results-section {
-  padding-top: 1px;
+  margin-top: 28px;
+  padding: 0 18px;
+}
+.booster-results-panel {
+  padding: 15px 16px 18px;
+  border: 1px solid rgb(91 244 242 / 28%);
+  border-radius: 22px;
+  background: rgb(91 244 242 / 4%);
 }
 .reference-toolbar,
 .booster-toolbar {
@@ -2961,7 +2969,7 @@ summary {
   align-items: end;
   justify-content: space-between;
   gap: 16px;
-  margin: 28px 0 14px;
+  margin: 0 0 14px;
 }
 .booster-result-heading p,
 .booster-result-heading h2 {
@@ -3010,14 +3018,12 @@ summary {
 }
 .booster-card-heading h3 {
   margin: 0;
-}
-.booster-card-heading h3 {
   display: flex;
   align-items: center;
   min-width: 0;
   gap: 2px;
   overflow: hidden;
-  font-size: 1.08rem;
+  font-size: 1rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -3028,9 +3034,9 @@ summary {
 .booster-attributes small {
   min-width: 0;
   overflow: hidden;
-  color: #afbeef;
+  color: #b8c7f5;
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3038,6 +3044,7 @@ summary {
 .booster-name-separator {
   color: #8196da;
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
+  white-space: pre;
   font-weight: 600;
 }
 .booster-recommendation {
@@ -3065,16 +3072,14 @@ summary {
   border-top: 1px solid rgb(142 169 255 / 15%);
   background: rgb(142 169 255 / 14%);
 }
-.booster-attributes span {
-  min-width: 0;
-  padding: 6px 13px;
-  background: rgb(4 16 88 / 93%);
-}
 .booster-attributes > span {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 2px;
   overflow: hidden;
+  padding: 6px 10px;
+  background: rgb(4 16 88 / 93%);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -3083,18 +3088,17 @@ summary {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.booster-attributes strong {
-  font-size: 0.86rem;
+  font-size: 0.8rem;
 }
 .booster-attributes small {
   flex: 1 1 auto;
-  color: #8499dd;
+  color: #9fb0ec;
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
   font-size: 0.68rem;
 }
 .booster-empty {
   grid-column: 1 / -1;
+  min-height: 180px;
 }
 
 @media (min-width: 560px) {
@@ -3239,10 +3243,6 @@ summary {
 }
 
 @media (min-width: 1100px) {
-  .booster-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
   .skill-category-list {
     grid-template-columns: repeat(8, minmax(0, 1fr));
   }
