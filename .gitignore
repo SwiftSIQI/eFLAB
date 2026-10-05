@@ -11,7 +11,7 @@
 # testing
 /coverage
 
-# next.js
+# framework caches
 /.next/
 /.vinext/
 /out/
@@ -20,15 +20,16 @@
 .DS_Store
 *.pem
 
-# debug
+# debug and local logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
 
 # local environment
 .env*
 
-# deployment and generated files
+# deployment, build, and generated files
 .vercel
 next-env.d.ts
 *.tsbuildinfo
@@ -41,3 +42,9 @@ next-env.d.ts
 /app/skills/data.ts
 /app/boosters/data.ts
 /app/attributes/data.ts
+
+# local tooling and operating-system files
+.ruby-version
+.bundle/
+.yardoc/
+/.sass-cache/

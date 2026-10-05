@@ -16,7 +16,7 @@
 
 ## 1. 项目概况
 
-- 项目是 eFootball 中文工具站，使用 React、TypeScript、Vinext、Vite 和 Tailwind CSS。
+- 项目是 eFootball 中文工具站，使用 React、TypeScript、Vite、Vinext 适配层和 Tailwind CSS。
 - `app/page.tsx` 是首页；`app/styles/`、`app/skills/`、`app/boosters/`、`app/attributes/` 分别负责比赛风格、球员技巧、增能和属性页面。
 - `app/data.ts` 保存位置和比赛风格数据；`components/` 保存共用组件；`app/globals.css` 保存全局样式。
 
@@ -31,7 +31,7 @@
 
 ### 3.1 基本原则
 
-- 不编辑或提交 `node_modules/`、`.next/`、`.vinext/`、`.wrangler/`、`dist/` 和 `.env*` 敏感内容。
+- 不编辑或提交 `node_modules/`、`.next/`、`.vinext/`、`.wrangler/`、`dist/`、构建缓存和 `.env*` 敏感内容。
 
 ### 3.2 数据来源与生成
 
@@ -77,8 +77,8 @@
 
 ### 4.2 Chrome 本地预览
 
-- 只有用户明确要求预览时才启动。项目使用 `.openai/hosting.json` 和 Vinext，优先使用 `node_modules/.bin/vinext` 与项目现有 npm 命令。
-- 预览前确认 `node_modules/.bin/vinext` 存在。依赖缺失时使用 `npm ci`，不得使用 pnpm；除非用户明确要求，否则不要手工修改或删除 `node_modules/`。
+- 只有用户明确要求预览时才启动。项目使用 `.openai/hosting.json`、Vite 和 Vinext 适配层，优先使用项目现有 npm 命令 `npm run dev`。
+- 预览前确认 `node_modules/.bin/vite` 存在。依赖缺失时使用 `npm ci`，不得使用 pnpm；除非用户明确要求，否则不要手工修改或删除 `node_modules/`。
 - 在可保留的终端会话中运行 `npm run dev -- --host 127.0.0.1`，等待实际的 `Local` 地址，不重复启动服务或扫描端口。
 - 用同一环境对该地址发起一次轻量 HTTP 请求，确认返回非错误状态后，再在 Chrome 中打开该准确地址；请求失败不能视为预览成功。
 - 不得留下预览适配配置。若环境限制要求临时修改，启动后立即恢复，并说明临时调整及恢复结果。
