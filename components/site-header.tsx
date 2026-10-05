@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
+import { useState } from 'react';
 
 const links = [
   { href: '/', label: '首页', description: 'HOME' },
@@ -14,6 +16,7 @@ const links = [
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="topbar">
@@ -30,13 +33,33 @@ export function SiteHeader() {
           priority
         />
       </Link>
-      <nav className="site-nav" aria-label="工具导航">
+      <button
+        className="mobile-nav-toggle"
+        type="button"
+        aria-expanded={menuOpen}
+        aria-controls="site-navigation"
+        onClick={() => setMenuOpen((isOpen) => !isOpen)}
+      >
+        {menuOpen ? (
+          <X size={18} aria-hidden="true" />
+        ) : (
+          <Menu size={18} aria-hidden="true" />
+        )}
+        <span>菜单</span>
+        <small>MENU</small>
+      </button>
+      <nav
+        id="site-navigation"
+        className={`site-nav ${menuOpen ? 'is-open' : ''}`}
+        aria-label="工具导航"
+      >
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             className={`site-nav-link ${pathname === link.href ? 'is-active' : ''}`}
             aria-current={pathname === link.href ? 'page' : undefined}
+            onClick={() => setMenuOpen(false)}
           >
             <span>{link.label}</span>
             <small>{link.description}</small>

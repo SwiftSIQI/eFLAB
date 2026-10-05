@@ -41,6 +41,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: clip;
   background:
     radial-gradient(circle at 90% 2%, rgb(255 47 179 / 22%), transparent 28rem),
     radial-gradient(circle at 5% 25%, rgb(91 244 242 / 17%), transparent 30rem),
@@ -321,8 +322,12 @@ summary {
 
 .brand-logo {
   display: block;
-  width: 124px;
-  height: auto;
+  flex: 0 0 92px;
+  width: 92px;
+  min-width: 92px;
+  max-width: 92px;
+  height: 24.35px;
+  max-height: 24.35px;
 }
 
 .brand {
@@ -356,6 +361,9 @@ summary {
   scrollbar-width: none;
 }
 .site-nav::-webkit-scrollbar {
+  display: none;
+}
+.mobile-nav-toggle {
   display: none;
 }
 .site-nav-link {
@@ -2970,6 +2978,66 @@ summary {
   }
 }
 
+@media (max-width: 759px) {
+  .topbar {
+    display: flex;
+    min-height: 76px;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 17px 18px 10px;
+  }
+  .brand-lockup {
+    flex: 0 0 auto;
+  }
+  .brand-logo {
+    width: 92px;
+  }
+  .mobile-nav-toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 6px;
+    min-height: 42px;
+    padding: 8px 12px;
+    border: 1px solid rgb(142 169 255 / 42%);
+    border-radius: 999px;
+    background: rgb(16 36 126 / 65%);
+    color: #d5dfff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .mobile-nav-toggle small {
+    color: inherit;
+    font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    opacity: 0.72;
+  }
+  .mobile-nav-toggle:focus-visible {
+    outline: 2px solid var(--yellow);
+    outline-offset: 2px;
+  }
+  .site-nav {
+    display: none;
+    flex: 0 0 100%;
+    order: 3;
+    gap: 6px;
+    padding: 4px 0 0;
+  }
+  .site-nav.is-open {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .site-nav-link {
+    flex: none;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
 @media (min-width: 760px) {
   .topbar {
     display: flex;
@@ -3050,6 +3118,14 @@ summary {
 }
 
 @media (max-width: 620px) {
+  .site-nav-link {
+    gap: 7px;
+    padding: 8px 12px;
+    font-size: 0.86rem;
+  }
+  .site-nav-link small {
+    display: block;
+  }
   .booster-intro {
     grid-template-columns: 1fr;
   }
@@ -3313,10 +3389,7 @@ summary {
     min-width: 0;
   }
   .brand-logo {
-    width: 124px;
-  }
-  .site-nav-link small {
-    display: none;
+    width: 92px;
   }
   .workspace {
     padding: 18px 14px;
