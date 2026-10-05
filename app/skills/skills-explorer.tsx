@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { CircleHelp, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -17,6 +16,7 @@ import {
   type SkillRecommendationPlanId,
 } from './data';
 import { skillComboGroups, type SkillComboId } from './skill-combos';
+import { SkillCard } from './skill-card';
 
 type Category = (typeof skillCategories)[number]['id'];
 type SkillRecommendation = Exclude<PlayerSkill['recommendation'], null>;
@@ -35,6 +35,11 @@ const positionRecommendationLabels = {
 const positionRecommendationLevels = [
   3, 2, 1,
 ] as const satisfies readonly SkillPositionRecommendation[];
+const recommendationSourceUrls: Record<string, string> = {
+  '冲啊大叔 CasToR': 'https://www.bilibili.com/video/BV1UuJazNE8s/',
+  Skye:
+    'https://docs.google.com/spreadsheets/u/0/d/1A33zBtq6cVTghg6ytROST6k70SRMSFoOxEkSvdXSeRk/htmlview?pli=1#gid=2081134566',
+};
 const getHighestPositionLevel = (
   values: Partial<Record<string, SkillPositionRecommendation>> | undefined,
 ) =>
@@ -44,20 +49,6 @@ const getHighestPositionLevel = (
       (level): level is SkillPositionRecommendation => level !== undefined,
     ),
   );
-
-const getDisplayedPositionLevel = (
-  skill: PlayerSkill,
-  plan: SkillRecommendationPlanId,
-  position: SkillPosition,
-  profile: string | null,
-  selectedLevel: SkillPositionRecommendation | null,
-) => {
-  if (selectedLevel !== null) return selectedLevel;
-
-  const values = skill.positionRecommendations[plan]?.[position];
-  if (profile !== null && profile !== '通用') return values?.[profile] ?? 0;
-  return getHighestPositionLevel(values);
-};
 export function SkillsExplorer() {
   const [category, setCategory] = useState<Category>('all');
   const [query, setQuery] = useState('');
@@ -351,12 +342,7 @@ export function SkillsExplorer() {
               <div className="recommendation-plan-options">
                 {skillRecommendationPlans.map((plan) => {
                   const selected = selectedPlan === plan.id;
-                  const sourceUrl =
-                    plan.id === '1'
-                      ? 'https://www.bilibili.com/video/BV1UuJazNE8s/'
-                      : 'https://docs.google.com/spreadsheets/u/0/d/1A33zBtq6cVTghg6ytROST6k70SRMSFoOxEkSvdXSeRk/htmlview?pli=1#gid=2081134566';
-                  const sourceName =
-                    plan.id === '1' ? '冲啊大叔 CasToR' : 'Skye';
+                  const sourceUrl = recommendationSourceUrls[plan.label];
                   return (
                     <div
                       key={plan.id}
@@ -373,7 +359,11 @@ export function SkillsExplorer() {
                           setSelectedSkillCombo(null);
                         }}
                         aria-pressed={selected}
-                        aria-describedby={`recommendation-plan-source-${plan.id}`}
+                        aria-describedby={
+                          sourceUrl
+                            ? `recommendation-plan-source-${plan.id}`
+                            : undefined
+                        }
                       >
                         <span>{plan.label}</span>
                         <span
@@ -383,17 +373,19 @@ export function SkillsExplorer() {
                           <CircleHelp />
                         </span>
                       </button>
-                      <span
-                        id={`recommendation-plan-source-${plan.id}`}
-                        className="custom-filter-tooltip recommendation-source-tooltip"
-                        role="tooltip"
-                      >
-                        推荐方案参考自{sourceName}的研究成果，
-                        <a href={sourceUrl} target="_blank" rel="noreferrer">
-                          查看相关资料
-                        </a>
-                        。
-                      </span>
+                      {sourceUrl && (
+                        <span
+                          id={`recommendation-plan-source-${plan.id}`}
+                          className="custom-filter-tooltip recommendation-source-tooltip"
+                          role="tooltip"
+                        >
+                          推荐方案参考自{plan.label}的研究成果，
+                          <a href={sourceUrl} target="_blank" rel="noreferrer">
+                            查看相关资料
+                          </a>
+                          。
+                        </span>
+                      )}
                     </div>
                   );
                 })}
@@ -659,117 +651,16 @@ export function SkillsExplorer() {
             </div>
 
             <div className="skill-list">
-              {results.map((skill) => {
-                const displayedPositionLevel =
-                  selectedPlan !== null && selectedPosition !== null
-                    ? getDisplayedPositionLevel(
-                        skill,
-                        selectedPlan,
-                        selectedPosition,
-                        selectedProfile,
-                        selectedPositionRecommendation,
-                      )
-                    : 0;
-                const displayedPositionLabel =
-                  positionRecommendationLabels[
-                    displayedPositionLevel as SkillPositionRecommendation
-                  ] ?? '暂无适配';
-
-                return (
-                  <details key={skill.id} className="skill-card">
-                  <summary>
-                    <span className="skill-number">
-                      {String(skill.id).padStart(2, '0')}
-                    </span>
-                    <span className="skill-title">
-                      <strong>
-                        {skill.nameZh}
-                        <span> / {skill.nameEn}</span>
-                      </strong>
-                    </span>
-                    <span className="skill-category-tags" aria-label="技能分类">
-                      {skill.categories.map((id) => (
-                        <span key={id} className="skill-category-tag">
-                          {
-                            skillCategories.find((item) => item.id === id)
-                              ?.label
-                          }
-                        </span>
-                      ))}
-                    </span>
-                    {selectedPosition !== null && selectedPlan !== null && (
-                      <span
-                        className="skill-position-fit"
-                        aria-label={`${selectedPosition} 位置适配 ${selectedProfile && selectedProfile !== '通用' ? `${selectedProfile} ` : ''}${displayedPositionLabel}`}
-                      >
-                        {selectedPosition}{' '}
-                        {selectedProfile && selectedProfile !== '通用'
-                          ? `${selectedProfile} `
-                          : ''}
-                        {displayedPositionLabel}
-                      </span>
-                    )}
-                    <span
-                      className={`skill-recommendation${skill.recommendation === null ? ' is-unrated' : ''}`}
-                      aria-label={
-                        skill.recommendation === null
-                          ? '暂无技巧价值评级'
-                          : `技巧价值 ${skill.recommendation} 颗星`
-                      }
-                    >
-                      <strong>
-                        {skill.recommendation === null
-                          ? '暂无评级'
-                          : `技能价值 ${skill.recommendation} 星`}
-                      </strong>
-                    </span>
-                    <span className="skill-expand" aria-hidden="true">
-                      ＋
-                    </span>
-                  </summary>
-                  <div className="skill-detail">
-                    <Image
-                      className="skill-image"
-                      src={skill.image}
-                      alt={`${skill.nameZh}技巧示意图`}
-                      width={567}
-                      height={319}
-                      unoptimized
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div className="skill-detail-copy">
-                      <p>{skill.description}</p>
-                      <p lang="en" className="skill-description-en">
-                        {skill.descriptionEn}
-                      </p>
-                      {skill.researchZh && (
-                        <section
-                          className="skill-research"
-                          aria-label="三方研究"
-                        >
-                          <div className="skill-research-heading">
-                            <strong>三方研究</strong>
-                            <span>THIRD-PARTY RESEARCH</span>
-                          </div>
-                          <p className="skill-research-copy">
-                            {skill.researchZh}
-                          </p>
-                          {skill.researchEn && (
-                            <p
-                              lang="en"
-                              className="skill-research-copy skill-research-copy-en"
-                            >
-                              {skill.researchEn}
-                            </p>
-                          )}
-                        </section>
-                      )}
-                    </div>
-                  </div>
-                  </details>
-                );
-              })}
+              {results.map((skill) => (
+                <SkillCard
+                  key={skill.id}
+                  skill={skill}
+                  selectedPlan={selectedPlan}
+                  selectedPosition={selectedPosition}
+                  selectedProfile={selectedProfile}
+                  selectedPositionRecommendation={selectedPositionRecommendation}
+                />
+              ))}
               {results.length === 0 && (
                 <div className="empty-state">
                   <Search aria-hidden="true" />

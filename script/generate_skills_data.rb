@@ -31,6 +31,7 @@ required_position_headers = %w[方案 方案ID 位置 定位 技能 推荐等级
 fail_with("位置推荐文件缺少字段") unless (required_position_headers - position_headers).empty?
 position_recommendations = Hash.new { |hash, skill_name| hash[skill_name] = {} }
 recommendation_plans = {}
+skill_names = table.map { |row| row["技巧名称-中文"].to_s.strip }
 position_table.each do |row|
   plan_id = row["方案ID"].to_s.strip
   plan_label = row["方案"].to_s.strip
@@ -42,6 +43,7 @@ position_table.each do |row|
   fail_with("位置推荐中的位置无效：#{position}") unless POSITION_ORDER.include?(position)
   fail_with("位置推荐中的定位为空") if profile.empty?
   fail_with("位置推荐中的技能为空") if skill_name.empty?
+  fail_with("位置推荐中的技能不存在于 player_skill.csv：#{skill_name}") unless skill_names.include?(skill_name)
   fail_with("技能 #{skill_name} 的位置推荐等级无效") unless level && (1..3).include?(level)
   recommendation_plans[plan_id] ||= { label: plan_label, positions: Hash.new { |hash, key| hash[key] = [] } }
   recommendation_plans[plan_id][:positions][position] << profile unless recommendation_plans[plan_id][:positions][position].include?(profile)
@@ -50,6 +52,10 @@ position_table.each do |row|
   fail_with("方案 #{plan_label} 的 #{position} / #{profile} / #{skill_name} 推荐重复") if position_recommendations[skill_name][plan_id][position].key?(profile)
   position_recommendations[skill_name][plan_id][position][profile] = level
 end
+
+recommendation_skill_names = position_recommendations.keys
+unknown_skills = recommendation_skill_names - skill_names
+fail_with("位置推荐中存在未知技能：#{unknown_skills.join('、')}") unless unknown_skills.empty?
 
 ids = table.map { |row| Integer(row["序号"].to_s, 10) rescue nil }
 fail_with("序号必须连续且从 1 开始") unless ids == (1..table.length).to_a

@@ -3,11 +3,11 @@
 require "csv"
 require "json"
 
-# 从属性 CSV 生成 app/attributes/data.ts。
+# 从球员属性 CSV 生成 app/attributes/data.ts。
 # 属性记录的 id 直接使用 CSV 序号；分类 id 是网页筛选所需的稳定结构值，
 # 中文名和英文名仍然全部来自 CSV。
 ROOT = File.expand_path("..", __dir__)
-CSV_PATH = File.join(ROOT, "csv/player_attributes.csv")
+CSV_PATH = File.join(ROOT, "csv/player_ability.csv")
 OUTPUT_PATH = File.join(ROOT, "app/attributes/data.ts")
 CATEGORY_IDS = {
   "Attack" => "attacking",
@@ -50,7 +50,7 @@ fail_with("属性序号重复") unless attributes.map { |item| item[:id] }.uniq.
 json = ->(value) { JSON.generate(value, ensure_ascii: false) }
 
 output = <<~TS
-  // 此文件由 csv/player_attributes.csv 自动生成，请勿直接编辑。
+  // 此文件由 csv/player_ability.csv 自动生成，请勿直接编辑。
   export const attributeCategories = #{json.call(categories)} as const;
 
   export type AttributeCategory = (typeof attributeCategories)[number]['id'];

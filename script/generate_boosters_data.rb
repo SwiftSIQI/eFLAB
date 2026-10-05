@@ -8,7 +8,7 @@ require "json"
 # 推荐度从“增能推荐度”的星级文本转换为 1～5 的数字。
 ROOT = File.expand_path("..", __dir__)
 CSV_PATH = File.join(ROOT, "csv/player_booster.csv")
-ATTRIBUTE_CSV_PATH = File.join(ROOT, "csv/player_attributes.csv")
+ATTRIBUTE_CSV_PATH = File.join(ROOT, "csv/player_ability.csv")
 OUTPUT_PATH = File.join(ROOT, "app/boosters/data.ts")
 POSITIONS = %w[CF SS RWF/LWF AMF RMF/LMF CMF DMF RB/LB CB GK].freeze
 FIXED_HEADERS = %w[序号 增能-中文 增能-英文 增能推荐度].freeze
