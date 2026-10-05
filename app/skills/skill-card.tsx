@@ -87,6 +87,9 @@ export function SkillCard({
             </span>
           ))}
         </span>
+        {(skill.researchZh || skill.researchEn) && (
+          <span className="skill-research-tag">技能深度解析</span>
+        )}
         {selectedPosition !== null && selectedPlan !== null && (
           <span
             className="skill-position-fit"

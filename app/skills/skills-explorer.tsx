@@ -21,6 +21,27 @@ import { SkillCard } from './skill-card';
 
 type Category = (typeof skillCategories)[number]['id'];
 type SkillRecommendation = Exclude<PlayerSkill['recommendation'], null>;
+type SkillCategoryDefinition = Extract<
+  (typeof skillCategories)[number],
+  { id: Exclude<Category, 'all'> }
+>;
+const skillCategoryOrder: readonly Exclude<Category, 'all'>[] = [
+  'Showtime',
+  'Shooting',
+  'Passing',
+  'Dribbling',
+  'Defending',
+  'Goalkeeping',
+  'Other',
+];
+const orderedSkillCategories: SkillCategoryDefinition[] = skillCategoryOrder.map(
+  (id) =>
+    skillCategories.find((item) => item.id === id) as SkillCategoryDefinition,
+);
+const displaySkillCategories = [
+  skillCategories.find((item) => item.id === 'all')!,
+  ...orderedSkillCategories,
+];
 type RecommendationPosition = {
   readonly id: SkillPosition;
   readonly profiles: readonly string[];
@@ -70,8 +91,7 @@ const getHighestPositionLevel = (
 
 const skillOverviewStats = [
   { label: '球员技能', value: playerSkills.length },
-  ...skillCategories
-    .filter((item) => item.id !== 'all')
+  ...orderedSkillCategories
     .map((item) => ({
       label: item.id === 'Showtime' ? 'ST 技能' : `${item.label}技能`,
       value: playerSkills.filter((skill) => skill.categories.includes(item.id))
@@ -185,7 +205,45 @@ export function SkillsExplorer() {
     selectedSkillCombo,
   ]);
 
-  const activeCategory = skillCategories.find((item) => item.id === category)!;
+  const renderOwnedSkillCategory = (categoryItem: SkillCategoryDefinition) => {
+    const categorySkills = playerSkills.filter((skill) =>
+      skill.categories.includes(categoryItem.id),
+    );
+    return (
+      <section
+        key={categoryItem.id}
+        className="owned-skill-category"
+        aria-labelledby={`owned-skill-category-${categoryItem.id}`}
+      >
+        <h3 id={`owned-skill-category-${categoryItem.id}`}>
+          {categoryItem.label}
+          <span>{categoryItem.nameEn}</span>
+        </h3>
+        <div className="owned-skill-category-options">
+          {categorySkills.map((skill) => {
+            const selected = selectedOwnedSkillIds.includes(skill.id);
+            return (
+              <button
+                key={skill.id}
+                type="button"
+                className={selected ? 'is-selected' : ''}
+                onClick={() =>
+                  setSelectedOwnedSkillIds((current) =>
+                    selected
+                      ? current.filter((id) => id !== skill.id)
+                      : [...current, skill.id],
+                  )
+                }
+                aria-pressed={selected}
+              >
+                {skill.nameZh}
+              </button>
+            );
+          })}
+        </div>
+      </section>
+    );
+  };
 
   return (
     <main id="main-content" className="site-shell reference-page skills-page">
@@ -254,39 +312,6 @@ export function SkillsExplorer() {
 
       <section className="skills-workspace" aria-label="球员技巧查询">
         <div className="skills-controls">
-          <div className="skills-library-module">
-            <div className="skills-module-label skills-module-label-browse">
-              <p className="eyebrow">SKILL LIBRARY</p>
-              <h2>球员技巧</h2>
-              <p>按分类和关键词了解每项技巧的效果。</p>
-            </div>
-            <nav className="skill-category-list" aria-label="技巧分类">
-              {skillCategories.map((item) => {
-                const count =
-                  item.id === 'all'
-                    ? playerSkills.length
-                    : playerSkills.filter((skill) =>
-                        skill.categories.includes(item.id),
-                      ).length;
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`skill-category ${category === item.id ? 'is-active' : ''}`}
-                    onClick={() => setCategory(item.id)}
-                    aria-pressed={category === item.id}
-                  >
-                    <span>
-                      {item.label}
-                      <small>{item.nameEn}</small>
-                    </span>
-                    <b>{count}</b>
-                  </button>
-                );
-              })}
-            </nav>
-          </div>
-
           <div className="skill-results">
             <div className="skill-search-row">
               <label className="search-box">
@@ -696,26 +721,33 @@ export function SkillsExplorer() {
                     )}
                   </div>
                   <div className="owned-skill-options">
-                    {playerSkills.map((skill) => {
-                      const selected = selectedOwnedSkillIds.includes(skill.id);
-                      return (
-                        <button
-                          key={skill.id}
-                          type="button"
-                          className={selected ? 'is-selected' : ''}
-                          onClick={() =>
-                            setSelectedOwnedSkillIds((current) =>
-                              selected
-                                ? current.filter((id) => id !== skill.id)
-                                : [...current, skill.id],
-                            )
-                          }
-                          aria-pressed={selected}
-                        >
-                          {skill.nameZh}
-                        </button>
-                      );
-                    })}
+                    <div className="owned-skill-category-columns">
+                      <div className="owned-skill-category-column">
+                        {orderedSkillCategories
+                          .filter((item) =>
+                            ['Shooting', 'Goalkeeping', 'Other'].includes(
+                              item.id,
+                            ),
+                          )
+                          .map(renderOwnedSkillCategory)}
+                      </div>
+                      <div className="owned-skill-category-column">
+                        {orderedSkillCategories
+                          .filter((item) =>
+                            ['Passing', 'Dribbling', 'Defending'].includes(
+                              item.id,
+                            ),
+                          )
+                          .map(renderOwnedSkillCategory)}
+                      </div>
+                    </div>
+                    <div className="owned-skill-featured-category">
+                      {renderOwnedSkillCategory(
+                        orderedSkillCategories.find(
+                          (item) => item.id === 'Showtime',
+                        )!,
+                      )}
+                    </div>
                   </div>
                 </div>
               </section>
@@ -726,15 +758,37 @@ export function SkillsExplorer() {
               aria-live="polite"
             >
               <div>
-                <p className="eyebrow">{activeCategory.nameEn.toUpperCase()}</p>
-                <h2>
-                  {category === 'Showtime' || category === 'Goalkeeping'
-                    ? activeCategory.label
-                    : `${activeCategory.label}技巧`}
-                </h2>
+                <p className="eyebrow">SKILLS LIST</p>
+                <h2>技巧列表</h2>
               </div>
               <span className="skill-result-count">{results.length} 项</span>
             </div>
+
+            <nav className="skill-category-list" aria-label="技巧分类">
+              {displaySkillCategories.map((item) => {
+                const count =
+                  item.id === 'all'
+                    ? playerSkills.length
+                    : playerSkills.filter((skill) =>
+                        skill.categories.includes(item.id),
+                      ).length;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`skill-category ${category === item.id ? 'is-active' : ''}`}
+                    onClick={() => setCategory(item.id)}
+                    aria-pressed={category === item.id}
+                  >
+                    <span>
+                      {item.label}
+                      <small>{item.nameEn}</small>
+                    </span>
+                    <b>{count}</b>
+                  </button>
+                );
+              })}
+            </nav>
 
             <div className="skill-list">
               {results.map((skill) => (

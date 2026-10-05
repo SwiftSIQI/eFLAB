@@ -180,19 +180,6 @@ export function BoostersExplorer() {
     selectedRecommendation,
   ]);
 
-  const resultTitle =
-    boosterIntent === 'lookup'
-      ? query
-        ? `搜索「${query}」的增能`
-        : '全部增能'
-      : selectedPosition
-        ? respectRandomBoosterLimit
-          ? `${selectedPosition} 可随机获得的增能`
-          : `${selectedPosition} 的增能（已忽略随机限制）`
-        : selectedAttributes.length === 0
-          ? '全部增能'
-          : `同时提升「${selectedAttributes.map((id) => getAttribute(id).nameZh).join('＋')}」`;
-
   return (
     <main id="main-content" className="site-shell reference-page boosters-page">
       <section className="reference-workspace">
@@ -497,7 +484,7 @@ export function BoostersExplorer() {
         <div className="booster-result-heading" aria-live="polite">
           <div>
             <p className="eyebrow">BOOSTER LIST</p>
-            <h2>{resultTitle}</h2>
+            <h2>增能列表</h2>
           </div>
           <span>
             {results.length} / {boosters.length}
