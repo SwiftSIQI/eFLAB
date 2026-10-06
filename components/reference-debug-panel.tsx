@@ -23,7 +23,6 @@ const debugStyles = `
     background: transparent !important;
   }
   html[data-reference-layer-debug='on'] .reference-page .reference-intro-layout > .usage-guide,
-  html[data-reference-layer-debug='on'] .reference-page .reference-stats span,
   html[data-reference-layer-debug='on'] .reference-page .reference-result-heading > span,
   html[data-reference-layer-debug='on'] .reference-page .reference-filter-module,
   html[data-reference-layer-debug='on'] .reference-page .position-filter,

@@ -47,7 +47,7 @@ export function AttributesExplorer() {
   return (
     <main
       id="main-content"
-      className="site-shell reference-page attributes-page"
+      className="site-shell reference-page"
     >
       <section className="reference-workspace">
         <ReferencePageIntro
@@ -58,7 +58,7 @@ export function AttributesExplorer() {
       </section>
 
       <section
-        className="skills-workspace attribute-explorer-workspace"
+        className="skills-workspace"
         aria-label="球员属性查询"
       >
         <div className="skills-controls">

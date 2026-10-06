@@ -337,7 +337,7 @@ export function BoostersExplorer() {
           className="reference-content reference-results-section"
           aria-label="增能查询结果"
         >
-          <div className="reference-results-panel reference-section-panel">
+          <div className="reference-section-panel">
             <ReferenceResultsHeading
               eyebrow="BOOSTER RESULT LIST"
               title="增能结果列表"

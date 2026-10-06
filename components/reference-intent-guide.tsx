@@ -13,7 +13,6 @@ type ReferenceIntentGuideProps<Intent extends string> = {
   readonly selectedIntent: Intent;
   readonly options: readonly ReferenceIntentDefinition<Intent>[];
   readonly onSelect: (intent: Intent) => void;
-  readonly className?: string;
 };
 
 export function ReferenceIntentGuide<Intent extends string>({
@@ -23,11 +22,10 @@ export function ReferenceIntentGuide<Intent extends string>({
   selectedIntent,
   options,
   onSelect,
-  className = '',
 }: ReferenceIntentGuideProps<Intent>) {
   return (
     <section
-      className={`usage-guide reference-intent-guide ${className}`.trim()}
+      className="usage-guide reference-intent-guide"
       aria-labelledby={titleId}
     >
       <div className="usage-guide-heading">

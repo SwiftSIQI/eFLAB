@@ -161,7 +161,7 @@ export default function StylesPage() {
   return (
     <main id="main-content" className="site-shell reference-page styles-page">
       {isDebugBuild && <ReferenceDebugPanel />}
-      <section className="reference-workspace styles-reference-workspace">
+      <section className="reference-workspace">
         <ReferencePageIntro
           eyebrow="PLAYING STYLES"
           title="比赛风格"
@@ -235,7 +235,7 @@ export default function StylesPage() {
           className="results-panel reference-content reference-results-section"
           aria-label="比赛风格列表"
         >
-          <div className="reference-results-panel reference-section-panel">
+          <div className="reference-section-panel">
             <ReferenceResultsHeading
               eyebrow="COMPATIBLE STYLES"
               title={resultTitle}

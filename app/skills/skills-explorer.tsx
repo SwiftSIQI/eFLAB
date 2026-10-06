@@ -293,7 +293,7 @@ export function SkillsExplorer() {
   return (
     <main id="main-content" className="site-shell reference-page skills-page">
       {isDebugBuild && <ReferenceDebugPanel />}
-      <section className="reference-workspace skills-reference-workspace">
+      <section className="reference-workspace">
         <ReferencePageIntro
           eyebrow="PLAYER SKILLS GUIDE"
           title="球员技巧"
@@ -305,7 +305,6 @@ export function SkillsExplorer() {
             radioName="skill-intent"
             selectedIntent={skillIntent}
             onSelect={selectSkillIntent}
-            className="skill-intent-guide"
             options={[
               {
                 intent: 'lookup',
@@ -681,7 +680,7 @@ export function SkillsExplorer() {
           aria-label="技巧列表"
         >
           <div className="skills-controls">
-            <div className="skill-results reference-results-panel reference-section-panel">
+            <div className="skill-results reference-section-panel">
               <ReferenceResultsHeading
                 eyebrow="SKILL RESULT LIST"
                 title="技巧结果列表"

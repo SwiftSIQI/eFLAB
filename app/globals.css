@@ -1438,30 +1438,6 @@ summary {
   column-gap: 44px;
   align-items: start;
 }
-.reference-stats {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 18px;
-}
-.reference-stats span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border: 1px solid rgb(142 169 255 / 34%);
-  border-radius: 9px;
-  background: rgb(3 12 72 / 44%);
-  color: #b9c7f7;
-  font-size: 0.76rem;
-}
-.reference-stats strong {
-  color: var(--yellow);
-  font-size: 1.1rem;
-  font-weight: 800;
-  line-height: 1;
-}
 .booster-source-info {
   position: relative;
   display: inline-flex;
@@ -3011,9 +2987,6 @@ summary {
     font-size: 0.82rem;
     line-height: 1.5;
   }
-}
-
-@media (min-width: 621px) {
 }
 
 @media (min-width: 980px) {
