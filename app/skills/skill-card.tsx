@@ -1,42 +1,16 @@
 import Image from 'next/image';
 
 import {
-  skillCategories,
+  getDisplayedPositionLevel,
+  positionRecommendationLabels,
+} from '@/lib/skill-recommendation';
+import {
   type PlayerSkill,
+  skillCategories,
   type SkillPosition,
   type SkillPositionRecommendation,
   type SkillRecommendationPlanId,
 } from './data';
-
-const positionRecommendationLabels = {
-  3: '必备',
-  2: '推荐',
-  1: '可选',
-} as const;
-
-const getHighestPositionLevel = (
-  values: Partial<Record<string, SkillPositionRecommendation>> | undefined,
-) =>
-  Math.max(
-    0,
-    ...Object.values(values ?? {}).filter(
-      (level): level is SkillPositionRecommendation => level !== undefined,
-    ),
-  );
-
-const getDisplayedPositionLevel = (
-  skill: PlayerSkill,
-  plan: SkillRecommendationPlanId,
-  position: SkillPosition,
-  profile: string | null,
-  selectedLevel: SkillPositionRecommendation | null,
-) => {
-  if (selectedLevel !== null) return selectedLevel;
-
-  const values = skill.positionRecommendations[plan]?.[position];
-  if (profile !== null && profile !== '通用') return values?.[profile] ?? 0;
-  return getHighestPositionLevel(values);
-};
 
 type SkillCardProps = {
   readonly skill: PlayerSkill;
@@ -69,7 +43,7 @@ export function SkillCard({
     ] ?? '暂无适配';
 
   return (
-    <details className="skill-card">
+    <details className="reference-result-card skill-card">
       <summary>
         <span className="skill-number">
           {String(skill.id).padStart(2, '0')}

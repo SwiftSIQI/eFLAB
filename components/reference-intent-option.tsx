@@ -1,6 +1,3 @@
-import { ChevronDown } from 'lucide-react';
-import type { ReactNode } from 'react';
-
 type ReferenceIntentOptionProps<Intent extends string> = {
   readonly intent: Intent;
   readonly selectedIntent: Intent;
@@ -8,10 +5,6 @@ type ReferenceIntentOptionProps<Intent extends string> = {
   readonly description: string;
   readonly radioName: string;
   readonly onSelect: (intent: Intent) => void;
-  readonly expanded?: boolean;
-  readonly detailId?: string;
-  readonly onToggle?: (intent: Intent) => void;
-  readonly children?: ReactNode;
 };
 
 export function ReferenceIntentOption<Intent extends string>({
@@ -21,17 +14,12 @@ export function ReferenceIntentOption<Intent extends string>({
   description,
   radioName,
   onSelect,
-  expanded = false,
-  detailId,
-  onToggle,
-  children,
 }: ReferenceIntentOptionProps<Intent>) {
   const selected = selectedIntent === intent;
-  const expandable = Boolean(onToggle && detailId);
 
   return (
     <div
-      className={`reference-intent-option${selected ? ' is-selected' : ''}${expanded ? ' is-expanded' : ''}`}
+      className={`reference-intent-option${selected ? ' is-selected' : ''}`}
     >
       <label className="reference-intent-summary">
         <input
@@ -48,22 +36,6 @@ export function ReferenceIntentOption<Intent extends string>({
           <small>{description}</small>
         </span>
       </label>
-      {expandable && (
-        <button
-          type="button"
-          className="reference-intent-expand"
-          aria-label={
-            expanded ? `收起${title}的使用说明` : `展开${title}的使用说明`
-          }
-          aria-expanded={expanded}
-          aria-controls={detailId}
-          onClick={() => onToggle?.(intent)}
-        >
-          <span>{expanded ? '收起使用说明' : '查看使用说明'}</span>
-          <ChevronDown aria-hidden="true" />
-        </button>
-      )}
-      {expanded && children}
     </div>
   );
 }

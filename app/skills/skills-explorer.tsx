@@ -1,14 +1,21 @@
 'use client';
 
-import { CircleHelp, Search, X } from 'lucide-react';
+import { CircleHelp, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { ReferenceIntentOption } from '@/components/reference-intent-option';
+import { ReferenceChoiceGrid } from '@/components/reference-choice-grid';
+import { ReferenceFilterHeading } from '@/components/reference-filter-heading';
+import { ReferenceRatingOptions } from '@/components/reference-rating-options';
+import { ReferenceSearchField } from '@/components/reference-search-field';
 import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
 import { ReferenceSectionHeading } from '@/components/reference-section-heading';
-import { Input } from '@/components/ui/input';
 import { SiteFooter } from '@/components/site-footer';
 import { normalizeSearchText } from '@/lib/utils';
+import {
+  getHighestPositionLevel,
+  positionRecommendationLabels,
+} from '@/lib/skill-recommendation';
 import {
   playerSkills,
   skillCategories,
@@ -66,11 +73,6 @@ const recommendationLevels: SkillRecommendation[] = [
   ),
 ].sort((first, second) => second - first);
 const maxRecommendationLevel = Math.max(...recommendationLevels, 0);
-const positionRecommendationLabels = {
-  3: '必备',
-  2: '推荐',
-  1: '可选',
-} as const;
 const positionRecommendationLevels: SkillPositionRecommendation[] = [
   ...new Set(
     playerSkills
@@ -106,16 +108,6 @@ const orderedRecommendationPlans = [...skillRecommendationPlans].sort(
     );
   },
 );
-const getHighestPositionLevel = (
-  values: Partial<Record<string, SkillPositionRecommendation>> | undefined,
-) =>
-  Math.max(
-    0,
-    ...Object.values(values ?? {}).filter(
-      (level): level is SkillPositionRecommendation => level !== undefined,
-    ),
-  );
-
 const skillOverviewStats = [
   { label: '球员技能', value: playerSkills.length },
   ...orderedSkillCategories
@@ -367,24 +359,13 @@ export function SkillsExplorer() {
                 />
               </div>
               <div className="skill-search-row reference-toolbar">
-                <label className="search-box">
-                  <span className="sr-only">搜索球员技巧</span>
-                  <Search aria-hidden="true" />
-                  <Input
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    placeholder="搜索技巧中文或英文名称…"
-                  />
-                  {query && (
-                    <button
-                      type="button"
-                      onClick={() => setQuery('')}
-                      aria-label="清除搜索"
-                    >
-                      <X aria-hidden="true" />
-                    </button>
-                  )}
-                </label>
+                <ReferenceSearchField
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  onClear={() => setQuery('')}
+                  label="搜索球员技巧"
+                  placeholder="搜索技巧中文或英文名称…"
+                />
               </div>
               </section>
             )}
@@ -402,7 +383,7 @@ export function SkillsExplorer() {
                 />
               </div>
               <section
-                className="position-filter reference-filter-module skill-recommendation-filter skill-value-filter"
+                  className="reference-filter-module position-filter skill-recommendation-filter skill-value-filter"
                 aria-labelledby="skill-recommendation-filter-title"
               >
                 <div className="recommendation-filter-heading">
@@ -451,54 +432,39 @@ export function SkillsExplorer() {
                     </button>
                   )}
                 </div>
-                <div className="recommendation-options">
-                  {recommendationLevels.map((level) => {
-                    const selected = selectedRecommendation === level;
-                    return (
-                      <button
-                        key={level}
-                        type="button"
-                        className={selected ? 'is-selected' : ''}
-                        onClick={() =>
-                          setSelectedRecommendation(selected ? null : level)
-                        }
-                        aria-pressed={selected}
-                      >
-                        <strong>{level} 星</strong>
-                        <span aria-label={`${level} 颗星`}>
-                          {'★'.repeat(level)}
-                          <i>{'★'.repeat(maxRecommendationLevel - level)}</i>
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
+                <ReferenceRatingOptions
+                  levels={recommendationLevels}
+                  maxLevel={maxRecommendationLevel}
+                  selectedLevel={selectedRecommendation}
+                  onSelect={setSelectedRecommendation}
+                />
               </section>
 
               <div className="skill-position-filter">
                 <section
-                  className="position-filter reference-filter-module"
+                  className="reference-filter-module position-filter"
                   aria-labelledby="skill-position-filter-title"
                 >
-                  <div className="position-filter-heading">
-                  <div>
-                    <h2 id="skill-position-filter-title">推荐方案</h2>
-                    <p>先选择专家方案，再按位置和球员定位查看技巧</p>
-                  </div>
-                  {selectedPlan !== null && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedPlan(null);
-                        setSelectedPosition(null);
-                        setSelectedProfile(null);
-                        setSelectedPositionRecommendation(null);
-                      }}
-                    >
-                      清除选择
-                    </button>
-                  )}
-                </div>
+                  <ReferenceFilterHeading
+                    headingId="skill-position-filter-title"
+                    title="推荐方案"
+                    description="先选择专家方案，再按位置和球员定位查看技巧"
+                    action={
+                      selectedPlan !== null && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedPlan(null);
+                            setSelectedPosition(null);
+                            setSelectedProfile(null);
+                            setSelectedPositionRecommendation(null);
+                          }}
+                        >
+                          清除选择
+                        </button>
+                      )
+                    }
+                  />
                   <div className="recommendation-plan-options">
                   {orderedRecommendationPlans.map((plan) => {
                     const selected = selectedPlan === plan.id;
@@ -555,60 +521,49 @@ export function SkillsExplorer() {
                   </div>
                 </section>
 
-                <section className="position-filter reference-filter-module">
-                  <div className="position-filter-heading">
-                  <div>
-                    <h2>位置适配</h2>
-                    <p>
-                      {selectedPlan === null
+                <section className="reference-filter-module position-filter">
+                  <ReferenceFilterHeading
+                    title="位置适配"
+                    description={
+                      selectedPlan === null
                         ? '请先选择专家方案'
-                        : '选择位置后，按适配度优先显示技巧'}
-                    </p>
-                  </div>
-                  {selectedPosition !== null && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedPosition(null);
-                        setSelectedProfile(null);
-                        setSelectedPositionRecommendation(null);
-                      }}
-                    >
-                      显示全部
-                    </button>
-                  )}
-                </div>
-                  <div className="position-options">
-                  {positionOptions.map((position) => {
-                    const selected = selectedPosition === position.id;
-                    return (
-                      <button
-                        key={position.id}
-                        type="button"
-                        className={selected ? 'is-selected' : ''}
-                        disabled={selectedPlan === null}
-                        onClick={() => {
-                          setSelectedPosition(selected ? null : position.id);
-                          setSelectedProfile(null);
-                          setSelectedPositionRecommendation(null);
-                        }}
-                        aria-pressed={selected}
-                      >
-                        {position.id}
-                      </button>
-                    );
-                  })}
-                  </div>
+                        : '选择位置后，按适配度优先显示技巧'
+                    }
+                    action={
+                      selectedPosition !== null && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedPosition(null);
+                            setSelectedProfile(null);
+                            setSelectedPositionRecommendation(null);
+                          }}
+                        >
+                          显示全部
+                        </button>
+                      )
+                    }
+                  />
+                  <ReferenceChoiceGrid
+                    values={positionOptions.map((position) => position.id)}
+                    selectedValue={selectedPosition}
+                    onSelect={(position) => {
+                      setSelectedPosition(position as SkillPosition | null);
+                      setSelectedProfile(null);
+                      setSelectedPositionRecommendation(null);
+                    }}
+                    disabled={selectedPlan === null}
+                    className="position-options"
+                  />
                 {selectedPosition !== null &&
                   activePosition &&
                   activePosition.profiles.length > 0 && (
                     <div className="skill-profile-filter">
-                      <div className="position-filter-heading">
-                        <div>
-                          <h2>球员定位</h2>
-                          <p>不同定位可以有不同的技能优先级</p>
-                        </div>
-                        {selectedProfile !== null &&
+                      <ReferenceFilterHeading
+                        title="球员定位"
+                        description="不同定位可以有不同的技能优先级"
+                        action={
+                          selectedProfile !== null &&
                           activePosition.profiles.length > 1 && (
                             <button
                               type="button"
@@ -619,8 +574,9 @@ export function SkillsExplorer() {
                             >
                               显示全部
                             </button>
-                          )}
-                      </div>
+                          )
+                        }
+                      />
                       {activePosition.profiles.length === 1 &&
                       String(activePosition.profiles[0]) === '通用' ? (
                         <p className="skill-profile-note">
@@ -628,76 +584,48 @@ export function SkillsExplorer() {
                           当前方案未在该位置做球员定位细化
                         </p>
                       ) : (
-                        <div className="profile-options">
-                          {activePosition.profiles
-                            .filter((profile) => profile !== '通用')
-                            .map((profile) => (
-                              <button
-                                key={profile}
-                                type="button"
-                                className={
-                                  selectedProfile === profile
-                                    ? 'is-selected'
-                                    : ''
-                                }
-                                onClick={() => {
-                                  setSelectedProfile(
-                                    selectedProfile === profile
-                                      ? null
-                                      : profile,
-                                  );
-                                  setSelectedPositionRecommendation(null);
-                                }}
-                                aria-pressed={selectedProfile === profile}
-                              >
-                                {profile}
-                              </button>
-                            ))}
-                        </div>
+                        <ReferenceChoiceGrid
+                          values={activePosition.profiles.filter(
+                            (profile) => profile !== '通用',
+                          )}
+                          selectedValue={selectedProfile}
+                          onSelect={(profile) => {
+                            setSelectedProfile(profile);
+                            setSelectedPositionRecommendation(null);
+                          }}
+                          className="profile-options"
+                        />
                       )}
                     </div>
                   )}
                 </section>
-                <section className="position-filter reference-filter-module skill-position-level-filter">
-                  <div className="position-filter-heading">
-                    <div>
-                      <h2>位置适配等级</h2>
-                      <p>
-                        {selectedPosition === null
-                          ? '请先选择位置'
-                          : '按必备、推荐或可选筛选'}
-                      </p>
-                    </div>
-                    {selectedPositionRecommendation !== null && (
-                      <button
-                        type="button"
-                        onClick={() => setSelectedPositionRecommendation(null)}
-                      >
-                        显示全部
-                      </button>
-                    )}
-                  </div>
-                  <div className="position-level-options">
-                    {positionRecommendationLevels.map((level) => {
-                      const selected = selectedPositionRecommendation === level;
-                      return (
+                <section className="reference-filter-module position-filter skill-position-level-filter">
+                  <ReferenceFilterHeading
+                    title="位置适配等级"
+                    description={
+                      selectedPosition === null
+                        ? '请先选择位置'
+                        : '按必备、推荐或可选筛选'
+                    }
+                    action={
+                      selectedPositionRecommendation !== null && (
                         <button
-                          key={level}
                           type="button"
-                          className={selected ? 'is-selected' : ''}
-                          disabled={selectedPlan === null}
-                          onClick={() =>
-                            setSelectedPositionRecommendation(
-                              selected ? null : level,
-                            )
-                          }
-                          aria-pressed={selected}
+                          onClick={() => setSelectedPositionRecommendation(null)}
                         >
-                          {positionRecommendationLabels[level]}
+                          显示全部
                         </button>
-                      );
-                    })}
-                  </div>
+                      )
+                    }
+                  />
+                  <ReferenceChoiceGrid
+                    values={positionRecommendationLevels}
+                    selectedValue={selectedPositionRecommendation}
+                    onSelect={setSelectedPositionRecommendation}
+                    getLabel={(level) => positionRecommendationLabels[level]}
+                    disabled={selectedPlan === null}
+                    className="position-level-options"
+                  />
                 </section>
                 <section className="reference-filter-module skill-custom-filter">
                   <div className="position-filter-heading">

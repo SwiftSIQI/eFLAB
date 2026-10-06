@@ -1495,8 +1495,10 @@ summary {
   display: grid;
   gap: 10px;
 }
-.skill-card {
+.reference-result-card {
   overflow: hidden;
+}
+.skill-card {
   border: 1px solid rgb(142 169 255 / 36%);
   border-radius: 15px;
   background: var(--surface);
@@ -1851,41 +1853,8 @@ summary {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 14px 150px 14px 14px;
+  padding: 14px;
   cursor: pointer;
-}
-.reference-intent-option.is-expanded .reference-intent-summary {
-  padding-bottom: 10px;
-}
-.reference-intent-expand {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  display: grid;
-  min-height: 30px;
-  grid-auto-flow: column;
-  align-items: center;
-  gap: 5px;
-  padding: 0 9px;
-  place-items: center;
-  border: 1px solid rgb(239 255 39 / 45%);
-  border-radius: 7px;
-  background: rgb(239 255 39 / 7%);
-  color: var(--yellow);
-  cursor: pointer;
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-.reference-intent-expand:hover,
-.reference-intent-expand:focus-visible {
-  background: rgb(239 255 39 / 12%);
-}
-.reference-intent-expand svg {
-  width: 20px;
-  transition: transform 180ms ease;
-}
-.reference-intent-option.is-expanded .reference-intent-expand svg {
-  transform: rotate(180deg);
 }
 .reference-intent-option:hover,
 .reference-intent-option:has(input:focus-visible) {
@@ -1901,18 +1870,6 @@ summary {
   width: 1px;
   height: 1px;
   opacity: 0;
-}
-.reference-intent-detail {
-  margin: 0;
-  padding: 0 14px 14px;
-}
-.reference-intent-detail li {
-  min-width: 0;
-  min-height: 0;
-  padding: 14px;
-}
-.reference-intent-lookup-steps {
-  grid-template-columns: 1fr;
 }
 .reference-intent-radio {
   display: grid;
@@ -1966,6 +1923,15 @@ summary {
   border: 1px solid rgb(91 244 242 / 28%);
   border-radius: 22px;
   background: var(--reference-section-bg);
+}
+.reference-filter-module {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 15px 16px;
+  border: 1px solid rgb(142 169 255 / 28%);
+  border-radius: 16px;
+  background: var(--reference-filter-bg);
 }
 .reference-filter-heading {
   display: flex;
@@ -2261,13 +2227,7 @@ summary {
   color: var(--yellow);
 }
 .position-filter {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 14px;
-  padding: 15px 16px;
-  border: 1px solid rgb(91 244 242 / 28%);
-  border-radius: 16px;
-  background: var(--reference-filter-bg);
+  border-color: rgb(91 244 242 / 28%);
 }
 .position-filter-heading {
   display: flex;
@@ -2333,12 +2293,7 @@ summary {
   border-color: rgb(142 169 255 / 28%);
 }
 .random-limit-filter {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 14px;
-  padding: 15px 16px;
   border: 1px solid rgb(91 244 242 / 28%);
-  border-radius: 16px;
   background: rgb(91 244 242 / 5%);
 }
 .random-limit-options {
@@ -2753,13 +2708,7 @@ summary {
   opacity: 0.45;
 }
 .recommendation-filter {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 22px;
-  padding: 15px 16px;
   border: 1px solid rgb(239 255 39 / 28%);
-  border-radius: 16px;
-  background: var(--reference-filter-bg);
 }
 .recommendation-filter-heading {
   display: flex;
@@ -2919,10 +2868,13 @@ summary {
 }
 .attribute-filter {
   overflow: hidden;
-  margin: 22px 0 26px;
+  margin: 0 0 14px;
   border: 1px solid rgb(91 244 242 / 28%);
   border-radius: 18px;
   background: rgb(5 20 100 / 72%);
+}
+.reference-filter-module.attribute-filter {
+  padding: 0;
 }
 .attribute-filter-heading {
   display: flex;
@@ -3096,7 +3048,6 @@ summary {
   gap: 12px;
 }
 .booster-card {
-  overflow: hidden;
   border: 1px solid rgb(142 169 255 / 34%);
   border-radius: 17px;
   background: linear-gradient(145deg, rgb(10 29 118 / 94%), rgb(4 17 86 / 94%));
