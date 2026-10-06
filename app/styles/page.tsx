@@ -1,15 +1,16 @@
 'use client';
 
-import { Search, Shield, Swords } from 'lucide-react';
+import { Shield, Swords } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
+import { ReferenceEmptyState } from '@/components/reference-empty-state';
 import { ReferencePageIntro } from '@/components/reference-page-intro';
 import { ReferenceResultsHeading } from '@/components/reference-results-heading';
 import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import { SiteFooter } from '@/components/site-footer';
+import { useReferenceSearch } from '@/lib/use-reference-search';
 import { normalizeSearchText } from '@/lib/utils';
 import { positions, styles, type Side } from '../data';
 
@@ -63,7 +64,7 @@ type WebMcpContext = {
 export default function StylesPage() {
   const [position, setPosition] = useState<Position>('ALL');
   const [side, setSide] = useState<SideFilter>('all');
-  const [query, setQuery] = useState('');
+  const { query, keyword, setQuery, clearQuery } = useReferenceSearch();
   const filterState = useRef({ position, side, query });
 
   useEffect(() => {
@@ -134,10 +135,9 @@ export default function StylesPage() {
     ).catch(() => undefined);
 
     return () => lifecycle.abort();
-  }, []);
+  }, [setQuery]);
 
   const results = useMemo(() => {
-    const keyword = normalizeSearchText(query);
     return styles.filter((style) => {
       const positionMatches =
         position === 'ALL' || style.positions.includes(position);
@@ -149,7 +149,7 @@ export default function StylesPage() {
         ).includes(keyword);
       return positionMatches && sideMatches && searchMatches;
     });
-  }, [position, query, side]);
+  }, [keyword, position, side]);
 
   const attackCount = results.filter((style) => style.side === 'attack').length;
   const defenseCount = results.length - attackCount;
@@ -278,18 +278,12 @@ export default function StylesPage() {
                 </details>
               ))}
               {results.length === 0 && (
-                <div className="empty-state">
-                  <Search aria-hidden="true" />
-                  <h3>没有找到相关风格</h3>
-                  <p>尝试更换位置、类型或搜索词。</p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setQuery('')}
-                  >
-                    清除搜索
-                  </Button>
-                </div>
+                <ReferenceEmptyState
+                  title="没有找到相关风格"
+                  description="尝试更换位置、类型或搜索词。"
+                  actionLabel="清除搜索"
+                  onAction={clearQuery}
+                />
               )}
             </div>
           </div>

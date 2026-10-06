@@ -1,10 +1,11 @@
 'use client';
 
-import { CircleHelp, Search } from 'lucide-react';
+import { CircleHelp } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
 import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
+import { ReferenceEmptyState } from '@/components/reference-empty-state';
 import { ReferenceIntentGuide } from '@/components/reference-intent-guide';
 import { ReferencePageIntro } from '@/components/reference-page-intro';
 import { ReferenceChoiceGrid } from '@/components/reference-choice-grid';
@@ -14,6 +15,7 @@ import { ReferenceResultsHeading } from '@/components/reference-results-heading'
 import { ReferenceSearchField } from '@/components/reference-search-field';
 import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import externalLinks from '@/config/external-links.json';
+import { useReferenceSearch } from '@/lib/use-reference-search';
 import { includesValue, normalizeSearchText } from '@/lib/utils';
 import {
   attributeCategories,
@@ -48,7 +50,7 @@ type BoosterIntent = 'lookup' | 'recommend';
 const isDebugBuild = import.meta.env.DEV || import.meta.env.MODE === 'test';
 
 export function BoostersExplorer() {
-  const [query, setQuery] = useState('');
+  const { query, keyword, setQuery, clearQuery } = useReferenceSearch();
   const [boosterIntent, setBoosterIntent] = useState<BoosterIntent>('lookup');
   const [selectedAttributes, setSelectedAttributes] = useState<AttributeId[]>(
     [],
@@ -79,7 +81,6 @@ export function BoostersExplorer() {
   }
 
   const results = useMemo(() => {
-    const keyword = normalizeSearchText(query);
     const isRecommendationMode = boosterIntent === 'recommend';
     return boosters.filter((booster) => {
       const matchesPosition =
@@ -112,7 +113,7 @@ export function BoostersExplorer() {
     });
   }, [
     boosterIntent,
-    query,
+    keyword,
     respectRandomBoosterLimit,
     selectedAttributes,
     selectedPosition,
@@ -410,15 +411,19 @@ export function BoostersExplorer() {
                 </article>
               ))}
               {results.length === 0 && (
-                <div className="empty-state booster-empty">
-                  <Search aria-hidden="true" />
-                  <h3>没有找到相关增能</h3>
-                  <p>
-                    {boosterIntent === 'lookup'
+                <ReferenceEmptyState
+                  className="reference-empty-compact"
+                  title="没有找到相关增能"
+                  description={
+                    boosterIntent === 'lookup'
                       ? '请尝试其他中文或英文关键词。'
-                      : '请尝试其他位置、星级或属性组合。'}
-                  </p>
-                </div>
+                      : '请尝试其他位置、星级或属性组合。'
+                  }
+                  actionLabel={
+                    boosterIntent === 'lookup' ? '清除搜索' : undefined
+                  }
+                  onAction={boosterIntent === 'lookup' ? clearQuery : undefined}
+                />
               )}
             </div>
           </div>

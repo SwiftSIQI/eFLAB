@@ -56,7 +56,7 @@
 - `csv/player_skill.csv` 是技巧名称、描述和分类的唯一来源，不得添加其中不存在的技能或分类。
 - 技巧分类允许重叠，以 CSV 的“技巧类型-中文”和“技巧类型-英文”为准。
 - 遇到别名、缩写或组合简称时，查阅 `csv/player_skill.csv` 和 `csv/player_skill_combo.csv`。网页数据和代码使用 CSV 标准名称；无法对应时，先询问标准技能及是否需要补充映射。
-- 技巧原始高清图片位于工程外的 `../efootball material/skills-hd/`，发布用的 WebP 位于 `public/skills/`，按序号使用 `01.webp`～`67.webp`。修改或补充原始 PNG 后运行 `npm run convert:skills` 更新发布资源；原始高清图不参与网站路由，也不纳入网站仓库。
+- 技巧页面直接使用 `public/skills/` 下固定的 WebP 资源（`01.webp`～`67.webp`），图片不依赖脚本生成或转换。
 
 ### 3.6 技能推荐归一化
 
@@ -85,9 +85,9 @@
 - 使用本地 Node.js 24 和 `package-lock.json` 锁定的 npm 依赖；本地 Node.js 或 npm 不可用时，才使用 workspace dependencies 作为备用运行时。
 - 常用命令：`npm run dev`、`npm run lint`、`npm run build`。
 - 访问本地站点时，首次打开需要输入访问密码 `eflab666`；验证状态保存在当前浏览器本地存储中。
-- `npm run prepare:build` 是正式构建前的完整准备流程：清理可重建缓存、`node_modules/` 和生成产物；按 `package-lock.json` 执行 `npm ci`；再依次执行技能推荐归一化和数据生成。发布用 WebP 已保存在 `public/skills/`，不依赖仓库外的原始高清图参与构建。
-- `npm run build` 会自动先执行 `npm run prepare:build`，因此每次正式构建都从全新的依赖和生成产物开始，不复用本地依赖或构建缓存。该流程不删除 `.env*`、源码 CSV 或 `media/` 原始资源；不要把这些 source of truth 或本地配置加入清理列表。
-- 仅修改数据或开发调试时，不需要执行完整清理流程；使用 `npm run normalize:data`、`npm run generate:data` 或 `npm run convert:skills` 更新对应产物即可。
+- `npm run prepare:build` 是正式构建前的完整准备流程：清理可重建缓存、`node_modules/` 和生成产物；按 `package-lock.json` 执行 `npm ci`；再依次执行技能推荐归一化和数据生成。发布用 WebP 已固定保存在 `public/skills/`，构建直接使用这些资源。
+- `npm run build` 会自动先执行 `npm run prepare:build`，因此每次正式构建都从全新的依赖和生成产物开始，不复用本地依赖或构建缓存。该流程不删除 `.env*` 或源码 CSV；不要把这些 source of truth 或本地配置加入清理列表。
+- 仅修改数据或开发调试时，不需要执行完整清理流程；使用 `npm run normalize:data` 或 `npm run generate:data` 更新对应产物即可。`public/skills/` 下的固定图片资源无需生成。
 - 需要单独更新技能推荐归一化结果时，运行 `npm run normalize:data`。
 - 修改后运行最相关的检查；涉及交互时检查对应页面。无法验证时说明原因和风险。
 

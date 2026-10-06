@@ -304,14 +304,6 @@ summary {
   box-shadow: 0 0 20px rgb(239 255 39 / 18%);
 }
 
-.workspace {
-  display: grid;
-  width: min(1440px, 100%);
-  margin: 0 auto;
-  padding: 24px;
-  gap: 24px;
-}
-
 .pitch-panel,
 .results-panel {
   min-width: 0;
@@ -325,6 +317,7 @@ summary {
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
+  margin-bottom: 14px;
 }
 
 .result-heading h2,
@@ -410,9 +403,6 @@ summary {
   width: 17px;
 }
 
-.result-heading {
-  margin-bottom: 14px;
-}
 .result-counts {
   display: flex;
   gap: 6px;
@@ -1146,14 +1136,6 @@ summary {
 .skill-results {
   min-width: 0;
 }
-.skill-recommendation-module .recommendation-filter,
-.skill-recommendation-module .skill-position-filter {
-  margin-bottom: 14px;
-}
-.skill-recommendation-module .skill-position-filter {
-  border-color: rgb(91 244 242 / 28%);
-  background: rgb(91 244 242 / 5%);
-}
 .reference-filter-section .reference-section-heading > p:last-child {
   color: #c3cff5;
   font-size: 0.82rem;
@@ -1680,8 +1662,13 @@ summary {
 }
 .attribute-card {
   min-width: 0;
+  overflow: hidden;
   padding: 15px 17px;
-  background: rgb(5 20 100 / 96%);
+  border: 1px solid rgb(142 169 255 / 36%);
+  border-left: 3px solid rgb(142 169 255 / 52%);
+  border-radius: 15px;
+  background: var(--surface);
+  box-shadow: 0 10px 30px rgb(0 0 40 / 16%);
 }
 .attribute-list {
   display: grid;
@@ -1701,14 +1688,6 @@ summary {
 .attribute-result-heading h2 {
   margin-top: 4px;
   font-size: clamp(1.25rem, 2.5vw, 1.65rem);
-}
-.attribute-card {
-  overflow: hidden;
-  border: 1px solid rgb(142 169 255 / 36%);
-  border-left: 3px solid rgb(142 169 255 / 52%);
-  border-radius: 15px;
-  background: var(--surface);
-  box-shadow: 0 10px 30px rgb(0 0 40 / 16%);
 }
 .attribute-card.attacking {
   border-left-color: var(--attack);
@@ -2553,6 +2532,7 @@ summary {
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
   white-space: pre;
   font-weight: 600;
+  line-height: 1;
 }
 .booster-recommendation {
   display: grid;
@@ -2596,14 +2576,16 @@ summary {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 0.8rem;
+  line-height: 1;
 }
 .booster-attributes small {
   flex: 1 1 auto;
   color: #9fb0ec;
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
   font-size: 0.68rem;
+  line-height: 1;
 }
-.booster-empty {
+.reference-empty-compact {
   grid-column: 1 / -1;
   min-height: 180px;
 }
@@ -3008,13 +2990,6 @@ summary {
     padding-right: 34px;
     padding-left: 34px;
   }
-  .workspace {
-    grid-template-columns: minmax(390px, 0.82fr) minmax(540px, 1.18fr);
-    align-items: start;
-    padding: 32px;
-    gap: 28px;
-  }
-
   .pitch-panel {
     position: sticky;
     top: 108px;
@@ -3151,9 +3126,6 @@ summary {
 @media (max-width: 420px) {
   .brand-lockup {
     min-width: 0;
-  }
-  .workspace {
-    padding: 18px 14px;
   }
   .result-heading {
     align-items: center;

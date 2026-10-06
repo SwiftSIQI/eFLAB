@@ -1,6 +1,6 @@
 'use client';
 
-import { CircleHelp, Search } from 'lucide-react';
+import { CircleHelp } from 'lucide-react';
 import { lazy, Suspense, useMemo, useState } from 'react';
 
 import { ReferenceChoiceGrid } from '@/components/reference-choice-grid';
@@ -8,12 +8,14 @@ import { ReferenceFilterHeading } from '@/components/reference-filter-heading';
 import { ReferenceRatingOptions } from '@/components/reference-rating-options';
 import { ReferenceSearchField } from '@/components/reference-search-field';
 import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
+import { ReferenceEmptyState } from '@/components/reference-empty-state';
 import { ReferencePageIntro } from '@/components/reference-page-intro';
 import { ReferenceIntentGuide } from '@/components/reference-intent-guide';
 import { ReferenceResultsHeading } from '@/components/reference-results-heading';
 import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import { SiteFooter } from '@/components/site-footer';
 import externalLinks from '@/config/external-links.json';
+import { useReferenceSearch } from '@/lib/use-reference-search';
 import { normalizeSearchText } from '@/lib/utils';
 import {
   getHighestPositionLevel,
@@ -129,7 +131,7 @@ const orderedRecommendationPlans = [...skillRecommendationPlans].sort(
 export function SkillsExplorer() {
   const [category, setCategory] = useState<Category>('all');
   const [skillIntent, setSkillIntent] = useState<SkillIntent>('lookup');
-  const [query, setQuery] = useState('');
+  const { query, keyword, setQuery } = useReferenceSearch();
   const [selectedRecommendation, setSelectedRecommendation] =
     useState<SkillRecommendation | null>(null);
   const [selectedPlan, setSelectedPlan] =
@@ -171,7 +173,7 @@ export function SkillsExplorer() {
     activePlan?.positions ?? skillPositions.map((id) => ({ id, profiles: [] }));
 
   const results = useMemo(() => {
-    const keyword = skillIntent === 'lookup' ? normalizeSearchText(query) : '';
+    const searchKeyword = skillIntent === 'lookup' ? keyword : '';
     const selectedComboSkillIds = new Set<number>(
       skillComboGroups
         .filter((group) => selectedSkillCombos.includes(group.id))
@@ -204,9 +206,9 @@ export function SkillsExplorer() {
           skill.recommendation === selectedRecommendation) &&
         !selectedOwnedSkillIds.includes(skill.id) &&
         (matchesPositionFilters || isSelectedComboSkill) &&
-        (!keyword ||
+        (!searchKeyword ||
           normalizeSearchText(`${skill.nameZh} ${skill.nameEn}`).includes(
-            keyword,
+            searchKeyword,
           ))
       );
     });
@@ -237,7 +239,7 @@ export function SkillsExplorer() {
         });
   }, [
     category,
-    query,
+    keyword,
     skillIntent,
     selectedOwnedSkillIds,
     selectedPlan,
@@ -750,11 +752,11 @@ export function SkillsExplorer() {
                   </button>
                 )}
                 {results.length === 0 && (
-                  <div className="empty-state booster-empty">
-                    <Search aria-hidden="true" />
-                    <h3>没有找到相关技巧</h3>
-                    <p>请尝试其他中文或英文关键词。</p>
-                  </div>
+                  <ReferenceEmptyState
+                    className="reference-empty-compact"
+                    title="没有找到相关技巧"
+                    description="请尝试其他中文或英文关键词。"
+                  />
                 )}
               </div>
             </div>

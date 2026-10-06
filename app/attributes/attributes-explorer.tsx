@@ -1,12 +1,13 @@
 'use client';
 
-import { Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
+import { ReferenceEmptyState } from '@/components/reference-empty-state';
 import { SiteFooter } from '@/components/site-footer';
 import { ReferencePageIntro } from '@/components/reference-page-intro';
 import { ReferenceSearchField } from '@/components/reference-search-field';
 import { normalizeSearchText } from '@/lib/utils';
+import { useReferenceSearch } from '@/lib/use-reference-search';
 import {
   attributeCategories,
   playerAttributes,
@@ -25,10 +26,9 @@ const attributeCounts = new Map(
 
 export function AttributesExplorer() {
   const [category, setCategory] = useState<CategoryFilter>('all');
-  const [query, setQuery] = useState('');
+  const { query, keyword, setQuery, clearQuery } = useReferenceSearch();
 
   const results = useMemo(() => {
-    const keyword = normalizeSearchText(query);
     return playerAttributes.filter(
       (attribute) =>
         (category === 'all' || attribute.category === category) &&
@@ -37,7 +37,7 @@ export function AttributesExplorer() {
             `${attribute.nameZh} ${attribute.nameEn} ${attribute.descriptionZh} ${attribute.descriptionEn}`,
           ).includes(keyword)),
     );
-  }, [category, query]);
+  }, [category, keyword]);
 
   const activeCategory =
     category === 'all'
@@ -145,18 +145,12 @@ export function AttributesExplorer() {
                 </article>
               ))}
               {results.length === 0 && (
-                <div className="empty-state">
-                  <Search aria-hidden="true" />
-                  <h3>没有找到相关属性</h3>
-                  <p>试试其他分类或关键词。</p>
-                  <button
-                    type="button"
-                    className="clear-search"
-                    onClick={() => setQuery('')}
-                  >
-                    清除搜索
-                  </button>
-                </div>
+                <ReferenceEmptyState
+                  title="没有找到相关属性"
+                  description="试试其他分类或关键词。"
+                  actionLabel="清除搜索"
+                  onAction={clearQuery}
+                />
               )}
             </div>
           </div>
