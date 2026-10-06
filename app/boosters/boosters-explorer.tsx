@@ -10,6 +10,7 @@ import { ReferencePageIntro } from '@/components/reference-page-intro';
 import { ReferenceChoiceGrid } from '@/components/reference-choice-grid';
 import { ReferenceFilterHeading } from '@/components/reference-filter-heading';
 import { ReferenceRatingOptions } from '@/components/reference-rating-options';
+import { ReferenceResultsHeading } from '@/components/reference-results-heading';
 import { ReferenceSearchField } from '@/components/reference-search-field';
 import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import externalLinks from '@/config/external-links.json';
@@ -349,16 +350,15 @@ export function BoostersExplorer() {
           aria-label="增能查询结果"
         >
           <div className="reference-results-panel reference-section-panel">
-            <div className="reference-result-heading" aria-live="polite">
-              <ReferenceSectionHeading
-                eyebrow="BOOSTER RESULT LIST"
-                title="增能结果列表"
-                level="h2"
-              />
-              <span>
-                显示 {results.length} / 共 {boosters.length}
-              </span>
-            </div>
+            <ReferenceResultsHeading
+              eyebrow="BOOSTER RESULT LIST"
+              title="增能结果列表"
+              count={
+                <span>
+                  显示 {results.length} / 共 {boosters.length}
+                </span>
+              }
+            />
 
             <div className="booster-grid">
               {results.map((booster) => (

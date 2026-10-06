@@ -3,7 +3,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
-const SOURCE_DIR = path.join(ROOT, 'media', 'skills-hd');
+const SOURCE_DIR = path.resolve(ROOT, '../efootball material/skills-hd');
 const OUTPUT_DIR = path.join(ROOT, 'public', 'skills');
 const SOURCE_PATTERN = /^\d{2}\.png$/;
 const OUTPUT_WIDTH = 567;
@@ -15,7 +15,9 @@ const sourceFiles = (await readdir(SOURCE_DIR))
   .sort();
 
 if (sourceFiles.length === 0) {
-  throw new Error(`未找到 PNG 原始资源：${SOURCE_DIR}`);
+  throw new Error(
+    `未找到 PNG 原始资源：${SOURCE_DIR}。技能原图已移至工程外的 efootball material/skills-hd。`,
+  );
 }
 
 await mkdir(OUTPUT_DIR, { recursive: true });

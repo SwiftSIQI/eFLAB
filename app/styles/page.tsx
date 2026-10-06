@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
 import { ReferencePageIntro } from '@/components/reference-page-intro';
+import { ReferenceResultsHeading } from '@/components/reference-results-heading';
 import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import { SiteFooter } from '@/components/site-footer';
 import { normalizeSearchText } from '@/lib/utils';
@@ -246,23 +247,20 @@ export default function StylesPage() {
           aria-label="比赛风格列表"
         >
           <div className="reference-results-panel reference-section-panel">
-            <div
-              className="result-heading reference-result-heading"
-              aria-live="polite"
-            >
-              <ReferenceSectionHeading
-                eyebrow="COMPATIBLE STYLES"
-                title={resultTitle}
-                level="h2"
-              />
-              <div
-                className="result-counts"
-                aria-label={`${results.length} 项结果`}
-              >
-                <span className="attack-count">攻 {attackCount}</span>
-                <span className="defense-count">防 {defenseCount}</span>
-              </div>
-            </div>
+            <ReferenceResultsHeading
+              eyebrow="COMPATIBLE STYLES"
+              title={resultTitle}
+              className="result-heading"
+              count={
+                <div
+                  className="result-counts"
+                  aria-label={`${results.length} 项结果`}
+                >
+                  <span className="attack-count">攻 {attackCount}</span>
+                  <span className="defense-count">防 {defenseCount}</span>
+                </div>
+              }
+            />
 
             <div className="style-list">
               {results.map((style) => (

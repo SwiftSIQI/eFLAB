@@ -39,7 +39,6 @@ const debugStyles = `
   html[data-reference-layer-debug='on'] .reference-page .skill-result-count {
     background: #0b6b63 !important;
   }
-  html[data-reference-layer-debug='on'] .styles-page .controls,
   html[data-reference-layer-debug='on'] .styles-page .pitch,
   html[data-reference-layer-debug='on'] .styles-page .style-list,
   html[data-reference-layer-debug='on'] .styles-page .pitch-side-filter,
@@ -60,8 +59,6 @@ const debugStyles = `
   html[data-reference-layer-debug='on'] .reference-page .skill-card summary {
     background: #8a5a00 !important;
   }
-  html[data-reference-layer-debug='on'] .styles-page .position-strip,
-  html[data-reference-layer-debug='on'] .styles-page .filter-row,
   html[data-reference-layer-debug='on'] .styles-page .style-card,
   html[data-reference-layer-debug='on'] .styles-page .pitch-node,
   html[data-reference-layer-debug='on'] .styles-page .pitch-side-tabs [data-slot='tabs-trigger'] {
@@ -72,7 +69,6 @@ const debugStyles = `
   html[data-reference-layer-debug='on'] .reference-page .random-limit-options button,
   html[data-reference-layer-debug='on'] .reference-page .recommendation-options button,
   html[data-reference-layer-debug='on'] .reference-page .recommendation-plan-option,
-  html[data-reference-layer-debug='on'] .reference-page .attribute-category,
   html[data-reference-layer-debug='on'] .reference-page .position-level-options button,
   html[data-reference-layer-debug='on'] .reference-page .custom-filter-option,
   html[data-reference-layer-debug='on'] .reference-page .owned-skill-category,
@@ -80,7 +76,6 @@ const debugStyles = `
     background: #4b236d !important;
   }
   html[data-reference-layer-debug='on'] .reference-page .owned-skill-category-options button,
-  html[data-reference-layer-debug='on'] .reference-page .attribute-category-options > button,
   html[data-reference-layer-debug='on'] .reference-page .booster-attributes > span,
   html[data-reference-layer-debug='on'] .reference-page .booster-index,
   html[data-reference-layer-debug='on'] .reference-page .booster-recommendation strong,
@@ -92,7 +87,6 @@ const debugStyles = `
   html[data-reference-layer-debug='on'] .reference-page .skill-research {
     background: #8d3f78 !important;
   }
-  html[data-reference-layer-debug='on'] .styles-page .position-chip,
   html[data-reference-layer-debug='on'] .styles-page .search-box,
   html[data-reference-layer-debug='on'] .styles-page .style-description {
     background: #4b236d !important;

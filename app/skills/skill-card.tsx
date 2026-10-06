@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { memo } from 'react';
 
 import {
   getDisplayedPositionLevel,
@@ -20,7 +21,7 @@ type SkillCardProps = {
   readonly selectedPositionRecommendation: SkillPositionRecommendation | null;
 };
 
-export function SkillCard({
+export const SkillCard = memo(function SkillCard({
   skill,
   selectedPlan,
   selectedPosition,
@@ -90,10 +91,7 @@ export function SkillCard({
             </strong>
           </span>
         </span>
-        <span
-          className="skill-expand"
-          aria-hidden="true"
-        >
+        <span className="skill-expand" aria-hidden="true">
           ＋
         </span>
       </summary>
@@ -133,4 +131,4 @@ export function SkillCard({
       </div>
     </details>
   );
-}
+});

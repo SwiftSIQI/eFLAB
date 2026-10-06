@@ -1,7 +1,7 @@
 'use client';
 
 import { CircleHelp, Search } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { lazy, Suspense, useMemo, useState } from 'react';
 
 import { ReferenceIntentOption } from '@/components/reference-intent-option';
 import { ReferenceChoiceGrid } from '@/components/reference-choice-grid';
@@ -10,6 +10,7 @@ import { ReferenceRatingOptions } from '@/components/reference-rating-options';
 import { ReferenceSearchField } from '@/components/reference-search-field';
 import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
 import { ReferencePageIntro } from '@/components/reference-page-intro';
+import { ReferenceResultsHeading } from '@/components/reference-results-heading';
 import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import { SiteFooter } from '@/components/site-footer';
 import externalLinks from '@/config/external-links.json';
@@ -29,7 +30,10 @@ import {
   type SkillRecommendationPlanId,
 } from './data';
 import { skillComboGroups, type SkillComboId } from './skill-combos';
-import { SkillCard } from './skill-card';
+const SkillCard = lazy(async () => {
+  const skillCardModule = await import('./skill-card');
+  return { default: skillCardModule.SkillCard };
+});
 
 type Category = (typeof skillCategories)[number]['id'];
 type SkillRecommendation = Exclude<PlayerSkill['recommendation'], null>;
@@ -150,6 +154,7 @@ export function SkillsExplorer() {
   const [selectedOwnedSkillIds, setSelectedOwnedSkillIds] = useState<number[]>(
     [],
   );
+  const [visibleSkillCount, setVisibleSkillCount] = useState(24);
 
   function selectSkillIntent(intent: SkillIntent) {
     setSkillIntent(intent);
@@ -251,6 +256,8 @@ export function SkillsExplorer() {
     selectedRecommendation,
     selectedSkillCombos,
   ]);
+
+  const visibleResults = results.slice(0, visibleSkillCount);
 
   const renderOwnedSkillCategory = (categoryItem: SkillCategoryDefinition) => {
     const categorySkills = playerSkills.filter((skill) =>
@@ -700,19 +707,16 @@ export function SkillsExplorer() {
         >
           <div className="skills-controls">
             <div className="skill-results reference-results-panel reference-section-panel">
-              <div
-                className="result-heading skill-result-heading reference-result-heading"
-                aria-live="polite"
-              >
-                <ReferenceSectionHeading
-                  eyebrow="SKILL RESULT LIST"
-                  title="技巧结果列表"
-                  level="h2"
-                />
-                <span className="skill-result-count">
-                  显示 {results.length} / 共 {playerSkills.length}
-                </span>
-              </div>
+              <ReferenceResultsHeading
+                eyebrow="SKILL RESULT LIST"
+                title="技巧结果列表"
+                className="result-heading skill-result-heading"
+                count={
+                  <span className="skill-result-count">
+                    显示 {results.length} / 共 {playerSkills.length}
+                  </span>
+                }
+              />
 
               <nav className="skill-category-list" aria-label="技巧分类">
                 {displaySkillCategories.map((item) => {
@@ -744,18 +748,33 @@ export function SkillsExplorer() {
               </nav>
 
               <div className="skill-list">
-                {results.map((skill) => (
-                  <SkillCard
-                    key={skill.id}
-                    skill={skill}
-                    selectedPlan={selectedPlan}
-                    selectedPosition={selectedPosition}
-                    selectedProfile={selectedProfile}
-                    selectedPositionRecommendation={
-                      selectedPositionRecommendation
-                    }
-                  />
-                ))}
+                <Suspense
+                  fallback={
+                    <div className="skill-list-loading">加载技巧卡片…</div>
+                  }
+                >
+                  {visibleResults.map((skill) => (
+                    <SkillCard
+                      key={skill.id}
+                      skill={skill}
+                      selectedPlan={selectedPlan}
+                      selectedPosition={selectedPosition}
+                      selectedProfile={selectedProfile}
+                      selectedPositionRecommendation={
+                        selectedPositionRecommendation
+                      }
+                    />
+                  ))}
+                </Suspense>
+                {visibleSkillCount < results.length && (
+                  <button
+                    className="skill-load-more"
+                    type="button"
+                    onClick={() => setVisibleSkillCount((count) => count + 24)}
+                  >
+                    加载更多（剩余 {results.length - visibleSkillCount} 项）
+                  </button>
+                )}
                 {results.length === 0 && (
                   <div className="empty-state booster-empty">
                     <Search aria-hidden="true" />
