@@ -1,11 +1,11 @@
 'use client';
 
-import { Search, Shield, Swords, X } from 'lucide-react';
+import { Search, Shield, Swords } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ReferenceSearchField } from '@/components/reference-search-field';
 import { SiteFooter } from '@/components/site-footer';
 import { normalizeSearchText } from '@/lib/utils';
 import { positions, styles, type Side } from '../data';
@@ -256,24 +256,13 @@ export default function StylesPage() {
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-              <label className="search-box">
-                <span className="sr-only">搜索比赛风格</span>
-                <Search aria-hidden="true" />
-                <Input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="搜索中英文名称…"
-                />
-                {query && (
-                  <button
-                    type="button"
-                    onClick={() => setQuery('')}
-                    aria-label="清除搜索"
-                  >
-                    <X aria-hidden="true" />
-                  </button>
-                )}
-              </label>
+              <ReferenceSearchField
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                onClear={() => setQuery('')}
+                label="搜索比赛风格"
+                placeholder="搜索中英文名称…"
+              />
             </div>
           </div>
 

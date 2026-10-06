@@ -1,10 +1,10 @@
 'use client';
 
-import { Search, X } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
-import { Input } from '@/components/ui/input';
+import { ReferenceSearchField } from '@/components/reference-search-field';
 import { normalizeSearchText } from '@/lib/utils';
 import {
   attributeCategories,
@@ -112,24 +112,13 @@ export function AttributesExplorer() {
 
           <div className="skill-results">
             <div className="skill-search-row">
-              <label className="search-box">
-                <span className="sr-only">搜索球员属性</span>
-                <Search aria-hidden="true" />
-                <Input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="搜索属性名称或描述…"
-                />
-                {query && (
-                  <button
-                    type="button"
-                    onClick={() => setQuery('')}
-                    aria-label="清除搜索"
-                  >
-                    <X aria-hidden="true" />
-                  </button>
-                )}
-              </label>
+              <ReferenceSearchField
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                onClear={() => setQuery('')}
+                label="搜索球员属性"
+                placeholder="搜索属性名称或描述…"
+              />
             </div>
 
             <div

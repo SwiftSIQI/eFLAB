@@ -11,7 +11,8 @@ import { ReferenceFilterHeading } from '@/components/reference-filter-heading';
 import { ReferenceRatingOptions } from '@/components/reference-rating-options';
 import { ReferenceSearchField } from '@/components/reference-search-field';
 import { ReferenceSectionHeading } from '@/components/reference-section-heading';
-import { normalizeSearchText } from '@/lib/utils';
+import externalLinks from '@/config/external-links.json';
+import { includesValue, normalizeSearchText } from '@/lib/utils';
 import {
   attributeCategories,
   getAttribute,
@@ -22,7 +23,6 @@ import {
   boosterIdsByPosition,
   boosterPositions,
   boosters,
-  type BoosterId,
   type BoosterPosition,
   type BoosterRecommendation,
 } from './data';
@@ -84,9 +84,7 @@ export function BoostersExplorer() {
         !isRecommendationMode ||
         selectedPosition === null ||
         !respectRandomBoosterLimit ||
-        (
-          boosterIdsByPosition[selectedPosition] as readonly BoosterId[]
-        ).includes(booster.id);
+        includesValue(boosterIdsByPosition[selectedPosition], booster.id);
       const matchesRecommendation =
         !isRecommendationMode ||
         selectedRecommendation === null ||
@@ -94,7 +92,7 @@ export function BoostersExplorer() {
       const matchesAttributes =
         !isRecommendationMode ||
         selectedAttributes.every((attribute) =>
-          (booster.attributes as readonly AttributeId[]).includes(attribute),
+          includesValue(booster.attributes, attribute),
         );
       const matchesKeyword =
         isRecommendationMode ||
@@ -216,7 +214,10 @@ export function BoostersExplorer() {
                   description="开启随机增能限制后，只显示该位置可通过随机增能代币获得的增能"
                   action={
                     selectedPosition !== null && (
-                      <button type="button" onClick={() => setSelectedPosition(null)}>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedPosition(null)}
+                      >
                         显示全部
                       </button>
                     )
@@ -266,7 +267,9 @@ export function BoostersExplorer() {
                         </h3>
                         <div className="attribute-category-options">
                           {categoryAttributes.map((item) => {
-                            const selected = selectedAttributes.includes(item.id);
+                            const selected = selectedAttributes.includes(
+                              item.id,
+                            );
                             return (
                               <button
                                 key={item.id}
@@ -321,7 +324,12 @@ export function BoostersExplorer() {
                         >
                           球员增能价值参考自vearwu的研究成果，
                           <a
-                            href="https://www.bilibili.com/video/BV1M3m3BaEuM/"
+                            href={
+                              externalLinks.find(
+                                (link) =>
+                                  link.id === 'booster-recommendation-source',
+                              )?.url
+                            }
                             target="_blank"
                             rel="noreferrer"
                           >
@@ -380,10 +388,7 @@ export function BoostersExplorer() {
         aria-label="增能查询结果"
       >
         <div className="reference-results-panel reference-section-panel">
-          <div
-            className="reference-result-heading"
-            aria-live="polite"
-          >
+          <div className="reference-result-heading" aria-live="polite">
             <ReferenceSectionHeading
               eyebrow="BOOSTER RESULT LIST"
               title="增能结果列表"

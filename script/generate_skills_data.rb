@@ -33,6 +33,7 @@ fail_with("位置推荐文件缺少字段") unless (required_position_headers - 
 position_recommendations = Hash.new { |hash, skill_name| hash[skill_name] = {} }
 recommendation_plans = {}
 skill_names = table.map { |row| row["技巧名称-中文"].to_s.strip }
+fail_with("技巧名称-中文 存在重复") unless skill_names.uniq.length == skill_names.length
 position_table.each do |row|
   plan_id = row["方案ID"].to_s.strip
   plan_label = row["方案"].to_s.strip

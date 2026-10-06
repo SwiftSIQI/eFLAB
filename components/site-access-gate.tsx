@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useSyncExternalStore } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
 const ACCESS_PASSWORD = 'eflab666';
 const ACCESS_STORAGE_KEY = 'eflab-access-granted';
@@ -37,7 +37,9 @@ export function SiteAccessGate({ children }: { readonly children: ReactNode }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  function handleSubmit(event: { preventDefault: () => void }) {
+  function handleSubmit(
+    event: Parameters<NonNullable<ComponentProps<'form'>['onSubmit']>>[0],
+  ) {
     event.preventDefault();
     if (password !== ACCESS_PASSWORD) {
       setError('密码不正确，请重新输入。');
@@ -70,6 +72,7 @@ export function SiteAccessGate({ children }: { readonly children: ReactNode }) {
               setError('');
             }}
             autoComplete="current-password"
+            aria-invalid={Boolean(error)}
             aria-describedby={error ? 'site-access-error' : undefined}
           />
           <button type="submit">进入 eFLAB</button>

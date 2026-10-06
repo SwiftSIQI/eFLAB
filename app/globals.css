@@ -2605,11 +2605,7 @@ summary {
   padding: 14px;
   border: 1px solid rgb(142 169 255 / 24%);
   border-radius: 10px;
-  background: linear-gradient(
-    135deg,
-    rgb(9 28 115 / 62%),
-    rgb(4 16 88 / 42%)
-  );
+  background: linear-gradient(135deg, rgb(9 28 115 / 62%), rgb(4 16 88 / 42%));
 }
 .owned-skill-category h3 {
   display: flex;
@@ -2640,7 +2636,7 @@ summary {
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
   font-size: 0.68rem;
   letter-spacing: 0.04em;
-  }
+}
 .owned-skill-category-options {
   display: flex;
   flex-wrap: wrap;
@@ -2918,11 +2914,7 @@ summary {
   padding: 13px;
   border: 1px solid rgb(142 169 255 / 24%);
   border-radius: 12px;
-  background: linear-gradient(
-    135deg,
-    rgb(9 28 115 / 62%),
-    rgb(4 16 88 / 42%)
-  );
+  background: linear-gradient(135deg, rgb(9 28 115 / 62%), rgb(4 16 88 / 42%));
 }
 .attribute-category h3 {
   display: flex;
@@ -3190,11 +3182,7 @@ summary {
   border-color: rgb(142 169 255 / 28%);
 }
 .reference-page .owned-skill-category {
-  background: linear-gradient(
-    135deg,
-    rgb(9 28 115 / 62%),
-    rgb(4 16 88 / 42%)
-  );
+  background: linear-gradient(135deg, rgb(9 28 115 / 62%), rgb(4 16 88 / 42%));
 }
 .reference-page .owned-skill-category-options button {
   background: var(--reference-control-muted-bg);

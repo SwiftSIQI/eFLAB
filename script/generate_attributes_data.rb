@@ -67,7 +67,11 @@ output = <<~TS
   export type AttributeId = (typeof playerAttributes)[number]['id'];
 
   export function getAttribute(id: AttributeId) {
-    return playerAttributes.find((attribute) => attribute.id === id)!;
+    const attribute = playerAttributes.find((item) => item.id === id);
+    if (!attribute) {
+      throw new Error(`未找到属性 ID：${id}`);
+    }
+    return attribute;
   }
 TS
 

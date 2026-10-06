@@ -13,6 +13,7 @@
     "generate:data:skills": "ruby script/generate_skills_data.rb",
     "generate:data": "ruby script/generate_playing_styles_data.rb && ruby script/generate_boosters_data.rb && ruby script/generate_attributes_data.rb && ruby script/generate_skills_data.rb && ruby script/generate_skill_combo_data.rb",
     "convert:skills": "node script/convert_skill_images.mjs",
+    "check:links": "node script/check_external_links.mjs",
     "prepare:build": "node script/prepare_build.mjs",
     "predev": "npm run normalize:data && npm run generate:data",
     "dev": "vite dev",

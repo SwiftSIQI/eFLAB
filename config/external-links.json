@@ -1,0 +1,22 @@
+[
+  {
+    "id": "booster-recommendation-source",
+    "label": "增能价值研究资料",
+    "url": "https://www.bilibili.com/video/BV1M3m3BaEuM/"
+  },
+  {
+    "id": "skill-plan-castor",
+    "label": "冲啊大叔 CasToR 技能推荐方案",
+    "url": "https://www.bilibili.com/video/BV1UuJazNE8s/"
+  },
+  {
+    "id": "skill-plan-skye",
+    "label": "Skye 技能推荐方案",
+    "url": "https://docs.google.com/spreadsheets/u/0/d/1A33zBtq6cVTghg6ytROST6k70SRMSFoOxEkSvdXSeRk/htmlview?pli=1#gid=2081134566"
+  },
+  {
+    "id": "skill-value-source",
+    "label": "技巧价值研究资料",
+    "url": "https://mp.weixin.qq.com/s/2QyJhO7otdglQJKDAKldwA"
+  }
+]

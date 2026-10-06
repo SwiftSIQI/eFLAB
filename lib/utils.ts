@@ -6,5 +6,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function normalizeSearchText(value: string) {
-  return value.trim().toLocaleLowerCase();
+  return value.trim().toLowerCase();
+}
+
+export function includesValue<T>(values: readonly T[], value: unknown) {
+  return values.some((item) => item === value);
 }

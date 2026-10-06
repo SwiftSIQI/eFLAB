@@ -39,6 +39,13 @@ class DataPipelineTest < Minitest::Test
     end
   end
 
+  def test_skill_catalog_names_are_unique
+    names = SKILLS.map { |row| row['技巧名称-中文'].to_s.strip }
+
+    assert_equal names.length, names.uniq.length
+    refute_includes names, ''
+  end
+
   def test_expert_output_has_valid_unique_records
     skills = SKILLS.map { |row| row['技巧名称-中文'].to_s.strip }
     table = csv('csv/play_skill_rec_by_expert.csv')

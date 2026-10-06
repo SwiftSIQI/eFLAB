@@ -18,9 +18,7 @@ export function ReferenceIntentOption<Intent extends string>({
   const selected = selectedIntent === intent;
 
   return (
-    <div
-      className={`reference-intent-option${selected ? ' is-selected' : ''}`}
-    >
+    <div className={`reference-intent-option${selected ? ' is-selected' : ''}`}>
       <label className="reference-intent-summary">
         <input
           type="radio"
