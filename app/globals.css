@@ -1386,7 +1386,9 @@ summary {
 .skill-intent-recommend > .skill-position-filter {
   display: contents;
 }
-.skill-intent-recommend > .skill-position-filter > :not(.skill-recommendation-filter) {
+.skill-intent-recommend
+  > .skill-position-filter
+  > :not(.skill-recommendation-filter) {
   display: none;
 }
 .skill-category-list {
@@ -3546,6 +3548,121 @@ summary {
   }
 }
 
+@media (max-width: 979px) {
+  .styles-query-layout .pitch-panel {
+    display: block;
+    position: static;
+    padding: 18px;
+    border: 1px solid rgb(91 244 242 / 28%);
+    border-radius: 22px;
+    background: var(--reference-section-bg);
+    box-shadow: 0 20px 60px rgb(0 0 40 / 24%);
+  }
+
+  .styles-query-layout .pitch-side-filter {
+    margin-top: 18px;
+  }
+
+  .styles-query-layout .pitch-side-tabs {
+    margin: 0;
+  }
+
+  .styles-query-layout .pitch {
+    position: relative;
+    height: min(78vw, 420px);
+    min-height: 300px;
+    margin-top: 18px;
+    overflow: hidden;
+    border: 2px solid rgb(91 244 242 / 40%);
+    border-radius: 18px;
+    background:
+      linear-gradient(
+        90deg,
+        transparent 49.8%,
+        rgb(91 244 242 / 24%) 50%,
+        transparent 50.2%
+      ),
+      linear-gradient(rgb(91 244 242 / 5%), rgb(91 244 242 / 1%)),
+      repeating-linear-gradient(
+        90deg,
+        rgb(14 74 171 / 30%) 0 12.5%,
+        rgb(5 41 130 / 20%) 12.5% 25%
+      );
+  }
+
+  .styles-query-layout .pitch-box {
+    position: absolute;
+    left: 27%;
+    width: 46%;
+    height: 16%;
+    border: 1px solid rgb(91 244 242 / 25%);
+  }
+
+  .styles-query-layout .pitch-box.top {
+    top: -1px;
+    border-top: 0;
+  }
+
+  .styles-query-layout .pitch-box.bottom {
+    bottom: -1px;
+    border-bottom: 0;
+  }
+
+  .styles-query-layout .pitch-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 23%;
+    aspect-ratio: 1;
+    border: 1px solid rgb(91 244 242 / 23%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .styles-query-layout .pitch-half {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: rgb(91 244 242 / 22%);
+  }
+
+  .styles-query-layout .pitch-node {
+    position: absolute;
+    display: flex;
+    min-width: 54px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: 1px solid rgb(157 180 255 / 55%);
+    border-radius: 10px;
+    background: rgb(4 15 82 / 92%);
+    color: white;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+  }
+
+  .styles-query-layout .pitch-node strong {
+    font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
+    font-size: 0.95rem;
+  }
+
+  .styles-query-layout .pitch-node small {
+    color: currentColor;
+    font-size: 0.65rem;
+    opacity: 0.72;
+  }
+
+  .styles-query-layout .pitch-note {
+    margin: 13px 2px 0;
+    color: #aab9ee;
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+}
+
 @media (min-width: 621px) {
   .reference-intro-layout .usage-steps {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3583,9 +3700,9 @@ summary {
     top: 108px;
     display: block;
     padding: 20px;
-    border: 1px solid rgb(91 244 242 / 24%);
+    border: 1px solid rgb(91 244 242 / 28%);
     border-radius: 22px;
-    background: rgb(5 20 100 / 74%);
+    background: var(--reference-section-bg);
     box-shadow: 0 20px 60px rgb(0 0 40 / 24%);
     backdrop-filter: blur(12px);
   }

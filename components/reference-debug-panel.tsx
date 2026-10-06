@@ -19,7 +19,7 @@ const debugStyles = `
   html[data-reference-layer-debug='on'] .styles-page .results-panel {
     background: #57213d !important;
   }
-  html[data-reference-layer-debug='on'] .styles-page .workspace {
+  html[data-reference-layer-debug='on'] .styles-page .styles-query-layout {
     background: transparent !important;
   }
   html[data-reference-layer-debug='on'] .reference-page .reference-intro-layout > .usage-guide,

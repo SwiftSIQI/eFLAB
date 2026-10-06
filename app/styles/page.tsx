@@ -6,6 +6,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
+import { ReferencePageIntro } from '@/components/reference-page-intro';
+import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import { SiteFooter } from '@/components/site-footer';
 import { normalizeSearchText } from '@/lib/utils';
 import { positions, styles, type Side } from '../data';
@@ -159,42 +161,45 @@ export default function StylesPage() {
     { label: '进攻', value: totalAttackCount },
     { label: '防守', value: totalDefenseCount },
   ];
+  const resultPositionLabel = position === 'ALL' ? '全部位置' : position;
+  const resultSideLabel =
+    side === 'all' ? '' : side === 'attack' ? '进攻型' : '防守型';
+  const resultTitle = `${resultPositionLabel}可触发的${resultSideLabel}比赛风格`;
 
   return (
     <main id="main-content" className="site-shell reference-page styles-page">
       {isDebugBuild && <ReferenceDebugPanel />}
       <section className="reference-workspace styles-reference-workspace">
-        <header className="reference-intro">
-          <p className="eyebrow">PLAYING STYLES</p>
-          <h1>比赛风格</h1>
-          <p>
-            {styles.length}{' '}
-            项比赛风格分为进攻和防守两大类，帮助你快速了解球员在场上的跑位倾向与职责。
-          </p>
-          <div className="reference-stats" aria-label="比赛风格概览">
-            {overviewStats.map((item) => (
-              <span key={item.label}>
-                <strong>{item.value}</strong>
-                {item.label}
-              </span>
-            ))}
-          </div>
-        </header>
+        <ReferencePageIntro
+          eyebrow="PLAYING STYLES"
+          title="比赛风格"
+          description={`${styles.length} 项比赛风格分为进攻和防守两大类，帮助你快速了解球员在场上的跑位倾向与职责。`}
+          stats={overviewStats}
+          className="styles-intro"
+        />
       </section>
-      <section className="workspace" aria-label="比赛风格查询">
-        <aside className="pitch-panel" aria-label="球场位置选择">
-          <div className="panel-heading">
-            <div>
-              <p className="eyebrow">POSITION MAP</p>
-              <h2>选择球员位置</h2>
-            </div>
-          </div>
+      <div
+        className="reference-query-layout styles-query-layout"
+        aria-label="比赛风格查询"
+      >
+        <aside
+          className="pitch-panel reference-section-panel"
+          aria-label="球员位置和比赛风格选择"
+        >
+          <ReferenceSectionHeading
+            eyebrow="POSITION MAP"
+            title="选择球员位置和比赛风格"
+            level="h2"
+          />
           <Tabs
             value={side}
             onValueChange={(value) => setSide(value as SideFilter)}
             className="pitch-side-filter"
           >
-            <TabsList className="side-tabs pitch-side-tabs" aria-label="比赛风格类型">
+            <TabsList
+              className="side-tabs pitch-side-tabs"
+              aria-label="比赛风格类型"
+            >
               <TabsTrigger value="all">全部</TabsTrigger>
               <TabsTrigger value="attack" className="attack-tab">
                 <Swords aria-hidden="true" />
@@ -220,7 +225,9 @@ export default function StylesPage() {
                   className={`pitch-node ${position === node.position ? 'is-active' : ''}`}
                   style={{ left: `${node.x}%`, top: `${node.y}%` }}
                   onClick={() =>
-                    setPosition(position === node.position ? 'ALL' : node.position)
+                    setPosition(
+                      position === node.position ? 'ALL' : node.position,
+                    )
                   }
                   aria-pressed={position === node.position}
                   aria-label={`${node.position}，${count} 种风格`}
@@ -234,66 +241,73 @@ export default function StylesPage() {
           <p className="pitch-note">只有放在兼容位置时，比赛风格才会触发。</p>
         </aside>
 
-        <section className="results-panel">
-          <div className="result-heading" aria-live="polite">
-            <div>
-              <p className="eyebrow">COMPATIBLE STYLES</p>
-              <h2>
-                {position === 'ALL' ? '全部位置' : position} 可触发的比赛风格
-              </h2>
-            </div>
+        <section
+          className="results-panel reference-content reference-results-section"
+          aria-label="比赛风格列表"
+        >
+          <div className="reference-results-panel reference-section-panel">
             <div
-              className="result-counts"
-              aria-label={`${results.length} 项结果`}
+              className="result-heading reference-result-heading"
+              aria-live="polite"
             >
-              <span className="attack-count">攻 {attackCount}</span>
-              <span className="defense-count">防 {defenseCount}</span>
-            </div>
-          </div>
-
-          <div className="style-list">
-            {results.map((style) => (
-              <details key={style.id} className={`style-card ${style.side}`}>
-                <summary>
-                  <span className="type-mark" aria-hidden="true">
-                    {style.side === 'attack' ? <Swords /> : <Shield />}
-                  </span>
-                  <span className="style-heading">
-                    <span className="style-title">
-                      <strong>{style.nameZh}</strong>
-                      <span>/ {style.nameEn}</span>
-                    </span>
-                    <span className="expand-label">说明</span>
-                  </span>
-                  <span className="compatible-positions">
-                    {style.positions.map((item) => (
-                      <b key={item}>{item}</b>
-                    ))}
-                  </span>
-                </summary>
-                <div className="style-description">
-                  <p>{style.descriptionZh}</p>
-                  <p lang="en">{style.descriptionEn}</p>
-                </div>
-              </details>
-            ))}
-            {results.length === 0 && (
-              <div className="empty-state">
-                <Search aria-hidden="true" />
-                <h3>没有找到相关风格</h3>
-                <p>尝试更换位置、类型或搜索词。</p>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setQuery('')}
-                >
-                  清除搜索
-                </Button>
+              <ReferenceSectionHeading
+                eyebrow="COMPATIBLE STYLES"
+                title={resultTitle}
+                level="h2"
+              />
+              <div
+                className="result-counts"
+                aria-label={`${results.length} 项结果`}
+              >
+                <span className="attack-count">攻 {attackCount}</span>
+                <span className="defense-count">防 {defenseCount}</span>
               </div>
-            )}
+            </div>
+
+            <div className="style-list">
+              {results.map((style) => (
+                <details key={style.id} className={`style-card ${style.side}`}>
+                  <summary>
+                    <span className="type-mark" aria-hidden="true">
+                      {style.side === 'attack' ? <Swords /> : <Shield />}
+                    </span>
+                    <span className="style-heading">
+                      <span className="style-title">
+                        <strong>{style.nameZh}</strong>
+                        <span>/ {style.nameEn}</span>
+                      </span>
+                      <span className="expand-label">说明</span>
+                    </span>
+                    <span className="compatible-positions">
+                      {style.positions.map((item) => (
+                        <b key={item}>{item}</b>
+                      ))}
+                    </span>
+                  </summary>
+                  <div className="style-description">
+                    <p>{style.descriptionZh}</p>
+                    <p lang="en">{style.descriptionEn}</p>
+                  </div>
+                </details>
+              ))}
+              {results.length === 0 && (
+                <div className="empty-state">
+                  <Search aria-hidden="true" />
+                  <h3>没有找到相关风格</h3>
+                  <p>尝试更换位置、类型或搜索词。</p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setQuery('')}
+                  >
+                    清除搜索
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
         </section>
-      </section>
+      </div>
 
       <SiteFooter />
     </main>
