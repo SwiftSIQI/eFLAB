@@ -1,6 +1,7 @@
 type ReferenceSectionHeadingProps = {
   readonly eyebrow: string;
   readonly title: string;
+  readonly titleSuffix?: string;
   readonly description?: string;
   readonly level: 'h1' | 'h2';
   readonly className?: string;
@@ -9,6 +10,7 @@ type ReferenceSectionHeadingProps = {
 export function ReferenceSectionHeading({
   eyebrow,
   title,
+  titleSuffix,
   description,
   level,
   className = '',
@@ -18,7 +20,12 @@ export function ReferenceSectionHeading({
   return (
     <div className={`reference-section-heading ${className}`.trim()}>
       <p className="eyebrow">{eyebrow}</p>
-      <Heading>{title}</Heading>
+      <Heading>
+        {title}
+        {titleSuffix && (
+          <small className="reference-title-suffix">{titleSuffix}</small>
+        )}
+      </Heading>
       {description && <p>{description}</p>}
     </div>
   );

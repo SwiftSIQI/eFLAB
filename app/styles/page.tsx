@@ -165,6 +165,7 @@ export default function StylesPage() {
         <ReferencePageIntro
           eyebrow="PLAYING STYLES"
           title="比赛风格"
+          titleSuffix="（功能建设中，敬请期待）"
           description={`${styles.length} 项比赛风格分为进攻和防守两大类，帮助你快速了解球员在场上的跑位倾向与职责。`}
         />
       </section>

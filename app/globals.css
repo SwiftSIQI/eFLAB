@@ -1769,6 +1769,15 @@ summary {
   font-weight: 700;
   line-height: 1.15;
 }
+.reference-title-suffix {
+  margin-left: 10px;
+  color: var(--yellow);
+  font-size: 0.42em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  vertical-align: middle;
+}
 .reference-section-heading p:not(.eyebrow) {
   margin: 0;
   color: #c3cff5;

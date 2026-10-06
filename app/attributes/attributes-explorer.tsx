@@ -53,6 +53,7 @@ export function AttributesExplorer() {
         <ReferencePageIntro
           eyebrow="PLAYER ATTRIBUTES"
           title="球员属性"
+          titleSuffix="（功能建设中，敬请期待）"
           description={`${playerAttributes.length} 项球员属性分为 ${attributeCategories.length} 大类，包含游戏内中英文说明。`}
         />
       </section>

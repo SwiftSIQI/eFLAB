@@ -5,6 +5,7 @@ import { ReferenceSectionHeading } from './reference-section-heading';
 type ReferencePageIntroProps = {
   readonly eyebrow: string;
   readonly title: string;
+  readonly titleSuffix?: string;
   readonly description: string;
   readonly children?: ReactNode;
 };
@@ -12,6 +13,7 @@ type ReferencePageIntroProps = {
 export function ReferencePageIntro({
   eyebrow,
   title,
+  titleSuffix,
   description,
   children,
 }: ReferencePageIntroProps) {
@@ -21,6 +23,7 @@ export function ReferencePageIntro({
         className="reference-hero-copy"
         eyebrow={eyebrow}
         title={title}
+        titleSuffix={titleSuffix}
         description={description}
         level="h1"
       />
