@@ -118,10 +118,6 @@ summary {
   padding: 24px;
 }
 
-.access-gate-loading {
-  background: transparent;
-}
-
 .access-card {
   width: min(100%, 430px);
   padding: clamp(28px, 6vw, 52px);
@@ -203,33 +199,6 @@ summary {
   background: rgb(7 24 111 / 58%);
 }
 
-.usage-guide[open] {
-  gap: 22px;
-}
-
-.usage-guide-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  cursor: pointer;
-  list-style: none;
-}
-
-.usage-guide-summary::-webkit-details-marker {
-  display: none;
-}
-
-.usage-guide-summary > svg {
-  flex: 0 0 auto;
-  color: var(--yellow);
-  transition: transform 180ms ease;
-}
-
-.usage-guide[open] .usage-guide-summary > svg {
-  transform: rotate(180deg);
-}
-
 .usage-guide-heading {
   display: grid;
   gap: 8px;
@@ -243,69 +212,6 @@ summary {
 .usage-guide-heading > span:last-child {
   margin: 0;
   color: var(--muted-foreground);
-}
-
-.usage-steps {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: usage-step;
-}
-
-.usage-steps li {
-  display: block;
-  min-height: 116px;
-  padding: 16px;
-  border: 1px solid rgb(123 158 255 / 24%);
-  border-radius: 12px;
-  background: rgb(16 36 126 / 48%);
-  counter-increment: usage-step;
-}
-
-.usage-steps li::before {
-  content: counter(usage-step, decimal-leading-zero);
-  display: inline-block;
-  margin-right: 12px;
-  color: var(--yellow);
-  font-family: inherit;
-  font-size: 0.98rem;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1.35rem;
-  vertical-align: baseline;
-}
-
-.usage-steps strong {
-  color: var(--yellow);
-  font-size: 0.98rem;
-  line-height: 1.4;
-}
-
-.usage-steps span,
-.usage-guide-notes p {
-  display: block;
-  margin-top: 8px;
-  color: var(--muted-foreground);
-  font-size: 0.88rem;
-  line-height: 1.65;
-}
-
-.usage-guide-notes {
-  display: grid;
-  gap: 8px;
-  padding-top: 4px;
-  border-top: 1px solid rgb(123 158 255 / 20%);
-}
-
-.usage-guide-notes p {
-  margin: 0;
-}
-
-.usage-guide-notes strong {
-  color: #ffffff;
 }
 
 .topbar {
@@ -812,67 +718,6 @@ summary {
   font-size: clamp(1rem, 1.5vw, 1.16rem);
   line-height: 1.75;
 }
-.home-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 34px;
-}
-.home-primary-action,
-.home-secondary-action {
-  display: inline-flex;
-  min-height: 48px;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 11px 20px;
-  border-radius: 999px;
-  font-weight: 800;
-  text-decoration: none;
-  transition:
-    transform 160ms ease,
-    border-color 160ms ease,
-    box-shadow 160ms ease;
-}
-.home-primary-action {
-  background: var(--yellow);
-  color: #06115c;
-  box-shadow: 0 10px 28px rgb(239 255 39 / 18%);
-}
-.home-primary-action svg {
-  width: 18px;
-}
-.home-secondary-action {
-  border: 1px solid rgb(142 169 255 / 52%);
-  background: rgb(10 29 115 / 72%);
-  color: white;
-}
-.home-primary-action:hover,
-.home-secondary-action:hover {
-  transform: translateY(-2px);
-}
-.home-secondary-action:hover {
-  border-color: var(--defense);
-}
-.home-hero-metrics {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  margin-top: 24px;
-  color: #9fb0ec;
-  font-size: 0.78rem;
-}
-.home-hero-metrics span {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 5px;
-}
-.home-hero-metrics strong {
-  color: var(--yellow);
-  font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
-  font-size: 1.1rem;
-}
-
 .home-visual {
   position: relative;
   min-height: 460px;
@@ -1173,34 +1018,6 @@ summary {
 }
 .skills-list-workspace .skill-results {
   min-width: 0;
-}
-.skills-usage-guide {
-  width: auto;
-  margin: 22px 0 0;
-  padding: 14px 18px;
-  border-color: rgb(123 158 255 / 28%);
-  background: rgb(7 24 111 / 42%);
-}
-.skills-usage-guide .usage-guide-heading {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 12px;
-}
-.skills-usage-guide .usage-guide-heading strong {
-  font-size: 1.2rem;
-}
-.skills-usage-guide .usage-guide-heading > span:last-child {
-  flex-basis: 100%;
-  margin-top: 3px;
-  font-size: 0.82rem;
-}
-.skills-usage-guide .usage-steps {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-.skills-usage-guide .usage-steps li {
-  min-height: 0;
-  padding: 14px;
 }
 .skills-intro {
   position: relative;
@@ -2281,10 +2098,6 @@ summary {
   min-width: 82px;
   white-space: nowrap;
 }
-.skill-custom-filter .position-filter-heading > button.is-placeholder {
-  visibility: hidden;
-  pointer-events: none;
-}
 .custom-filter-options {
   display: flex;
   flex-wrap: wrap;
@@ -3033,7 +2846,6 @@ summary {
     justify-self: end;
     margin-top: 0;
   }
-  .skills-reference-workspace .skills-usage-guide,
   .skills-reference-workspace .skill-intent-guide {
     grid-column: 1 / -1;
   }
@@ -3065,9 +2877,6 @@ summary {
 }
 
 @media (max-width: 900px) {
-  .usage-steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .home-hero {
     min-height: auto;
     grid-template-columns: 1fr;
@@ -3097,7 +2906,6 @@ summary {
     justify-self: start;
     margin-top: 4px;
   }
-  .reference-intro-layout .usage-steps,
   .reference-intent-options {
     grid-template-columns: 1fr;
   }
@@ -3119,20 +2927,10 @@ summary {
     justify-self: start;
     margin-top: 4px;
   }
-  .reference-intro-layout .usage-steps {
-    grid-template-columns: 1fr;
-  }
   .reference-intent-options {
     grid-template-columns: 1fr;
   }
   .reference-intro-layout .usage-guide-heading {
-    display: grid;
-    gap: 6px;
-  }
-  .skills-usage-guide .usage-steps {
-    grid-template-columns: 1fr;
-  }
-  .skills-usage-guide .usage-guide-heading {
     display: grid;
     gap: 6px;
   }
@@ -3142,9 +2940,6 @@ summary {
   .usage-guide {
     padding: 20px;
   }
-  .usage-steps {
-    grid-template-columns: 1fr;
-  }
   .home-hero {
     padding: 42px 18px 28px;
   }
@@ -3153,10 +2948,6 @@ summary {
   }
   .home-lead {
     margin-top: 20px;
-  }
-  .home-actions {
-    display: grid;
-    margin-top: 28px;
   }
   .home-visual {
     min-height: 310px;
@@ -3318,9 +3109,6 @@ summary {
 }
 
 @media (min-width: 621px) {
-  .reference-intro-layout .usage-steps {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
 }
 
 @media (min-width: 980px) {
