@@ -3,13 +3,13 @@
 import { CircleHelp, Search } from 'lucide-react';
 import { lazy, Suspense, useMemo, useState } from 'react';
 
-import { ReferenceIntentOption } from '@/components/reference-intent-option';
 import { ReferenceChoiceGrid } from '@/components/reference-choice-grid';
 import { ReferenceFilterHeading } from '@/components/reference-filter-heading';
 import { ReferenceRatingOptions } from '@/components/reference-rating-options';
 import { ReferenceSearchField } from '@/components/reference-search-field';
 import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
 import { ReferencePageIntro } from '@/components/reference-page-intro';
+import { ReferenceIntentGuide } from '@/components/reference-intent-guide';
 import { ReferenceResultsHeading } from '@/components/reference-results-heading';
 import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import { SiteFooter } from '@/components/site-footer';
@@ -126,15 +126,6 @@ const orderedRecommendationPlans = [...skillRecommendationPlans].sort(
     );
   },
 );
-const skillOverviewStats = [
-  { label: '球员技能', value: playerSkills.length },
-  ...orderedSkillCategories.map((item) => ({
-    label: item.id === 'Showtime' ? 'ST 技能' : `${item.label}技能`,
-    value: playerSkills.filter((skill) => skill.categories.includes(item.id))
-      .length,
-  })),
-];
-
 export function SkillsExplorer() {
   const [category, setCategory] = useState<Category>('all');
   const [skillIntent, setSkillIntent] = useState<SkillIntent>('lookup');
@@ -307,48 +298,32 @@ export function SkillsExplorer() {
           eyebrow="PLAYER SKILLS GUIDE"
           title="球员技巧"
           description={`${playerSkills.length} 个球员技巧分为 ${skillCategories.length - 1} 类，涵盖 ShowTime 技能、射门、盘带、传球、防守、守门和其他，帮助你快速了解每项技巧的效果与适用场景。`}
-          stats={skillOverviewStats}
-          className="skills-intro-copy"
         >
-          <section
-            className="usage-guide reference-intent-guide skill-intent-guide"
-            aria-labelledby="skills-intent-title"
-          >
-            <div className="usage-guide-heading">
-              <strong id="skills-intent-title">我想：</strong>
-              <span>选择一个使用方式，开始筛选球员技巧。</span>
-            </div>
-            <div
-              className="reference-intent-options"
-              role="radiogroup"
-              aria-labelledby="skills-intent-title"
-            >
-              <ReferenceIntentOption
-                intent="lookup"
-                selectedIntent={skillIntent}
-                title="我想查询某个技巧的作用"
-                description={skillIntentDescriptions.lookup}
-                radioName="skill-intent"
-                onSelect={selectSkillIntent}
-              />
-              <ReferenceIntentOption
-                intent="recommend"
-                selectedIntent={skillIntent}
-                title="我想了解不同技巧的通用价值"
-                description={skillIntentDescriptions.recommend}
-                radioName="skill-intent"
-                onSelect={selectSkillIntent}
-              />
-              <ReferenceIntentOption
-                intent="value"
-                selectedIntent={skillIntent}
-                title="我想给球员添加合适的技巧"
-                description={skillIntentDescriptions.value}
-                radioName="skill-intent"
-                onSelect={selectSkillIntent}
-              />
-            </div>
-          </section>
+          <ReferenceIntentGuide
+            titleId="skills-intent-title"
+            prompt="选择一个使用方式，开始筛选球员技巧。"
+            radioName="skill-intent"
+            selectedIntent={skillIntent}
+            onSelect={selectSkillIntent}
+            className="skill-intent-guide"
+            options={[
+              {
+                intent: 'lookup',
+                title: '我想查询某个技巧的作用',
+                description: skillIntentDescriptions.lookup,
+              },
+              {
+                intent: 'recommend',
+                title: '我想了解不同技巧的通用价值',
+                description: skillIntentDescriptions.recommend,
+              },
+              {
+                intent: 'value',
+                title: '我想给球员添加合适的技巧',
+                description: skillIntentDescriptions.value,
+              },
+            ]}
+          />
         </ReferencePageIntro>
       </section>
 

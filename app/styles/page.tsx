@@ -39,10 +39,6 @@ const pitchNodes: Array<{
   { position: 'GK', x: 50, y: 94 },
 ];
 
-const totalAttackCount = styles.filter(
-  (style) => style.side === 'attack',
-).length;
-const totalDefenseCount = styles.length - totalAttackCount;
 const stylePositionCounts = new Map(
   positions.map((position) => [
     position,
@@ -157,11 +153,6 @@ export default function StylesPage() {
 
   const attackCount = results.filter((style) => style.side === 'attack').length;
   const defenseCount = results.length - attackCount;
-  const overviewStats = [
-    { label: '球员风格', value: styles.length },
-    { label: '进攻', value: totalAttackCount },
-    { label: '防守', value: totalDefenseCount },
-  ];
   const resultPositionLabel = position === 'ALL' ? '全部位置' : position;
   const resultSideLabel =
     side === 'all' ? '' : side === 'attack' ? '进攻型' : '防守型';
@@ -175,8 +166,6 @@ export default function StylesPage() {
           eyebrow="PLAYING STYLES"
           title="比赛风格"
           description={`${styles.length} 项比赛风格分为进攻和防守两大类，帮助你快速了解球员在场上的跑位倾向与职责。`}
-          stats={overviewStats}
-          className="styles-intro"
         />
       </section>
       <div

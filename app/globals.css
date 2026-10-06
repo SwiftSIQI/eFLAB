@@ -100,8 +100,8 @@ summary {
 }
 
 .reference-page {
-  --booster-panel-padding: 20px;
-  --booster-heading-content-gap: 16px;
+  --reference-panel-padding: 20px;
+  --reference-heading-content-gap: 16px;
   --reference-intro-bg: rgb(5 20 100 / 88%);
   --reference-section-bg: rgb(7 24 111 / 72%);
   --reference-guide-bg: rgb(7 24 111 / 84%);
@@ -337,10 +337,6 @@ summary {
   font-weight: 800;
   line-height: 1.25;
 }
-.styles-reference-workspace .reference-intro h1 {
-  font-weight: 800;
-}
-
 .eyebrow {
   color: var(--yellow);
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
@@ -1019,26 +1015,6 @@ summary {
 .skills-list-workspace .skill-results {
   min-width: 0;
 }
-.skills-intro {
-  position: relative;
-  overflow: hidden;
-  padding: 26px 22px;
-  border: 1px solid rgb(91 244 242 / 28%);
-  border-radius: 22px;
-  background:
-    radial-gradient(circle at 90% 20%, rgb(255 47 179 / 22%), transparent 34%),
-    rgb(5 20 100 / 75%);
-}
-.skills-intro h1 {
-  margin: 5px 0 8px;
-  font-size: clamp(1.7rem, 4vw, 2.6rem);
-  line-height: 1.2;
-}
-.skills-intro > p:last-child {
-  margin: 0;
-  color: #c3cff5;
-  line-height: 1.5;
-}
 .skills-controls {
   display: grid;
   gap: 24px;
@@ -1446,45 +1422,26 @@ summary {
 .reference-intro {
   position: relative;
   overflow: hidden;
-  padding: 24px 24px;
   border: 1px solid rgb(91 244 242 / 28%);
   border-radius: 22px;
   background:
-    radial-gradient(circle at 90% 20%, rgb(255 47 179 / 20%), transparent 34%),
+    radial-gradient(circle at 92% 20%, rgb(239 255 39 / 16%), transparent 34%),
+    radial-gradient(circle at 8% 100%, rgb(255 47 179 / 13%), transparent 28%),
     var(--reference-intro-bg);
 }
 .reference-intro-layout {
   display: grid;
   overflow: visible;
-  padding: var(--booster-panel-padding);
-  grid-template-columns: minmax(0, 1fr) auto;
-  row-gap: var(--booster-heading-content-gap);
+  padding: var(--reference-panel-padding);
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--reference-heading-content-gap);
   column-gap: 44px;
-  align-items: center;
-}
-.reference-intro h1 {
-  margin: 5px 0 8px;
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  line-height: 1.15;
-}
-.reference-intro > p:not(.eyebrow) {
-  max-width: 720px;
-  margin: 0;
-  color: #c3cff5;
-  line-height: 1.65;
-}
-.skills-reference-workspace .reference-intro > p:not(.eyebrow) {
-  max-width: 1100px;
-}
-.skills-reference-workspace .skills-intro-copy > p:not(.eyebrow) {
-  max-width: 720px;
-}
-.reference-intro-layout > p:not(.eyebrow) {
-  max-width: 1100px;
+  align-items: start;
 }
 .reference-stats {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 8px;
   margin-top: 18px;
 }
@@ -1502,6 +1459,8 @@ summary {
 .reference-stats strong {
   color: var(--yellow);
   font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1;
 }
 .booster-source-info {
   position: relative;
@@ -1541,41 +1500,39 @@ summary {
 .booster-source-tooltip a {
   text-decoration: none;
 }
+.reference-hero-copy .eyebrow {
+  margin: 0 0 8px;
+  color: var(--yellow);
+  font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+}
+.reference-hero-copy h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.65rem, 3vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
 .reference-hero-copy > p:not(.eyebrow) {
   max-width: none;
-}
-.reference-intro-layout .reference-stats {
-  width: 100%;
-  min-width: 0;
-  justify-self: end;
-  margin-top: 0;
+  color: #c3cff5;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 .reference-intro-layout > .usage-guide {
   grid-column: 1 / -1;
   width: auto;
   margin: 0;
-  padding-block: var(--booster-panel-padding);
-  padding-inline: var(--booster-panel-padding);
+  padding-block: var(--reference-panel-padding);
+  padding-inline: var(--reference-panel-padding);
   border-color: rgb(123 158 255 / 28%);
   background: var(--reference-guide-bg);
 }
-.reference-intro-layout .usage-guide-heading {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 12px;
-}
-.reference-intro-layout .usage-guide-heading strong {
-  font-size: 1.2rem;
-}
-.reference-intro-layout .usage-guide-heading > span:last-child {
-  flex-basis: 100%;
-  margin-top: 3px;
-  font-size: 0.82rem;
-}
 .reference-intent-guide {
   align-content: start;
-  gap: var(--booster-heading-content-gap);
+  gap: var(--reference-heading-content-gap);
 }
 .reference-intent-guide .usage-guide-heading {
   display: grid;
@@ -1675,7 +1632,7 @@ summary {
   margin-top: 28px;
 }
 .reference-section-panel {
-  padding: var(--booster-panel-padding);
+  padding: var(--reference-panel-padding);
   border: 1px solid rgb(91 244 242 / 28%);
   border-radius: 22px;
   background: var(--reference-section-bg);
@@ -1683,18 +1640,13 @@ summary {
 .reference-filter-module {
   display: grid;
   gap: 12px;
-  margin-bottom: 14px;
-  padding: 15px 16px;
-  border: 1px solid rgb(142 169 255 / 28%);
-  border-radius: 16px;
-  background: var(--reference-filter-bg);
 }
 .reference-filter-heading {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: var(--booster-heading-content-gap);
+  margin-bottom: var(--reference-heading-content-gap);
 }
 .reference-filter-heading h2,
 .reference-filter-heading p,
@@ -1850,12 +1802,6 @@ summary {
 }
 .attribute-card .attribute-description:not([lang='en']) {
   margin-top: 12px;
-}
-.reference-intro-layout {
-  background:
-    radial-gradient(circle at 92% 20%, rgb(239 255 39 / 16%), transparent 34%),
-    radial-gradient(circle at 8% 100%, rgb(255 47 179 / 13%), transparent 28%),
-    var(--reference-intro-bg);
 }
 .reference-section-heading .eyebrow {
   margin: 0;
@@ -2560,7 +2506,7 @@ summary {
   align-items: end;
   justify-content: space-between;
   gap: 16px;
-  margin: 0 0 var(--booster-heading-content-gap);
+  margin: 0 0 var(--reference-heading-content-gap);
 }
 .reference-result-heading p {
   margin: 0;
@@ -2739,13 +2685,6 @@ summary {
   .compatible-positions {
     display: flex;
   }
-  .reference-toolbar {
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.6fr);
-    align-items: center;
-  }
-  .booster-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .attribute-options {
     grid-template-columns: 1fr;
   }
@@ -2836,19 +2775,6 @@ summary {
   .skills-controls {
     grid-template-columns: minmax(0, 1fr);
   }
-  .skills-reference-workspace .reference-intro {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.85fr);
-    gap: 18px 36px;
-    align-items: center;
-  }
-  .skills-reference-workspace .reference-stats {
-    justify-self: end;
-    margin-top: 0;
-  }
-  .skills-reference-workspace .skill-intent-guide {
-    grid-column: 1 / -1;
-  }
   .skill-category-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -2899,13 +2825,6 @@ summary {
 }
 
 @media (max-width: 759px) {
-  .reference-intro-layout {
-    grid-template-columns: 1fr;
-  }
-  .reference-intro-layout .reference-stats {
-    justify-self: start;
-    margin-top: 4px;
-  }
   .reference-intent-options {
     grid-template-columns: 1fr;
   }
@@ -2920,22 +2839,8 @@ summary {
   .site-nav-link small {
     display: block;
   }
-  .reference-intro-layout {
-    grid-template-columns: 1fr;
-  }
-  .reference-intro-layout .reference-stats {
-    justify-self: start;
-    margin-top: 4px;
-  }
   .reference-intent-options {
     grid-template-columns: 1fr;
-  }
-  .reference-intro-layout .usage-guide-heading {
-    display: grid;
-    gap: 6px;
-  }
-  .skills-reference-workspace .reference-stats {
-    margin-top: 18px;
   }
   .usage-guide {
     padding: 20px;

@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
 import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
-import { ReferenceIntentOption } from '@/components/reference-intent-option';
+import { ReferenceIntentGuide } from '@/components/reference-intent-guide';
 import { ReferencePageIntro } from '@/components/reference-page-intro';
 import { ReferenceChoiceGrid } from '@/components/reference-choice-grid';
 import { ReferenceFilterHeading } from '@/components/reference-filter-heading';
@@ -127,39 +127,27 @@ export function BoostersExplorer() {
           eyebrow="CRAFTABLE BOOSTERS"
           title="球员增能"
           description={`有 ${boosters.length} 个球员增能可以同时提升 ${boosterAttributeCount} 项球员属性，选择合适的增能可以进一步强化球员的场上竞争力。`}
-          stats={[{ label: '球员增能', value: boosters.length }]}
         >
-          <section
-            className="usage-guide reference-intent-guide"
-            aria-labelledby="boosters-usage-title"
-          >
-            <div className="usage-guide-heading">
-              <strong id="boosters-usage-title">我想：</strong>
-              <span>选择一个使用方式，开始查询增能。</span>
-            </div>
-            <div
-              className="reference-intent-options"
-              role="radiogroup"
-              aria-labelledby="boosters-usage-title"
-            >
-              <ReferenceIntentOption
-                intent="lookup"
-                selectedIntent={boosterIntent}
-                title="我想查询某个增能的作用"
-                description="搜索增能中文或英文名称，查看它会增加哪些属性。"
-                radioName="booster-intent"
-                onSelect={selectBoosterIntent}
-              />
-              <ReferenceIntentOption
-                intent="recommend"
-                selectedIntent={boosterIntent}
-                title="我想给球员添加合适的增能"
-                description="根据球员位置、球员属性和增能价值等维度筛选出最合适的球员增能。"
-                radioName="booster-intent"
-                onSelect={selectBoosterIntent}
-              />
-            </div>
-          </section>
+          <ReferenceIntentGuide
+            titleId="boosters-usage-title"
+            prompt="选择一个使用方式，开始查询增能。"
+            radioName="booster-intent"
+            selectedIntent={boosterIntent}
+            onSelect={selectBoosterIntent}
+            options={[
+              {
+                intent: 'lookup',
+                title: '我想查询某个增能的作用',
+                description: '搜索增能中文或英文名称，查看它会增加哪些属性。',
+              },
+              {
+                intent: 'recommend',
+                title: '我想给球员添加合适的增能',
+                description:
+                  '根据球员位置、球员属性和增能价值等维度筛选出最合适的球员增能。',
+              },
+            ]}
+          />
         </ReferencePageIntro>
       </section>
 

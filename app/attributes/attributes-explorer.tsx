@@ -4,6 +4,7 @@ import { Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
+import { ReferencePageIntro } from '@/components/reference-page-intro';
 import { ReferenceSearchField } from '@/components/reference-search-field';
 import { normalizeSearchText } from '@/lib/utils';
 import {
@@ -49,25 +50,11 @@ export function AttributesExplorer() {
       className="site-shell reference-page attributes-page"
     >
       <section className="reference-workspace">
-        <header className="reference-intro">
-          <p className="eyebrow">PLAYER ATTRIBUTES</p>
-          <h1>球员属性</h1>
-          <p>
-            {playerAttributes.length} 项球员属性分为
-            {attributeCategories.length} 大类，包含游戏内中英文说明。
-          </p>
-          <div className="reference-stats" aria-label="属性概览">
-            <span>
-              <strong>{playerAttributes.length}</strong>球员属性
-            </span>
-            {attributeCategories.map((item) => (
-              <span key={item.id}>
-                <strong>{attributeCounts.get(item.id) ?? 0}</strong>
-                {item.label}
-              </span>
-            ))}
-          </div>
-        </header>
+        <ReferencePageIntro
+          eyebrow="PLAYER ATTRIBUTES"
+          title="球员属性"
+          description={`${playerAttributes.length} 项球员属性分为 ${attributeCategories.length} 大类，包含游戏内中英文说明。`}
+        />
       </section>
 
       <section
