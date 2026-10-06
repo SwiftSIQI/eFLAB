@@ -452,7 +452,11 @@ summary {
 .result-heading h2 {
   margin-top: 4px;
   font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+  font-weight: 800;
   line-height: 1.25;
+}
+.styles-reference-workspace .reference-intro h1 {
+  font-weight: 800;
 }
 
 .eyebrow {
@@ -1379,11 +1383,10 @@ summary {
 .skills-recommendation-module > .skill-position-filter {
   order: 1;
 }
-.skills-recommendation-module > .skill-value-filter {
-  order: 2;
+.skill-intent-recommend > .skill-position-filter {
+  display: contents;
 }
-.skill-intent-recommend > .skill-position-filter,
-.skill-intent-value > .skill-value-filter {
+.skill-intent-recommend > .skill-position-filter > :not(.skill-recommendation-filter) {
   display: none;
 }
 .skill-category-list {
@@ -1537,27 +1540,46 @@ summary {
   font-weight: 800;
 }
 .skill-title {
+  flex: 0 1 auto;
+  max-width: 40%;
   min-width: 0;
-  flex: 1;
   line-height: 1.35;
+}
+.skill-title strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .skill-title strong {
   font-size: 1rem;
 }
-.skill-title strong span {
+.skill-title > span {
+  display: block;
+  overflow: hidden;
   color: #becbfa;
   font-family: 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.skill-category-tags {
+.skill-meta {
   display: flex;
-  flex: 0 0 auto;
+  min-width: 0;
+  flex: 1 1 auto;
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   gap: 5px;
-  max-width: 38%;
+}
+.skill-category-tags {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
   align-self: center;
 }
 .skill-category-tag,
@@ -1605,6 +1627,7 @@ summary {
   color: #9fafe9;
 }
 .skill-expand {
+  flex: 0 0 auto;
   color: var(--defense);
   font-size: 1.25rem;
 }
@@ -1791,6 +1814,8 @@ summary {
   max-width: none;
 }
 .reference-intro-layout .reference-stats {
+  width: 100%;
+  min-width: 0;
   justify-self: end;
   margin-top: 0;
 }
@@ -1961,6 +1986,24 @@ summary {
 }
 .reference-results-section {
   margin-top: 28px;
+}
+.reference-query-layout {
+  display: grid;
+  width: min(1280px, 100%);
+  margin: 28px auto 0;
+  padding: 0 18px;
+  gap: 24px;
+}
+.reference-query-layout > .reference-filter-section,
+.reference-query-layout > .reference-content {
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+.reference-query-layout .skills-filter-workspace,
+.reference-query-layout .skills-list-workspace {
+  padding-top: 0;
 }
 .reference-toolbar {
   display: grid;
@@ -2442,6 +2485,18 @@ summary {
   gap: 10px;
   padding-top: 2px;
 }
+.skill-custom-filter .position-filter-heading > div {
+  min-width: 0;
+  flex: 1;
+}
+.skill-custom-filter .position-filter-heading > button {
+  min-width: 82px;
+  white-space: nowrap;
+}
+.skill-custom-filter .position-filter-heading > button.is-placeholder {
+  visibility: hidden;
+  pointer-events: none;
+}
 .custom-filter-options {
   display: flex;
   flex-wrap: wrap;
@@ -2790,6 +2845,7 @@ summary {
   white-space: nowrap;
 }
 .recommendation-filter-heading button {
+  flex: 0 0 auto;
   padding: 6px 9px;
   border: 1px solid rgb(239 255 39 / 40%);
   border-radius: 8px;
@@ -2797,6 +2853,7 @@ summary {
   color: var(--yellow);
   cursor: pointer;
   font-size: 0.72rem;
+  white-space: nowrap;
 }
 .recommendation-filter-heading .booster-source-info button {
   display: grid;
@@ -2817,11 +2874,10 @@ summary {
   gap: 8px;
 }
 .recommendation-options button {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   min-width: 0;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
   padding: 9px 10px;
   border: 1px solid rgb(142 169 255 / 28%);
   border-radius: 10px;
@@ -2838,17 +2894,15 @@ summary {
   background: var(--yellow);
   color: #06115c;
 }
-.recommendation-options strong {
-  overflow: hidden;
-  font-size: 0.8rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 .recommendation-options span,
 .booster-recommendation span {
+  grid-column: 2;
+  display: inline-flex;
+  align-items: center;
   color: var(--yellow);
   font-size: 0.65rem;
   letter-spacing: 0.04em;
+  line-height: 1;
   white-space: nowrap;
 }
 .recommendation-options i,
@@ -3016,6 +3070,9 @@ summary {
 }
 .attribute-category-options .is-selected small {
   color: #c8d26d;
+}
+.boosters-page .attribute-options {
+  gap: 8px;
 }
 .reference-result-heading {
   display: flex;
@@ -3326,8 +3383,12 @@ summary {
   }
   .skill-category-list {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     overflow: visible;
+  }
+  .skill-category {
+    width: 100%;
+    min-width: 0;
   }
   .owned-skill-category-columns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3343,7 +3404,7 @@ summary {
 
 @media (min-width: 1100px) {
   .skill-category-list {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
 }
 
@@ -3369,6 +3430,20 @@ summary {
   }
   .home-floating-card {
     right: 5%;
+  }
+}
+
+@media (max-width: 759px) {
+  .reference-intro-layout {
+    grid-template-columns: 1fr;
+  }
+  .reference-intro-layout .reference-stats {
+    justify-self: start;
+    margin-top: 4px;
+  }
+  .reference-intro-layout .usage-steps,
+  .reference-intent-options {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -3478,6 +3553,10 @@ summary {
 }
 
 @media (min-width: 980px) {
+  .reference-query-layout {
+    grid-template-columns: minmax(320px, 0.82fr) minmax(0, 1.18fr);
+    align-items: start;
+  }
   .skill-detail {
     display: grid;
     grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
@@ -3509,6 +3588,15 @@ summary {
     background: rgb(5 20 100 / 74%);
     box-shadow: 0 20px 60px rgb(0 0 40 / 24%);
     backdrop-filter: blur(12px);
+  }
+
+  .pitch-panel .pitch-side-filter {
+    margin-top: 18px;
+  }
+
+  .pitch-panel .pitch-side-tabs {
+    display: grid;
+    margin: 0;
   }
 
   .controls {

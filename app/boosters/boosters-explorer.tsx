@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, CircleHelp, Search } from 'lucide-react';
+import { CircleHelp, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { SiteFooter } from '@/components/site-footer';
@@ -168,8 +168,9 @@ export function BoostersExplorer() {
         </div>
       </section>
 
-      <section className="reference-filter-section" aria-label="增能筛选">
-        <div className="reference-filter-panel reference-section-panel">
+      <div className="reference-query-layout">
+        <section className="reference-filter-section" aria-label="增能筛选">
+          <div className="reference-filter-panel reference-section-panel">
           <div className="reference-filter-heading">
             <ReferenceSectionHeading
               eyebrow="BOOSTER SEARCH AREA"
@@ -212,16 +213,6 @@ export function BoostersExplorer() {
                   headingId="position-filter-title"
                   title="球员位置"
                   description="开启随机增能限制后，只显示该位置可通过随机增能代币获得的增能"
-                  action={
-                    selectedPosition !== null && (
-                      <button
-                        type="button"
-                        onClick={() => setSelectedPosition(null)}
-                      >
-                        显示全部
-                      </button>
-                    )
-                  }
                 />
                 <ReferenceChoiceGrid
                   values={boosterPositions}
@@ -240,15 +231,6 @@ export function BoostersExplorer() {
                     <h2 id="attribute-filter-title">想提升哪些属性？</h2>
                     <p>可多选；结果需同时提升所有已选属性。</p>
                   </div>
-                  {selectedAttributes.length > 0 && (
-                    <button
-                      type="button"
-                      className="attribute-filter-clear"
-                      onClick={() => setSelectedAttributes([])}
-                    >
-                      清除 {selectedAttributes.length} 项
-                    </button>
-                  )}
                 </div>
                 <div className="attribute-options">
                   {attributeCategories.map((category) => {
@@ -258,14 +240,13 @@ export function BoostersExplorer() {
                     return (
                       <section
                         key={category.id}
-                        className="attribute-category"
+                        className="owned-skill-category"
                         aria-labelledby={`attribute-category-${category.id}`}
                       >
                         <h3 id={`attribute-category-${category.id}`}>
                           {category.label}
-                          <span>{category.nameEn}</span>
                         </h3>
-                        <div className="attribute-category-options">
+                        <div className="owned-skill-category-options">
                           {categoryAttributes.map((item) => {
                             const selected = selectedAttributes.includes(
                               item.id,
@@ -278,13 +259,7 @@ export function BoostersExplorer() {
                                 onClick={() => toggleAttribute(item.id)}
                                 aria-pressed={selected}
                               >
-                                <span className="attribute-check">
-                                  {selected && <Check aria-hidden="true" />}
-                                </span>
-                                <span>
-                                  {item.nameZh}
-                                  <small>{item.nameEn}</small>
-                                </span>
+                                {item.nameZh}
                               </button>
                             );
                           })}
@@ -340,14 +315,6 @@ export function BoostersExplorer() {
                     </div>
                     <p>按价值等级筛选增能</p>
                   </div>
-                  {selectedRecommendation !== null && (
-                    <button
-                      type="button"
-                      onClick={() => setSelectedRecommendation(null)}
-                    >
-                      显示全部
-                    </button>
-                  )}
                 </div>
                 <ReferenceRatingOptions
                   levels={recommendationLevels}
@@ -380,14 +347,14 @@ export function BoostersExplorer() {
               </section>
             </>
           )}
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section
-        className="reference-content reference-results-section"
-        aria-label="增能查询结果"
-      >
-        <div className="reference-results-panel reference-section-panel">
+        <section
+          className="reference-content reference-results-section"
+          aria-label="增能查询结果"
+        >
+          <div className="reference-results-panel reference-section-panel">
           <div className="reference-result-heading" aria-live="polite">
             <ReferenceSectionHeading
               eyebrow="BOOSTER RESULT LIST"
@@ -472,8 +439,9 @@ export function BoostersExplorer() {
               </div>
             )}
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
+      </div>
       <SiteFooter />
     </main>
   );

@@ -14,8 +14,13 @@ const layerLegend = [
 const debugStyles = `
   html[data-reference-layer-debug='on'] body { background: #101b36; }
   html[data-reference-layer-debug='on'] .reference-page .reference-intro,
-  html[data-reference-layer-debug='on'] .reference-page .reference-section-panel {
+  html[data-reference-layer-debug='on'] .reference-page .reference-section-panel,
+  html[data-reference-layer-debug='on'] .styles-page .pitch-panel,
+  html[data-reference-layer-debug='on'] .styles-page .results-panel {
     background: #57213d !important;
+  }
+  html[data-reference-layer-debug='on'] .styles-page .workspace {
+    background: transparent !important;
   }
   html[data-reference-layer-debug='on'] .reference-page .reference-intro-layout > .usage-guide,
   html[data-reference-layer-debug='on'] .reference-page .reference-stats span,
@@ -34,6 +39,13 @@ const debugStyles = `
   html[data-reference-layer-debug='on'] .reference-page .skill-result-count {
     background: #0b6b63 !important;
   }
+  html[data-reference-layer-debug='on'] .styles-page .controls,
+  html[data-reference-layer-debug='on'] .styles-page .pitch,
+  html[data-reference-layer-debug='on'] .styles-page .style-list,
+  html[data-reference-layer-debug='on'] .styles-page .pitch-side-filter,
+  html[data-reference-layer-debug='on'] .styles-page .pitch-side-tabs {
+    background: #0b6b63 !important;
+  }
   html[data-reference-layer-debug='on'] .reference-page .reference-intent-option,
   html[data-reference-layer-debug='on'] .reference-page .position-options,
   html[data-reference-layer-debug='on'] .reference-page .random-limit-options,
@@ -46,6 +58,13 @@ const debugStyles = `
   html[data-reference-layer-debug='on'] .reference-page .skill-category,
   html[data-reference-layer-debug='on'] .reference-page .skill-card,
   html[data-reference-layer-debug='on'] .reference-page .skill-card summary {
+    background: #8a5a00 !important;
+  }
+  html[data-reference-layer-debug='on'] .styles-page .position-strip,
+  html[data-reference-layer-debug='on'] .styles-page .filter-row,
+  html[data-reference-layer-debug='on'] .styles-page .style-card,
+  html[data-reference-layer-debug='on'] .styles-page .pitch-node,
+  html[data-reference-layer-debug='on'] .styles-page .pitch-side-tabs [data-slot='tabs-trigger'] {
     background: #8a5a00 !important;
   }
   html[data-reference-layer-debug='on'] .reference-page .reference-intent-option button,
@@ -72,6 +91,11 @@ const debugStyles = `
   html[data-reference-layer-debug='on'] .reference-page .skill-recommendation strong,
   html[data-reference-layer-debug='on'] .reference-page .skill-research {
     background: #8d3f78 !important;
+  }
+  html[data-reference-layer-debug='on'] .styles-page .position-chip,
+  html[data-reference-layer-debug='on'] .styles-page .search-box,
+  html[data-reference-layer-debug='on'] .styles-page .style-description {
+    background: #4b236d !important;
   }
 `;
 

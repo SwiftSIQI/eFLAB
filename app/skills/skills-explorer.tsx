@@ -12,7 +12,7 @@ import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
 import { ReferenceSectionHeading } from '@/components/reference-section-heading';
 import { SiteFooter } from '@/components/site-footer';
 import externalLinks from '@/config/external-links.json';
-import { includesValue, normalizeSearchText } from '@/lib/utils';
+import { normalizeSearchText } from '@/lib/utils';
 import {
   getHighestPositionLevel,
   positionRecommendationLabels,
@@ -143,8 +143,9 @@ export function SkillsExplorer() {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
   const [selectedPositionRecommendation, setSelectedPositionRecommendation] =
     useState<SkillPositionRecommendation | null>(null);
-  const [selectedSkillCombo, setSelectedSkillCombo] =
-    useState<SkillComboId | null>(null);
+  const [selectedSkillCombos, setSelectedSkillCombos] = useState<SkillComboId[]>(
+    [],
+  );
   const [selectedOwnedSkillIds, setSelectedOwnedSkillIds] = useState<number[]>(
     [],
   );
@@ -158,7 +159,7 @@ export function SkillsExplorer() {
     setSelectedPosition(null);
     setSelectedProfile(null);
     setSelectedPositionRecommendation(null);
-    setSelectedSkillCombo(null);
+    setSelectedSkillCombos([]);
     setSelectedOwnedSkillIds([]);
   }
 
@@ -174,15 +175,13 @@ export function SkillsExplorer() {
 
   const results = useMemo(() => {
     const keyword = skillIntent === 'lookup' ? normalizeSearchText(query) : '';
-    const selectedComboSkillIds =
-      selectedSkillCombo === null
-        ? undefined
-        : skillComboGroups.find((group) => group.id === selectedSkillCombo)
-            ?.skillIds;
+    const selectedComboSkillIds = new Set<number>(
+      skillComboGroups
+        .filter((group) => selectedSkillCombos.includes(group.id))
+        .flatMap((group) => group.skillIds),
+    );
     const filtered = playerSkills.filter((skill) => {
-      const isSelectedComboSkill = selectedComboSkillIds
-        ? includesValue(selectedComboSkillIds, skill.id)
-        : false;
+      const isSelectedComboSkill = selectedComboSkillIds.has(skill.id);
       const matchesPositionFilters =
         selectedPosition === null ||
         (selectedPlan !== null &&
@@ -249,7 +248,7 @@ export function SkillsExplorer() {
     selectedPositionRecommendation,
     selectedProfile,
     selectedRecommendation,
-    selectedSkillCombo,
+    selectedSkillCombos,
   ]);
 
   const renderOwnedSkillCategory = (categoryItem: SkillCategoryDefinition) => {
@@ -354,11 +353,12 @@ export function SkillsExplorer() {
         </header>
       </section>
 
-      <section
-        className="skills-workspace skills-filter-workspace reference-filter-section"
-        aria-label="球员技巧筛选"
-      >
-        <div className="skills-controls reference-filter-panel reference-section-panel">
+      <div className="reference-query-layout">
+        <section
+          className="skills-workspace skills-filter-workspace reference-filter-section"
+          aria-label="球员技巧筛选"
+        >
+          <div className="skills-controls reference-filter-panel reference-section-panel">
           <div className="skill-results">
             {skillIntent === 'lookup' && (
               <section className="skills-module skills-query-module">
@@ -394,68 +394,6 @@ export function SkillsExplorer() {
                     level="h2"
                   />
                 </div>
-                <section
-                  className="reference-filter-module position-filter skill-recommendation-filter skill-value-filter"
-                  aria-labelledby="skill-recommendation-filter-title"
-                >
-                  <div className="recommendation-filter-heading">
-                    <div className="recommendation-title-with-info">
-                      <div>
-                        <div className="recommendation-heading-title">
-                          <h2 id="skill-recommendation-filter-title">
-                            {skillIntent === 'recommend'
-                              ? '技巧通用价值'
-                              : '给球员添加合适的技巧'}
-                          </h2>
-                          <span className="custom-filter-option recommendation-info-option">
-                            <button
-                              type="button"
-                              className="recommendation-info-button"
-                              aria-label="查看技巧价值评分来源"
-                              aria-describedby="skill-recommendation-source"
-                            >
-                              <CircleHelp aria-hidden="true" />
-                            </button>
-                            <span
-                              id="skill-recommendation-source"
-                              className="custom-filter-tooltip recommendation-source-tooltip"
-                              role="tooltip"
-                            >
-                              技巧价值评分参考自珠海amadeusz的研究成果，
-                              <a
-                                href={
-                                  externalLinks.find(
-                                    (link) => link.id === 'skill-value-source',
-                                  )?.url
-                                }
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                查看相关资料
-                              </a>
-                              。
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    {selectedRecommendation !== null && (
-                      <button
-                        type="button"
-                        onClick={() => setSelectedRecommendation(null)}
-                      >
-                        显示全部
-                      </button>
-                    )}
-                  </div>
-                  <ReferenceRatingOptions
-                    levels={recommendationLevels}
-                    maxLevel={maxRecommendationLevel}
-                    selectedLevel={selectedRecommendation}
-                    onSelect={setSelectedRecommendation}
-                  />
-                </section>
-
                 <div className="skill-position-filter">
                   <section
                     className="reference-filter-module position-filter"
@@ -465,21 +403,6 @@ export function SkillsExplorer() {
                       headingId="skill-position-filter-title"
                       title="推荐方案"
                       description="先选择专家方案，再按位置和球员定位查看技巧"
-                      action={
-                        selectedPlan !== null && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedPlan(null);
-                              setSelectedPosition(null);
-                              setSelectedProfile(null);
-                              setSelectedPositionRecommendation(null);
-                            }}
-                          >
-                            清除选择
-                          </button>
-                        )
-                      }
                     />
                     <div className="recommendation-plan-options">
                       {orderedRecommendationPlans.map((plan) => {
@@ -494,7 +417,7 @@ export function SkillsExplorer() {
                               type="button"
                               className="recommendation-plan-select"
                               onClick={() => {
-                                setSelectedPlan(plan.id);
+                                setSelectedPlan(selected ? null : plan.id);
                                 setSelectedPosition(null);
                                 setSelectedProfile(null);
                                 setSelectedPositionRecommendation(null);
@@ -545,20 +468,6 @@ export function SkillsExplorer() {
                           ? '请先选择专家方案'
                           : '选择位置后，按适配度优先显示技巧'
                       }
-                      action={
-                        selectedPosition !== null && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedPosition(null);
-                              setSelectedProfile(null);
-                              setSelectedPositionRecommendation(null);
-                            }}
-                          >
-                            显示全部
-                          </button>
-                        )
-                      }
                     />
                     <ReferenceChoiceGrid
                       values={positionOptions.map((position) => position.id)}
@@ -578,20 +487,6 @@ export function SkillsExplorer() {
                           <ReferenceFilterHeading
                             title="球员定位"
                             description="不同定位可以有不同的技能优先级"
-                            action={
-                              selectedProfile !== null &&
-                              activePosition.profiles.length > 1 && (
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setSelectedProfile(null);
-                                    setSelectedPositionRecommendation(null);
-                                  }}
-                                >
-                                  显示全部
-                                </button>
-                              )
-                            }
                           />
                           {activePosition.profiles.length === 1 &&
                           String(activePosition.profiles[0]) === '通用' ? (
@@ -623,18 +518,6 @@ export function SkillsExplorer() {
                           ? '请先选择位置'
                           : '按必备、推荐或可选筛选'
                       }
-                      action={
-                        selectedPositionRecommendation !== null && (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setSelectedPositionRecommendation(null)
-                            }
-                          >
-                            显示全部
-                          </button>
-                        )
-                      }
                     />
                     <ReferenceChoiceGrid
                       values={positionRecommendationLevels}
@@ -650,21 +533,13 @@ export function SkillsExplorer() {
                       <div>
                         <h2>定制化技能组</h2>
                         <p>
-                          请注意选择任意技能组后，列表页的分类会自动切换到“全部”，并将对应技能追加到下方列表。
+                          右侧列表分类会切换到“全部”，并将球员技巧添加到列表下方。
                         </p>
                       </div>
-                      {selectedSkillCombo !== null && (
-                        <button
-                          type="button"
-                          onClick={() => setSelectedSkillCombo(null)}
-                        >
-                          显示全部
-                        </button>
-                      )}
                     </div>
                     <div className="custom-filter-options">
                       {skillComboGroups.map((group) => {
-                        const selected = selectedSkillCombo === group.id;
+                        const selected = selectedSkillCombos.includes(group.id);
                         const comboSkills = group.skillIds
                           .map(
                             (id) =>
@@ -682,8 +557,10 @@ export function SkillsExplorer() {
                               type="button"
                               className={`custom-filter-select${selected ? ' is-selected' : ''}`}
                               onClick={() => {
-                                setSelectedSkillCombo(
-                                  selected ? null : group.id,
+                                setSelectedSkillCombos((current) =>
+                                  selected
+                                    ? current.filter((id) => id !== group.id)
+                                    : [...current, group.id],
                                 );
                                 if (!selected) {
                                   setCategory('all');
@@ -715,6 +592,64 @@ export function SkillsExplorer() {
                       })}
                     </div>
                   </section>
+                  <section
+                    className="reference-filter-module position-filter skill-recommendation-filter"
+                    aria-labelledby="skill-recommendation-filter-title"
+                  >
+                    <div className="recommendation-filter-heading">
+                      <div className="recommendation-title-with-info">
+                        <div>
+                          <div className="recommendation-heading-title">
+                            <h2 id="skill-recommendation-filter-title">
+                              {skillIntent === 'recommend'
+                                ? '技巧通用价值'
+                                : '技巧价值筛选器'}
+                            </h2>
+                            <span className="custom-filter-option recommendation-info-option">
+                              <button
+                                type="button"
+                                className="recommendation-info-button"
+                                aria-label="查看技巧价值评分来源"
+                                aria-describedby="skill-recommendation-source"
+                              >
+                                <CircleHelp aria-hidden="true" />
+                              </button>
+                              <span
+                                id="skill-recommendation-source"
+                                className="custom-filter-tooltip recommendation-source-tooltip"
+                                role="tooltip"
+                              >
+                                技巧价值评分参考自珠海amadeusz的研究成果，
+                                <a
+                                  href={
+                                    externalLinks.find(
+                                      (link) => link.id === 'skill-value-source',
+                                    )?.url
+                                  }
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  查看相关资料
+                                </a>
+                                。
+                              </span>
+                            </span>
+                          </div>
+                            <p>
+                              {skillIntent === 'recommend'
+                                ? '根据珠海amadeusz的研究成果，了解每个技巧的实际价值。'
+                                : '按珠海 amadeusz 整理的技巧价值等级，筛选值得为球员添加的技巧。'}
+                            </p>
+                        </div>
+                      </div>
+                    </div>
+                    <ReferenceRatingOptions
+                      levels={recommendationLevels}
+                      maxLevel={maxRecommendationLevel}
+                      selectedLevel={selectedRecommendation}
+                      onSelect={setSelectedRecommendation}
+                    />
+                  </section>
                   <section className="reference-filter-module skill-owned-filter">
                     <div className="position-filter-heading">
                       <div>
@@ -723,14 +658,6 @@ export function SkillsExplorer() {
                           通过剔除球员已经拥有的技能，帮助玩家更好的聚焦应该新增的技能。
                         </p>
                       </div>
-                      {selectedOwnedSkillIds.length > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => setSelectedOwnedSkillIds([])}
-                        >
-                          清空已选
-                        </button>
-                      )}
                     </div>
                     <div className="owned-skill-options">
                       <div className="owned-skill-category-columns">
@@ -766,15 +693,15 @@ export function SkillsExplorer() {
               </section>
             )}
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section
-        className="skills-workspace skills-list-workspace reference-content reference-results-section"
-        aria-label="技巧列表"
-      >
-        <div className="skills-controls">
-          <div className="skill-results reference-results-panel reference-section-panel">
+        <section
+          className="skills-workspace skills-list-workspace reference-content reference-results-section"
+          aria-label="技巧列表"
+        >
+          <div className="skills-controls">
+            <div className="skill-results reference-results-panel reference-section-panel">
             <div
               className="result-heading skill-result-heading reference-result-heading"
               aria-live="polite"
@@ -803,7 +730,7 @@ export function SkillsExplorer() {
                     type="button"
                     className={`skill-category ${category === item.id ? 'is-active' : ''}`}
                     onClick={() => setCategory(item.id)}
-                    disabled={selectedSkillCombo !== null && item.id !== 'all'}
+                    disabled={selectedSkillCombos.length > 0 && item.id !== 'all'}
                     aria-pressed={category === item.id}
                   >
                     <span>
@@ -837,9 +764,10 @@ export function SkillsExplorer() {
                 </div>
               )}
             </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
       <SiteFooter />
     </main>
   );

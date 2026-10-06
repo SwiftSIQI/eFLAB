@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ReferenceSearchField } from '@/components/reference-search-field';
+import { ReferenceDebugPanel } from '@/components/reference-debug-panel';
 import { SiteFooter } from '@/components/site-footer';
 import { normalizeSearchText } from '@/lib/utils';
 import { positions, styles, type Side } from '../data';
@@ -14,6 +14,7 @@ export const dynamic = 'force-static';
 
 type SideFilter = 'all' | Side;
 type Position = (typeof positions)[number];
+const isDebugBuild = import.meta.env.DEV || import.meta.env.MODE === 'test';
 
 const pitchNodes: Array<{
   position: Exclude<Position, 'ALL'>;
@@ -161,6 +162,7 @@ export default function StylesPage() {
 
   return (
     <main id="main-content" className="site-shell reference-page styles-page">
+      {isDebugBuild && <ReferenceDebugPanel />}
       <section className="reference-workspace styles-reference-workspace">
         <header className="reference-intro">
           <p className="eyebrow">PLAYING STYLES</p>
@@ -186,16 +188,24 @@ export default function StylesPage() {
               <p className="eyebrow">POSITION MAP</p>
               <h2>选择球员位置</h2>
             </div>
-            <button
-              className="all-link"
-              type="button"
-              onClick={() => setPosition('ALL')}
-              disabled={position === 'ALL'}
-              aria-label="清除位置选项"
-            >
-              清除位置选项
-            </button>
           </div>
+          <Tabs
+            value={side}
+            onValueChange={(value) => setSide(value as SideFilter)}
+            className="pitch-side-filter"
+          >
+            <TabsList className="side-tabs pitch-side-tabs" aria-label="比赛风格类型">
+              <TabsTrigger value="all">全部</TabsTrigger>
+              <TabsTrigger value="attack" className="attack-tab">
+                <Swords aria-hidden="true" />
+                进攻型
+              </TabsTrigger>
+              <TabsTrigger value="defense" className="defense-tab">
+                <Shield aria-hidden="true" />
+                防守型
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
           <div className="pitch">
             <span className="pitch-box top" />
             <span className="pitch-box bottom" />
@@ -209,7 +219,9 @@ export default function StylesPage() {
                   type="button"
                   className={`pitch-node ${position === node.position ? 'is-active' : ''}`}
                   style={{ left: `${node.x}%`, top: `${node.y}%` }}
-                  onClick={() => setPosition(node.position)}
+                  onClick={() =>
+                    setPosition(position === node.position ? 'ALL' : node.position)
+                  }
                   aria-pressed={position === node.position}
                   aria-label={`${node.position}，${count} 种风格`}
                 >
@@ -223,49 +235,6 @@ export default function StylesPage() {
         </aside>
 
         <section className="results-panel">
-          <div className="controls">
-            <div className="position-strip" aria-label="按位置筛选">
-              {positions.map((item) => (
-                <Button
-                  key={item}
-                  type="button"
-                  variant="outline"
-                  className={`position-chip ${position === item ? 'is-active' : ''}`}
-                  onClick={() => setPosition(item)}
-                  aria-pressed={position === item}
-                >
-                  {item === 'ALL' ? '全部' : item}
-                </Button>
-              ))}
-            </div>
-
-            <div className="filter-row">
-              <Tabs
-                value={side}
-                onValueChange={(value) => setSide(value as SideFilter)}
-              >
-                <TabsList className="side-tabs" aria-label="比赛风格类型">
-                  <TabsTrigger value="all">全部</TabsTrigger>
-                  <TabsTrigger value="attack" className="attack-tab">
-                    <Swords aria-hidden="true" />
-                    进攻型
-                  </TabsTrigger>
-                  <TabsTrigger value="defense" className="defense-tab">
-                    <Shield aria-hidden="true" />
-                    防守型
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-              <ReferenceSearchField
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                onClear={() => setQuery('')}
-                label="搜索比赛风格"
-                placeholder="搜索中英文名称…"
-              />
-            </div>
-          </div>
-
           <div className="result-heading" aria-live="polite">
             <div>
               <p className="eyebrow">COMPATIBLE STYLES</p>

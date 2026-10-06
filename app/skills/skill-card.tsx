@@ -49,48 +49,51 @@ export function SkillCard({
           {String(skill.id).padStart(2, '0')}
         </span>
         <span className="skill-title">
-          <strong>
-            {skill.nameZh}
-            <span> / {skill.nameEn}</span>
-          </strong>
+          <strong>{skill.nameZh}</strong>
+          <span>{skill.nameEn}</span>
         </span>
-        <span className="skill-category-tags" aria-label="技能分类">
-          {skill.categories.map((id) => (
-            <span key={id} className="skill-category-tag">
-              {skillCategories.find((item) => item.id === id)?.label}
-            </span>
-          ))}
-        </span>
-        {(skill.researchZh || skill.researchEn) && (
-          <span className="skill-research-tag">技能深度解析</span>
-        )}
-        {selectedPosition !== null && selectedPlan !== null && (
-          <span
-            className="skill-position-fit"
-            aria-label={`${selectedPosition} 位置适配 ${selectedProfile && selectedProfile !== '通用' ? `${selectedProfile} ` : ''}${displayedPositionLabel}`}
-          >
-            {selectedPosition}{' '}
-            {selectedProfile && selectedProfile !== '通用'
-              ? `${selectedProfile} `
-              : ''}
-            {displayedPositionLabel}
+        <span className="skill-meta">
+          <span className="skill-category-tags" aria-label="技能分类">
+            {skill.categories.map((id) => (
+              <span key={id} className="skill-category-tag">
+                {skillCategories.find((item) => item.id === id)?.label}
+              </span>
+            ))}
           </span>
-        )}
-        <span
-          className={`skill-recommendation${skill.recommendation === null ? ' is-unrated' : ''}`}
-          aria-label={
-            skill.recommendation === null
-              ? '暂无技巧价值评级'
-              : `技巧价值 ${skill.recommendation} 颗星`
-          }
-        >
-          <strong>
-            {skill.recommendation === null
-              ? '暂无评级'
-              : `技能价值 ${skill.recommendation} 星`}
-          </strong>
+          {(skill.researchZh || skill.researchEn) && (
+            <span className="skill-research-tag">技能深度解析</span>
+          )}
+          {selectedPosition !== null && selectedPlan !== null && (
+            <span
+              className="skill-position-fit"
+              aria-label={`${selectedPosition} 位置适配 ${selectedProfile && selectedProfile !== '通用' ? `${selectedProfile} ` : ''}${displayedPositionLabel}`}
+            >
+              {selectedPosition}{' '}
+              {selectedProfile && selectedProfile !== '通用'
+                ? `${selectedProfile} `
+                : ''}
+              {displayedPositionLabel}
+            </span>
+          )}
+          <span
+            className={`skill-recommendation${skill.recommendation === null ? ' is-unrated' : ''}`}
+            aria-label={
+              skill.recommendation === null
+                ? '暂无技巧价值评级'
+                : `技巧价值 ${skill.recommendation} 颗星`
+            }
+          >
+            <strong>
+              {skill.recommendation === null
+                ? '暂无评级'
+                : `技能价值 ${skill.recommendation} 星`}
+            </strong>
+          </span>
         </span>
-        <span className="skill-expand" aria-hidden="true">
+        <span
+          className="skill-expand"
+          aria-hidden="true"
+        >
           ＋
         </span>
       </summary>
