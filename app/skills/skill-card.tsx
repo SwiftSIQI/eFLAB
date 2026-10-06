@@ -12,6 +12,7 @@ import {
   type SkillPositionRecommendation,
   type SkillRecommendationPlanId,
 } from './data';
+import { withBasePath } from '@/lib/site-path';
 
 type SkillCardProps = {
   readonly skill: PlayerSkill;
@@ -98,7 +99,7 @@ export const SkillCard = memo(function SkillCard({
       <div className="skill-detail">
         <Image
           className="skill-image"
-          src={skill.image}
+          src={withBasePath(skill.image)}
           alt={`${skill.nameZh}技巧示意图`}
           width={567}
           height={319}

@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
+import { withBasePath } from '@/lib/site-path';
+
 const links = [
   { href: '/', label: '首页', description: 'HOME' },
   { href: '/attributes', label: '球员属性', description: 'ATTRIBUTES' },
@@ -67,7 +69,7 @@ export function SiteHeader() {
       <Link className="brand-lockup" href="/" aria-label="eFLAB 首页">
         <Image
           className="brand-logo"
-          src="/eflab-logo.svg"
+          src={withBasePath('/eflab-logo.svg')}
           alt="eFLAB"
           width={136}
           height={36}
